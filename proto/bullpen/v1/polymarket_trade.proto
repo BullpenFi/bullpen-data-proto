@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package bullpen.v1;
+
+import "google/protobuf/timestamp.proto";
+import "bullpen/v1/common.proto";
+
+// =============================================================================
+// PolymarketTradeService — order execution against Polymarket CLOB
+//
+// All RPCs require authentication (JWT or API key).
+// Orders are routed through the proxy subsystem (AWS Gateway / direct).
+// =============================================================================
+
+service PolymarketTradeService {
+  rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (Order);
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+  rpc StreamOrderStatus(StreamOrderStatusRequest) returns (stream OrderStatusUpdate);
+}
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+enum OrderType {
+  ORDER_TYPE_UNSPECIFIED = 0;
+  LIMIT = 1;
+  MARKET = 2;
+}
+
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  PENDING = 1;
+  OPEN = 2;
+  PARTIALLY_FILLED = 3;
+  FILLED = 4;
+  CANCELLED = 5;
+  EXPIRED = 6;
+  FAILED = 7;
+}
+
+// ---------------------------------------------------------------------------
+// RPCs
+// ---------------------------------------------------------------------------
+
+message PlaceOrderRequest {
+  string token_id = 1;
+  Side side = 2;
+  OrderType order_type = 3;
+  string price = 4;           // decimal string e.g. "0.55"
+  string size = 5;            // decimal string e.g. "100.0"
+  string idempotency_key = 6; // client-generated, prevents duplicates
+}
+
+message PlaceOrderResponse {
+  string order_id = 1;
+  OrderStatus status = 2;
+  google.protobuf.Timestamp created_at = 3;
+}
+
+message GetOrderRequest {
+  string order_id = 1;
+}
+
+message Order {
+  string order_id = 1;
+  string token_id = 2;
+  Side side = 3;
+  OrderType order_type = 4;
+  string price = 5;
+  string original_size = 6;
+  string remaining_size = 7;
+  string filled_size = 8;
+  OrderStatus status = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+}
+
+message CancelOrderRequest {
+  string order_id = 1;
+}
+
+message CancelOrderResponse {
+  bool success = 1;
+  OrderStatus status = 2;
+}
+
+message StreamOrderStatusRequest {
+  string order_id = 1;
+}
+
+message OrderStatusUpdate {
+  string order_id = 1;
+  OrderStatus status = 2;
+  string filled_size = 3;
+  string remaining_size = 4;
+  google.protobuf.Timestamp timestamp = 5;
+}

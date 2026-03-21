@@ -1,0 +1,251 @@
+syntax = "proto3";
+
+package bullpen.v1;
+
+import "google/protobuf/timestamp.proto";
+import "bullpen/v1/common.proto";
+
+// =============================================================================
+// PolymarketAccountService — user profiles, portfolios, leaderboard, API keys
+//
+// Replaces: Profile API, Data API positions, Leaderboard API, analytics traders
+// =============================================================================
+
+service PolymarketAccountService {
+  // Profile
+  rpc GetProfile(GetProfileRequest) returns (Profile);
+  rpc GetTraderProfile(GetTraderProfileRequest) returns (TraderProfile);
+
+  // Portfolio
+  rpc GetPositions(GetPositionsRequest) returns (GetPositionsResponse);
+  rpc GetTradingHistory(GetTradingHistoryRequest) returns (GetTradingHistoryResponse);
+  rpc GetBalances(GetBalancesRequest) returns (Balances);
+
+  // Leaderboard
+  rpc GetLeaderboard(GetLeaderboardRequest) returns (GetLeaderboardResponse);
+  rpc GetBiggestMovers(GetBiggestMoversRequest) returns (GetBiggestMoversResponse);
+
+  // API key management (requires JWT auth)
+  rpc CreateApiKey(CreateApiKeyRequest) returns (CreateApiKeyResponse);
+  rpc ListApiKeys(ListApiKeysRequest) returns (ListApiKeysResponse);
+  rpc RevokeApiKey(RevokeApiKeyRequest) returns (RevokeApiKeyResponse);
+
+  // Streaming
+  rpc StreamPositionUpdates(StreamPositionUpdatesRequest) returns (stream PositionUpdate);
+}
+
+// ---------------------------------------------------------------------------
+// Profile
+// ---------------------------------------------------------------------------
+
+message GetProfileRequest {
+  string address = 1;
+}
+
+message Profile {
+  string address = 1;
+  string name = 2;
+  string pseudonym = 3;
+  string bio = 4;
+  string profile_image = 5;
+  string proxy_wallet = 6;
+  bool display_username_public = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+message GetTraderProfileRequest {
+  string address = 1;
+  TimeWindow window = 2;
+}
+
+message TraderProfile {
+  Profile profile = 1;
+  TraderStats stats = 2;
+  repeated Position top_positions = 3;
+
+  // Server-computed tags and score (replaces client-side trader-analysis.ts)
+  repeated TraderTag tags = 4;
+  int32 emoji_score = 5;
+  TraderTier tier = 6;
+}
+
+enum TraderTier {
+  TRADER_TIER_UNSPECIFIED = 0;
+  TRADER_TIER_NEWBIE = 1;       // <30 days
+  TRADER_TIER_GROWING = 2;      // 90d - 1yr
+  TRADER_TIER_EXPERIENCED = 3;  // >1yr
+  TRADER_TIER_ELITE = 4;        // combined excellence
+}
+
+message TraderStats {
+  string total_pnl = 1;
+  string total_volume = 2;
+  int32 num_markets = 3;
+  int32 num_winners = 4;
+  int32 num_losers = 5;
+  string biggest_win = 6;
+  string biggest_loss = 7;
+  string win_rate = 8;
+  // Capital tier
+  string total_position_value = 9;
+}
+
+// ---------------------------------------------------------------------------
+// Portfolio
+// ---------------------------------------------------------------------------
+
+message GetPositionsRequest {
+  string address = 1;
+  string market_condition_id = 2;  // optional: filter to specific market
+  string size_threshold = 3;       // optional: minimum position size
+}
+
+message Position {
+  string token_id = 1;
+  string condition_id = 2;
+  string market_question = 3;
+  string market_slug = 4;
+  string outcome = 5;
+  int32 outcome_index = 6;
+  Side side = 7;
+  string size = 8;
+  string avg_price = 9;
+  string current_price = 10;
+  string initial_value = 11;
+  string current_value = 12;
+  string pnl = 13;
+  string pnl_percent = 14;
+  bool neg_risk = 15;
+  google.protobuf.Timestamp end_date = 16;
+}
+
+message GetPositionsResponse {
+  repeated Position positions = 1;
+}
+
+message GetTradingHistoryRequest {
+  string address = 1;
+  string market_condition_id = 2;  // optional
+  PaginationRequest pagination = 3;
+  Side side_filter = 4;            // optional
+}
+
+message HistoricalTrade {
+  string trader_address = 1;
+  string trader_name = 2;
+  string trader_image = 3;
+  string condition_id = 4;
+  string token_id = 5;
+  Side side = 6;
+  string size = 7;
+  string price = 8;
+  string outcome = 9;
+  string transaction_hash = 10;
+  google.protobuf.Timestamp timestamp = 11;
+}
+
+message GetTradingHistoryResponse {
+  repeated HistoricalTrade trades = 1;
+  PaginationResponse pagination = 2;
+}
+
+message GetBalancesRequest {
+  string address = 1;
+}
+
+message Balances {
+  string usdc_balance = 1;
+  string total_position_value = 2;
+  string unrealized_pnl = 3;
+  string total_pnl = 4;
+}
+
+// ---------------------------------------------------------------------------
+// Leaderboard
+// ---------------------------------------------------------------------------
+
+message GetLeaderboardRequest {
+  enum LeaderboardType {
+    LEADERBOARD_TYPE_UNSPECIFIED = 0;
+    PROFIT = 1;
+    VOLUME = 2;
+  }
+  LeaderboardType type = 1;
+  TimeWindow window = 2;
+  PaginationRequest pagination = 3;
+}
+
+message LeaderboardEntry {
+  int32 rank = 1;
+  Profile profile = 2;
+  TraderStats stats = 3;
+}
+
+message GetLeaderboardResponse {
+  repeated LeaderboardEntry entries = 1;
+  PaginationResponse pagination = 2;
+}
+
+message GetBiggestMoversRequest {
+  enum MoverType {
+    MOVER_TYPE_UNSPECIFIED = 0;
+    WINNERS = 1;
+    LOSERS = 2;
+  }
+  MoverType type = 1;
+  int32 limit = 2;
+}
+
+message GetBiggestMoversResponse {
+  repeated LeaderboardEntry movers = 1;
+}
+
+// ---------------------------------------------------------------------------
+// API key management
+// ---------------------------------------------------------------------------
+
+message CreateApiKeyRequest {
+  string name = 1;  // human-readable label
+}
+
+message CreateApiKeyResponse {
+  // The raw API key — returned ONCE. Store it securely.
+  string api_key = 1;
+  ApiKeyInfo info = 2;
+}
+
+message ApiKeyInfo {
+  string id = 1;
+  string name = 2;
+  string prefix = 3;          // first 8 chars for identification
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp last_used_at = 5;
+  bool revoked = 6;
+}
+
+message ListApiKeysRequest {}
+
+message ListApiKeysResponse {
+  repeated ApiKeyInfo keys = 1;
+}
+
+message RevokeApiKeyRequest {
+  string key_id = 1;
+}
+
+message RevokeApiKeyResponse {
+  bool success = 1;
+}
+
+// ---------------------------------------------------------------------------
+// Streaming
+// ---------------------------------------------------------------------------
+
+message StreamPositionUpdatesRequest {
+  string address = 1;
+}
+
+message PositionUpdate {
+  Position position = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}

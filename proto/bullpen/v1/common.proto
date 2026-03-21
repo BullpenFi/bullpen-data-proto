@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package bullpen.v1;
+
+// Shared pagination
+message PaginationRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message PaginationResponse {
+  int32 total = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+  bool has_more = 4;
+}
+
+// Shared enums
+enum Side {
+  SIDE_UNSPECIFIED = 0;
+  BUY = 1;
+  SELL = 2;
+}
+
+enum SortOrder {
+  SORT_ORDER_UNSPECIFIED = 0;
+  ASCENDING = 1;
+  DESCENDING = 2;
+}
+
+enum TimeWindow {
+  TIME_WINDOW_UNSPECIFIED = 0;
+  ONE_DAY = 1;
+  SEVEN_DAYS = 2;
+  THIRTY_DAYS = 3;
+  ALL_TIME = 4;
+}
+
+// Shared trader tag (used by explore + account services)
+message TraderTag {
+  string category = 1;    // "experience", "capital", "performance", "special"
+  string name = 2;        // "DIAMOND", "WHALE", "HIGH_PERFORMER"
+  string emoji = 3;       // 💎, 🐳, 🧠
+  int32 points = 4;       // contribution to emoji_score
+}

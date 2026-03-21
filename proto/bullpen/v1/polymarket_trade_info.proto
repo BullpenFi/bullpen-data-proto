@@ -1,0 +1,174 @@
+syntax = "proto3";
+
+package bullpen.v1;
+
+import "google/protobuf/timestamp.proto";
+import "bullpen/v1/common.proto";
+
+// =============================================================================
+// PolymarketTradeInfoService — orderbooks, market data, holders, price feeds
+//
+// Replaces: CLOB API reads, Data API holders/trades, analytics market data
+// =============================================================================
+
+service PolymarketTradeInfoService {
+  // Orderbook
+  rpc GetOrderbook(GetOrderbookRequest) returns (Orderbook);
+  rpc GetOrderbooks(GetOrderbooksRequest) returns (GetOrderbooksResponse);
+  rpc StreamOrderbook(StreamOrderbookRequest) returns (stream OrderbookUpdate);
+
+  // Market data
+  rpc GetSpread(GetSpreadRequest) returns (Spread);
+  rpc GetLastTrade(GetLastTradeRequest) returns (LastTrade);
+  rpc GetOpenInterest(GetOpenInterestRequest) returns (OpenInterest);
+  rpc GetMarketPrices(GetMarketPricesRequest) returns (GetMarketPricesResponse);
+
+  // Market participants
+  rpc GetMarketHolders(GetMarketHoldersRequest) returns (GetMarketHoldersResponse);
+  rpc GetRecentTrades(GetRecentTradesRequest) returns (GetRecentTradesResponse);
+}
+
+// ---------------------------------------------------------------------------
+// Orderbook
+// ---------------------------------------------------------------------------
+
+message GetOrderbookRequest {
+  string token_id = 1;
+}
+
+message PriceLevel {
+  string price = 1;
+  string size = 2;
+  string total_usd = 3;
+}
+
+message Orderbook {
+  string token_id = 1;
+  repeated PriceLevel bids = 2;
+  repeated PriceLevel asks = 3;
+  string best_bid = 4;
+  string best_ask = 5;
+  string spread = 6;
+  string spread_percent = 7;
+  string midpoint = 8;
+  string total_bid_depth = 9;
+  string total_ask_depth = 10;
+  google.protobuf.Timestamp timestamp = 11;
+}
+
+message GetOrderbooksRequest {
+  repeated string token_ids = 1;
+}
+
+message GetOrderbooksResponse {
+  map<string, Orderbook> orderbooks = 1;
+}
+
+message StreamOrderbookRequest {
+  string token_id = 1;
+}
+
+message OrderbookUpdate {
+  Orderbook orderbook = 1;
+}
+
+// ---------------------------------------------------------------------------
+// Market data
+// ---------------------------------------------------------------------------
+
+message GetSpreadRequest {
+  string token_id = 1;
+}
+
+message Spread {
+  string token_id = 1;
+  string bid = 2;
+  string ask = 3;
+  string spread = 4;
+  string spread_percent = 5;
+  string quality = 6;    // "tight", "moderate", "wide"
+}
+
+message GetLastTradeRequest {
+  string token_id = 1;
+}
+
+message LastTrade {
+  string token_id = 1;
+  string price = 2;
+  string size = 3;
+  Side side = 4;
+  google.protobuf.Timestamp timestamp = 5;
+}
+
+message GetOpenInterestRequest {
+  string condition_id = 1;
+}
+
+message OpenInterest {
+  string condition_id = 1;
+  string open_interest = 2;
+  string open_interest_usd = 3;
+}
+
+message GetMarketPricesRequest {
+  repeated string token_ids = 1;
+}
+
+message TokenPrice {
+  string token_id = 1;
+  string price = 2;
+  string size = 3;
+}
+
+message GetMarketPricesResponse {
+  repeated TokenPrice prices = 1;
+}
+
+// ---------------------------------------------------------------------------
+// Market participants
+// ---------------------------------------------------------------------------
+
+message GetMarketHoldersRequest {
+  string condition_id = 1;
+  int32 limit = 2;
+}
+
+message Holder {
+  string address = 1;
+  string proxy_wallet = 2;
+  string pseudonym = 3;
+  string profile_image = 4;
+  string amount = 5;
+  string outcome = 6;
+  int32 outcome_index = 7;
+}
+
+message GetMarketHoldersResponse {
+  repeated Holder holders = 1;
+}
+
+message GetRecentTradesRequest {
+  string condition_id = 1;
+  PaginationRequest pagination = 2;
+  Side side_filter = 3;
+  string min_amount = 4;
+}
+
+message RecentTrade {
+  string trader_address = 1;
+  string trader_name = 2;
+  string trader_image = 3;
+  Side side = 4;
+  string token_id = 5;
+  string outcome = 6;
+  string size = 7;
+  string price = 8;
+  string transaction_hash = 9;
+  google.protobuf.Timestamp timestamp = 10;
+}
+
+message GetRecentTradesResponse {
+  repeated RecentTrade trades = 1;
+  PaginationResponse pagination = 2;
+}

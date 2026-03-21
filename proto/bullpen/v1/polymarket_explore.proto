@@ -1,0 +1,543 @@
+syntax = "proto3";
+
+package bullpen.v1;
+
+import "google/protobuf/timestamp.proto";
+import "bullpen/v1/common.proto";
+
+// =============================================================================
+// PolymarketExploreService — composable market discovery with lenses
+//
+// Core primitive: QueryMarkets with composable filter → score → sort → enrich
+// Named presets: thin wrappers for common lens configurations
+// =============================================================================
+
+service PolymarketExploreService {
+  // ---- Core composable query (the main primitive) ----
+  rpc QueryMarkets(QueryMarketsRequest) returns (QueryMarketsResponse);
+  rpc QueryEvents(QueryEventsRequest) returns (QueryEventsResponse);
+
+  // ---- Named lens presets (convenience, run predefined compositions) ----
+  rpc GetHomepageSummary(GetHomepageSummaryRequest) returns (HomepageSummary);
+  rpc GetFeaturedLens(GetFeaturedLensRequest) returns (QueryMarketsResponse);
+
+  // ---- Single-entity lookups ----
+  rpc GetEvent(GetEventRequest) returns (Event);
+  rpc GetMarket(GetMarketRequest) returns (Market);
+  rpc GetMarketAnalytics(GetMarketAnalyticsRequest) returns (MarketAnalytics);
+  rpc GetMarketStrength(GetMarketStrengthRequest) returns (MarketStrength);
+
+  // ---- Categories ----
+  rpc GetCategories(GetCategoriesRequest) returns (GetCategoriesResponse);
+
+  // ---- Social ----
+  rpc GetMarketComments(GetMarketCommentsRequest) returns (GetMarketCommentsResponse);
+
+  // ---- Streaming ----
+  rpc StreamMarketPrices(StreamMarketPricesRequest) returns (stream MarketPriceUpdate);
+
+  // ---- Page views (complete page rendering) ----
+  rpc GetPageView(GetPageViewRequest) returns (PageView);
+}
+
+// =============================================================================
+// Composable query pipeline: filter → score → sort → enrich → paginate
+// =============================================================================
+
+message QueryMarketsRequest {
+  MarketFilter filter = 1;
+  ScoringConfig scoring = 2;
+  SortConfig sort = 3;
+  EnrichmentConfig enrichment = 4;
+  PaginationRequest pagination = 5;
+}
+
+message QueryMarketsResponse {
+  repeated MarketResult markets = 1;
+  PaginationResponse pagination = 2;
+  // Aggregate stats across the full result set (pre-pagination)
+  ResultAggregates aggregates = 3;
+}
+
+message QueryEventsRequest {
+  MarketFilter filter = 1;
+  ScoringConfig scoring = 2;
+  SortConfig sort = 3;
+  EnrichmentConfig enrichment = 4;
+  PaginationRequest pagination = 5;
+}
+
+message QueryEventsResponse {
+  repeated EventResult events = 1;
+  PaginationResponse pagination = 2;
+  ResultAggregates aggregates = 3;
+}
+
+// ---------------------------------------------------------------------------
+// Filter — what markets to include
+// ---------------------------------------------------------------------------
+
+message MarketFilter {
+  // Text search
+  string query = 1;
+
+  // Category / tag filtering
+  repeated string categories = 2;      // tag slugs
+  repeated string tags = 3;            // specific tag IDs
+
+  // Status
+  StatusFilter status = 4;
+
+  // Time range
+  TimeRangeFilter time_range = 5;
+
+  // Thresholds
+  string min_volume = 6;
+  string min_liquidity = 7;
+  int32 min_unique_bettors = 8;
+
+  // Specific IDs (for batch lookups)
+  repeated string condition_ids = 9;
+}
+
+message StatusFilter {
+  bool include_active = 1;    // default true
+  bool include_closed = 2;
+  bool include_archived = 3;
+  bool include_resolved = 4;
+}
+
+message TimeRangeFilter {
+  // Ending within
+  google.protobuf.Timestamp ends_before = 1;
+  google.protobuf.Timestamp ends_after = 2;
+  // Created within
+  google.protobuf.Timestamp created_after = 3;
+  google.protobuf.Timestamp created_before = 4;
+}
+
+// ---------------------------------------------------------------------------
+// Scoring — what lens/perspective to apply
+// ---------------------------------------------------------------------------
+
+message ScoringConfig {
+  ScoringFunction function = 1;
+  TimeWindow window = 2;
+
+  // Optional: custom weights for COMPOSITE scoring
+  repeated ScoringWeight weights = 3;
+}
+
+enum ScoringFunction {
+  SCORING_UNSPECIFIED = 0;
+
+  // Volume velocity — price movement + volume spike + new trader influx
+  SCORING_TRENDING = 1;
+
+  // What top-ranked traders are buying/selling
+  SCORING_SMART_MONEY = 2;
+
+  // Weighted YES vs NO side comparison (market strength)
+  SCORING_MARKET_STRENGTH = 3;
+
+  // Large holder concentration on one side
+  SCORING_HIGH_CONVICTION = 4;
+
+  // Spread analysis, implied probability divergence
+  SCORING_MISPRICED = 5;
+
+  // Recently created with early momentum
+  SCORING_EARLY_MOMENTUM = 6;
+
+  // Custom: client specifies dimension weights
+  SCORING_COMPOSITE = 7;
+}
+
+message ScoringWeight {
+  ScoringDimension dimension = 1;
+  double weight = 2;  // 0.0 - 1.0
+}
+
+enum ScoringDimension {
+  DIMENSION_UNSPECIFIED = 0;
+  DIMENSION_VOLUME_24H = 1;
+  DIMENSION_VOLUME_VELOCITY = 2;     // rate of change
+  DIMENSION_LIQUIDITY = 3;
+  DIMENSION_TRADER_INFLUX = 4;       // new unique traders
+  DIMENSION_PRICE_MOVEMENT = 5;
+  DIMENSION_OPEN_INTEREST = 6;
+  DIMENSION_SPREAD_TIGHTNESS = 7;
+  DIMENSION_HOLDER_CONCENTRATION = 8;
+  DIMENSION_SMART_MONEY_FLOW = 9;    // top trader net position
+  DIMENSION_COMMENT_ACTIVITY = 10;
+}
+
+// ---------------------------------------------------------------------------
+// Sort — ordering of results
+// ---------------------------------------------------------------------------
+
+message SortConfig {
+  SortField field = 1;
+  SortOrder order = 2;
+}
+
+enum SortField {
+  SORT_FIELD_UNSPECIFIED = 0;
+  SORT_FIELD_SCORE = 1;         // from ScoringConfig
+  SORT_FIELD_VOLUME = 2;
+  SORT_FIELD_VOLUME_24H = 3;
+  SORT_FIELD_LIQUIDITY = 4;
+  SORT_FIELD_END_DATE = 5;
+  SORT_FIELD_CREATED_AT = 6;
+  SORT_FIELD_SPREAD = 7;
+  SORT_FIELD_UNIQUE_BETTORS = 8;
+  SORT_FIELD_OPEN_INTEREST = 9;
+  SORT_FIELD_PRICE_CHANGE = 10;
+}
+
+// ---------------------------------------------------------------------------
+// Enrichment — what extra data to include per result
+// ---------------------------------------------------------------------------
+
+message EnrichmentConfig {
+  bool include_analytics = 1;        // volume, OI, spread stats
+  bool include_market_strength = 2;  // YES vs NO strength scoring
+  bool include_top_holders = 3;      // top N holders per side
+  bool include_recent_trades = 4;    // last N trades
+  bool include_price_history = 5;    // price series
+  int32 top_holders_limit = 6;       // default 10
+  int32 recent_trades_limit = 7;     // default 5
+}
+
+// ---------------------------------------------------------------------------
+// Result types — market with optional enrichments
+// ---------------------------------------------------------------------------
+
+message MarketResult {
+  Market market = 1;
+  double score = 2;                  // from scoring function (0 if none)
+  MarketAnalytics analytics = 3;     // if include_analytics
+  MarketStrength strength = 4;       // if include_market_strength
+}
+
+message EventResult {
+  Event event = 1;
+  double score = 2;
+  MarketAnalytics analytics = 3;
+  MarketStrength strength = 4;
+}
+
+message ResultAggregates {
+  int32 total_results = 1;
+  string total_volume = 2;
+  string avg_volume = 3;
+  string min_volume = 4;
+  string max_volume = 5;
+  string total_liquidity = 6;
+  // Per-field min/max for progress bar rendering
+  map<string, FieldRange> field_ranges = 7;
+}
+
+message FieldRange {
+  string min = 1;
+  string max = 2;
+}
+
+// ---------------------------------------------------------------------------
+// Market Strength — server-computed YES vs NO scoring
+// ---------------------------------------------------------------------------
+
+message GetMarketStrengthRequest {
+  string condition_id = 1;
+  int32 top_holders_per_side = 2;  // default 20
+}
+
+message MarketStrength {
+  string yes_strength = 1;  // percentage (e.g., "65.3")
+  string no_strength = 2;   // percentage
+
+  // Per-dimension breakdown
+  repeated StrengthDimension dimensions = 3;
+
+  // Top holders with tags (enriched)
+  repeated TaggedHolder yes_holders = 4;
+  repeated TaggedHolder no_holders = 5;
+}
+
+message StrengthDimension {
+  string name = 1;        // "cash_balance", "weighted_pnl", "emoji_score", etc.
+  string yes_value = 2;
+  string no_value = 3;
+  double weight = 4;      // 0.0 - 1.0
+}
+
+message TaggedHolder {
+  string address = 1;
+  string name = 2;
+  string image = 3;
+  string size = 4;
+  string avg_price = 5;
+  string pnl = 6;
+  int32 emoji_score = 7;
+  repeated TraderTag tags = 8;
+}
+
+// =============================================================================
+// Named lens presets
+// =============================================================================
+
+message GetFeaturedLensRequest {
+  FeaturedLens lens = 1;
+  int32 limit = 2;
+  TimeWindow window = 3;
+}
+
+enum FeaturedLens {
+  FEATURED_LENS_UNSPECIFIED = 0;
+  FEATURED_LENS_TRENDING = 1;       // high volume velocity
+  FEATURED_LENS_ENDING_SOON = 2;    // ending within 24-72h with volume
+  FEATURED_LENS_SMART_MONEY = 3;    // top trader activity
+  FEATURED_LENS_HIGH_CONVICTION = 4; // concentrated positions
+  FEATURED_LENS_MISPRICED = 5;       // wide spreads / probability divergence
+  FEATURED_LENS_NEW_AND_HOT = 6;     // early momentum
+  FEATURED_LENS_BIGGEST_MARKETS = 7; // highest volume/OI
+}
+
+// =============================================================================
+// Shared market types
+// =============================================================================
+
+message GetHomepageSummaryRequest {}
+
+message HomepageSummary {
+  int64 total_traders = 1;
+  int64 total_markets = 2;
+  int64 total_positions = 3;
+  string total_volume = 4;
+}
+
+message GetEventRequest {
+  oneof identifier {
+    string slug = 1;
+    string event_id = 2;
+  }
+}
+
+message Event {
+  string event_id = 1;
+  string title = 2;
+  string slug = 3;
+  string description = 4;
+  string image = 5;
+  repeated Market markets = 6;
+  string volume = 7;
+  string volume_24h = 8;
+  string liquidity = 9;
+  int64 comment_count = 10;
+  int64 unique_bettors = 11;
+  bool active = 12;
+  bool closed = 13;
+  bool resolved = 14;
+  string resolution = 15;
+  repeated string tags = 16;
+  google.protobuf.Timestamp end_date = 17;
+  google.protobuf.Timestamp created_at = 18;
+}
+
+message GetMarketRequest {
+  oneof identifier {
+    string condition_id = 1;
+    string slug = 2;
+  }
+}
+
+message Market {
+  string condition_id = 1;
+  string question = 2;
+  string slug = 3;
+  string description = 4;
+  string category = 5;
+  string image = 6;
+  string outcome_yes_token = 7;
+  string outcome_no_token = 8;
+  string yes_price = 9;
+  string no_price = 10;
+  string volume = 11;
+  string liquidity = 12;
+  string spread = 13;
+  int64 unique_bettors = 14;
+  bool active = 15;
+  bool closed = 16;
+  bool resolved = 17;
+  string resolution = 18;
+  string minimum_order_size = 19;
+  string minimum_tick_size = 20;
+  bool neg_risk = 21;
+  repeated string clob_token_ids = 22;
+  google.protobuf.Timestamp end_date = 23;
+  google.protobuf.Timestamp created_at = 24;
+}
+
+message GetMarketAnalyticsRequest {
+  string slug = 1;
+}
+
+message MarketAnalytics {
+  string volume = 1;
+  string volume_24h = 2;
+  string open_interest = 3;
+  string spread = 4;
+  int64 unique_bettors = 5;
+  int64 comment_count = 6;
+  string market_cap = 7;
+  string total_shares = 8;
+  string highest_odds = 9;
+}
+
+// Categories
+
+message GetCategoriesRequest {}
+
+message Category {
+  string id = 1;
+  string label = 2;
+  string slug = 3;
+  repeated SubCategory sub_categories = 4;
+}
+
+message SubCategory {
+  string id = 1;
+  string label = 2;
+  string slug = 3;
+}
+
+message GetCategoriesResponse {
+  repeated Category categories = 1;
+}
+
+// Comments
+
+message GetMarketCommentsRequest {
+  string market_id = 1;
+  PaginationRequest pagination = 2;
+  bool holders_only = 3;
+}
+
+message Comment {
+  string id = 1;
+  string body = 2;
+  string user_address = 3;
+  string user_name = 4;
+  string user_image = 5;
+  int32 reaction_count = 6;
+  repeated Comment replies = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+message GetMarketCommentsResponse {
+  repeated Comment comments = 1;
+  PaginationResponse pagination = 2;
+}
+
+// Streaming
+
+message StreamMarketPricesRequest {
+  repeated string token_ids = 1;
+}
+
+message MarketPriceUpdate {
+  string token_id = 1;
+  string price = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+// =============================================================================
+// Page Views — ready-to-render pages returned by GetPageView
+// =============================================================================
+
+message GetPageViewRequest {
+  string page_id = 1;
+  string sub_category = 2;
+  string date_filter = 3;
+  PaginationRequest pagination = 4;
+  map<string, string> params = 5;
+}
+
+message PageView {
+  string page_id = 1;
+  string title = 2;
+  string description = 3;
+  repeated PageTab tabs = 4;
+  string active_tab = 5;
+  repeated PageSection sections = 6;
+  int32 cache_ttl_seconds = 7;
+  repeated string available_dates = 8;
+  string active_date = 9;
+}
+
+message PageTab {
+  string id = 1;
+  string label = 2;
+  string slug = 3;
+  int32 count = 4;
+  string icon = 5;
+}
+
+message PageSection {
+  string section_id = 1;
+  string title = 2;
+  oneof content {
+    EventGridSection event_grid = 10;
+    CategoryNavSection category_nav = 11;
+    StatsBarSection stats_bar = 12;
+    MarketListSection market_list = 13;
+  }
+}
+
+message EventGridSection {
+  repeated EventResult events = 1;
+  int32 total_count = 2;
+  bool truncated = 3;
+  SortConfig applied_sort = 4;
+}
+
+message CategoryNavSection {
+  repeated PageTab categories = 1;
+  string active_category = 2;
+}
+
+message StatsBarSection {
+  repeated StatItem stats = 1;
+}
+
+message StatItem {
+  string label = 1;
+  string value = 2;
+  string icon = 3;
+}
+
+message MarketListSection {
+  repeated MarketRow markets = 1;
+  int32 total_count = 2;
+}
+
+message MarketRow {
+  int32 rank = 1;
+  string slug = 2;
+  string event_slug = 3;
+  string question = 4;
+  string image = 5;
+  string current_price = 6;
+  int32 live_price_change = 7;
+  string one_day_price_change = 8;
+  repeated string clob_token_ids = 9;
+  repeated PricePoint history = 10;
+  bool closed = 11;
+  string volume = 12;
+  int32 comment_count = 13;
+}
+
+message PricePoint {
+  int64 timestamp = 1;
+  string price = 2;
+}
