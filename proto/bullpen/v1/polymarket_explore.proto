@@ -342,6 +342,8 @@ message Event {
   repeated string tags = 16;
   google.protobuf.Timestamp end_date = 17;
   google.protobuf.Timestamp created_at = 18;
+  bool is_new = 19;
+  string recurrence = 20;
 }
 
 message GetMarketRequest {
@@ -376,6 +378,7 @@ message Market {
   repeated string clob_token_ids = 22;
   google.protobuf.Timestamp end_date = 23;
   google.protobuf.Timestamp created_at = 24;
+  string group_item_title = 25;
 }
 
 message GetMarketAnalyticsRequest {
