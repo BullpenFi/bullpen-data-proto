@@ -1930,6 +1930,8 @@ type Event struct {
 	Tags          []string               `protobuf:"bytes,16,rep,name=tags,proto3" json:"tags,omitempty"`
 	EndDate       *timestamppb.Timestamp `protobuf:"bytes,17,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	IsNew         bool                   `protobuf:"varint,19,opt,name=is_new,json=isNew,proto3" json:"is_new,omitempty"`
+	Recurrence    string                 `protobuf:"bytes,20,opt,name=recurrence,proto3" json:"recurrence,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2090,6 +2092,20 @@ func (x *Event) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Event) GetIsNew() bool {
+	if x != nil {
+		return x.IsNew
+	}
+	return false
+}
+
+func (x *Event) GetRecurrence() string {
+	if x != nil {
+		return x.Recurrence
+	}
+	return ""
+}
+
 type GetMarketRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Identifier:
@@ -2198,6 +2214,7 @@ type Market struct {
 	ClobTokenIds     []string               `protobuf:"bytes,22,rep,name=clob_token_ids,json=clobTokenIds,proto3" json:"clob_token_ids,omitempty"`
 	EndDate          *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,24,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	GroupItemTitle   string                 `protobuf:"bytes,25,opt,name=group_item_title,json=groupItemTitle,proto3" json:"group_item_title,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -2398,6 +2415,13 @@ func (x *Market) GetCreatedAt() *timestamppb.Timestamp {
 		return x.CreatedAt
 	}
 	return nil
+}
+
+func (x *Market) GetGroupItemTitle() string {
+	if x != nil {
+		return x.GroupItemTitle
+	}
+	return ""
 }
 
 type GetMarketAnalyticsRequest struct {
@@ -4092,7 +4116,7 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x04slug\x18\x01 \x01(\tH\x00R\x04slug\x12\x1b\n" +
 	"\bevent_id\x18\x02 \x01(\tH\x00R\aeventIdB\f\n" +
 	"\n" +
-	"identifier\"\xc5\x04\n" +
+	"identifier\"\xfc\x04\n" +
 	"\x05Event\x12\x19\n" +
 	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
@@ -4116,12 +4140,16 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x04tags\x18\x10 \x03(\tR\x04tags\x125\n" +
 	"\bend_date\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\x129\n" +
 	"\n" +
-	"created_at\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"[\n" +
+	"created_at\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x15\n" +
+	"\x06is_new\x18\x13 \x01(\bR\x05isNew\x12\x1e\n" +
+	"\n" +
+	"recurrence\x18\x14 \x01(\tR\n" +
+	"recurrence\"[\n" +
 	"\x10GetMarketRequest\x12#\n" +
 	"\fcondition_id\x18\x01 \x01(\tH\x00R\vconditionId\x12\x14\n" +
 	"\x04slug\x18\x02 \x01(\tH\x00R\x04slugB\f\n" +
 	"\n" +
-	"identifier\"\xab\x06\n" +
+	"identifier\"\xd5\x06\n" +
 	"\x06Market\x12!\n" +
 	"\fcondition_id\x18\x01 \x01(\tR\vconditionId\x12\x1a\n" +
 	"\bquestion\x18\x02 \x01(\tR\bquestion\x12\x12\n" +
@@ -4150,7 +4178,8 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x0eclob_token_ids\x18\x16 \x03(\tR\fclobTokenIds\x125\n" +
 	"\bend_date\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\x129\n" +
 	"\n" +
-	"created_at\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"/\n" +
+	"created_at\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12(\n" +
+	"\x10group_item_title\x18\x19 \x01(\tR\x0egroupItemTitle\"/\n" +
 	"\x19GetMarketAnalyticsRequest\x12\x12\n" +
 	"\x04slug\x18\x01 \x01(\tR\x04slug\"\xb6\x02\n" +
 	"\x0fMarketAnalytics\x12\x16\n" +

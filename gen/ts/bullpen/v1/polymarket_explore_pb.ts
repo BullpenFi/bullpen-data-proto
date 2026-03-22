@@ -1733,6 +1733,16 @@ export class Event extends Message<Event> {
    */
   createdAt?: Timestamp;
 
+  /**
+   * @generated from field: bool is_new = 19;
+   */
+  isNew = false;
+
+  /**
+   * @generated from field: string recurrence = 20;
+   */
+  recurrence = "";
+
   constructor(data?: PartialMessage<Event>) {
     super();
     proto3.util.initPartial(data, this);
@@ -1759,6 +1769,8 @@ export class Event extends Message<Event> {
     { no: 16, name: "tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 17, name: "end_date", kind: "message", T: Timestamp },
     { no: 18, name: "created_at", kind: "message", T: Timestamp },
+    { no: 19, name: "is_new", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 20, name: "recurrence", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Event {
@@ -1952,6 +1964,11 @@ export class Market extends Message<Market> {
    */
   createdAt?: Timestamp;
 
+  /**
+   * @generated from field: string group_item_title = 25;
+   */
+  groupItemTitle = "";
+
   constructor(data?: PartialMessage<Market>) {
     super();
     proto3.util.initPartial(data, this);
@@ -1984,6 +2001,7 @@ export class Market extends Message<Market> {
     { no: 22, name: "clob_token_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 23, name: "end_date", kind: "message", T: Timestamp },
     { no: 24, name: "created_at", kind: "message", T: Timestamp },
+    { no: 25, name: "group_item_title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Market {
