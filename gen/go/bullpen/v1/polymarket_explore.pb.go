@@ -1932,6 +1932,15 @@ type Event struct {
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	IsNew         bool                   `protobuf:"varint,19,opt,name=is_new,json=isNew,proto3" json:"is_new,omitempty"`
 	Recurrence    string                 `protobuf:"bytes,20,opt,name=recurrence,proto3" json:"recurrence,omitempty"`
+	// Sports-specific fields
+	Score         string `protobuf:"bytes,21,opt,name=score,proto3" json:"score,omitempty"`                          // "93-114" (away-home)
+	Period        string `protobuf:"bytes,22,opt,name=period,proto3" json:"period,omitempty"`                        // "Q4", "H2", "P1", "HT"
+	Elapsed       string `protobuf:"bytes,23,opt,name=elapsed,proto3" json:"elapsed,omitempty"`                      // "04:51" time remaining/elapsed
+	Live          bool   `protobuf:"varint,24,opt,name=live,proto3" json:"live,omitempty"`                           // true if game is in-progress
+	Ended         bool   `protobuf:"varint,25,opt,name=ended,proto3" json:"ended,omitempty"`                         // true if game has ended
+	GameId        int32  `protobuf:"varint,26,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`         // Gamma gameId
+	StartTime     string `protobuf:"bytes,27,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"` // ISO timestamp of game start
+	League        string `protobuf:"bytes,28,opt,name=league,proto3" json:"league,omitempty"`                        // "NBA", "EPL", "NHL" etc.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2106,6 +2115,62 @@ func (x *Event) GetRecurrence() string {
 	return ""
 }
 
+func (x *Event) GetScore() string {
+	if x != nil {
+		return x.Score
+	}
+	return ""
+}
+
+func (x *Event) GetPeriod() string {
+	if x != nil {
+		return x.Period
+	}
+	return ""
+}
+
+func (x *Event) GetElapsed() string {
+	if x != nil {
+		return x.Elapsed
+	}
+	return ""
+}
+
+func (x *Event) GetLive() bool {
+	if x != nil {
+		return x.Live
+	}
+	return false
+}
+
+func (x *Event) GetEnded() bool {
+	if x != nil {
+		return x.Ended
+	}
+	return false
+}
+
+func (x *Event) GetGameId() int32 {
+	if x != nil {
+		return x.GameId
+	}
+	return 0
+}
+
+func (x *Event) GetStartTime() string {
+	if x != nil {
+		return x.StartTime
+	}
+	return ""
+}
+
+func (x *Event) GetLeague() string {
+	if x != nil {
+		return x.League
+	}
+	return ""
+}
+
 type GetMarketRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Identifier:
@@ -2215,6 +2280,10 @@ type Market struct {
 	EndDate          *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,24,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	GroupItemTitle   string                 `protobuf:"bytes,25,opt,name=group_item_title,json=groupItemTitle,proto3" json:"group_item_title,omitempty"`
+	SportsMarketType string                 `protobuf:"bytes,26,opt,name=sports_market_type,json=sportsMarketType,proto3" json:"sports_market_type,omitempty"` // "moneyline", "spread", "totals"
+	Line             string                 `protobuf:"bytes,27,opt,name=line,proto3" json:"line,omitempty"`                                                   // "-3.5", "+3.5", "227.5"
+	GameStartTime    string                 `protobuf:"bytes,28,opt,name=game_start_time,json=gameStartTime,proto3" json:"game_start_time,omitempty"`          // ISO timestamp
+	Outcomes         []string               `protobuf:"bytes,29,rep,name=outcomes,proto3" json:"outcomes,omitempty"`                                           // ["Trail Blazers", "Timberwolves"]
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -2424,6 +2493,126 @@ func (x *Market) GetGroupItemTitle() string {
 	return ""
 }
 
+func (x *Market) GetSportsMarketType() string {
+	if x != nil {
+		return x.SportsMarketType
+	}
+	return ""
+}
+
+func (x *Market) GetLine() string {
+	if x != nil {
+		return x.Line
+	}
+	return ""
+}
+
+func (x *Market) GetGameStartTime() string {
+	if x != nil {
+		return x.GameStartTime
+	}
+	return ""
+}
+
+func (x *Market) GetOutcomes() []string {
+	if x != nil {
+		return x.Outcomes
+	}
+	return nil
+}
+
+type Team struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	League        string                 `protobuf:"bytes,3,opt,name=league,proto3" json:"league,omitempty"`
+	Record        string                 `protobuf:"bytes,4,opt,name=record,proto3" json:"record,omitempty"`
+	Logo          string                 `protobuf:"bytes,5,opt,name=logo,proto3" json:"logo,omitempty"`
+	Abbreviation  string                 `protobuf:"bytes,6,opt,name=abbreviation,proto3" json:"abbreviation,omitempty"`
+	Color         string                 `protobuf:"bytes,7,opt,name=color,proto3" json:"color,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Team) Reset() {
+	*x = Team{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Team) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Team) ProtoMessage() {}
+
+func (x *Team) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Team.ProtoReflect.Descriptor instead.
+func (*Team) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *Team) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Team) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Team) GetLeague() string {
+	if x != nil {
+		return x.League
+	}
+	return ""
+}
+
+func (x *Team) GetRecord() string {
+	if x != nil {
+		return x.Record
+	}
+	return ""
+}
+
+func (x *Team) GetLogo() string {
+	if x != nil {
+		return x.Logo
+	}
+	return ""
+}
+
+func (x *Team) GetAbbreviation() string {
+	if x != nil {
+		return x.Abbreviation
+	}
+	return ""
+}
+
+func (x *Team) GetColor() string {
+	if x != nil {
+		return x.Color
+	}
+	return ""
+}
+
 type GetMarketAnalyticsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Slug          string                 `protobuf:"bytes,1,opt,name=slug,proto3" json:"slug,omitempty"`
@@ -2433,7 +2622,7 @@ type GetMarketAnalyticsRequest struct {
 
 func (x *GetMarketAnalyticsRequest) Reset() {
 	*x = GetMarketAnalyticsRequest{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[26]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2445,7 +2634,7 @@ func (x *GetMarketAnalyticsRequest) String() string {
 func (*GetMarketAnalyticsRequest) ProtoMessage() {}
 
 func (x *GetMarketAnalyticsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[26]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2458,7 +2647,7 @@ func (x *GetMarketAnalyticsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMarketAnalyticsRequest.ProtoReflect.Descriptor instead.
 func (*GetMarketAnalyticsRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{26}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetMarketAnalyticsRequest) GetSlug() string {
@@ -2485,7 +2674,7 @@ type MarketAnalytics struct {
 
 func (x *MarketAnalytics) Reset() {
 	*x = MarketAnalytics{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[27]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2497,7 +2686,7 @@ func (x *MarketAnalytics) String() string {
 func (*MarketAnalytics) ProtoMessage() {}
 
 func (x *MarketAnalytics) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[27]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2510,7 +2699,7 @@ func (x *MarketAnalytics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketAnalytics.ProtoReflect.Descriptor instead.
 func (*MarketAnalytics) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{27}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *MarketAnalytics) GetVolume() string {
@@ -2584,7 +2773,7 @@ type GetCategoriesRequest struct {
 
 func (x *GetCategoriesRequest) Reset() {
 	*x = GetCategoriesRequest{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[28]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2596,7 +2785,7 @@ func (x *GetCategoriesRequest) String() string {
 func (*GetCategoriesRequest) ProtoMessage() {}
 
 func (x *GetCategoriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[28]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2609,7 +2798,7 @@ func (x *GetCategoriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCategoriesRequest.ProtoReflect.Descriptor instead.
 func (*GetCategoriesRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{28}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{29}
 }
 
 type Category struct {
@@ -2624,7 +2813,7 @@ type Category struct {
 
 func (x *Category) Reset() {
 	*x = Category{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[29]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2636,7 +2825,7 @@ func (x *Category) String() string {
 func (*Category) ProtoMessage() {}
 
 func (x *Category) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[29]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2649,7 +2838,7 @@ func (x *Category) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Category.ProtoReflect.Descriptor instead.
 func (*Category) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{29}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *Category) GetId() string {
@@ -2691,7 +2880,7 @@ type SubCategory struct {
 
 func (x *SubCategory) Reset() {
 	*x = SubCategory{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[30]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2703,7 +2892,7 @@ func (x *SubCategory) String() string {
 func (*SubCategory) ProtoMessage() {}
 
 func (x *SubCategory) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[30]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2716,7 +2905,7 @@ func (x *SubCategory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubCategory.ProtoReflect.Descriptor instead.
 func (*SubCategory) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{30}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *SubCategory) GetId() string {
@@ -2749,7 +2938,7 @@ type GetCategoriesResponse struct {
 
 func (x *GetCategoriesResponse) Reset() {
 	*x = GetCategoriesResponse{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[31]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2761,7 +2950,7 @@ func (x *GetCategoriesResponse) String() string {
 func (*GetCategoriesResponse) ProtoMessage() {}
 
 func (x *GetCategoriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[31]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2774,7 +2963,7 @@ func (x *GetCategoriesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCategoriesResponse.ProtoReflect.Descriptor instead.
 func (*GetCategoriesResponse) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{31}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *GetCategoriesResponse) GetCategories() []*Category {
@@ -2795,7 +2984,7 @@ type GetMarketCommentsRequest struct {
 
 func (x *GetMarketCommentsRequest) Reset() {
 	*x = GetMarketCommentsRequest{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[32]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2807,7 +2996,7 @@ func (x *GetMarketCommentsRequest) String() string {
 func (*GetMarketCommentsRequest) ProtoMessage() {}
 
 func (x *GetMarketCommentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[32]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2820,7 +3009,7 @@ func (x *GetMarketCommentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMarketCommentsRequest.ProtoReflect.Descriptor instead.
 func (*GetMarketCommentsRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{32}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *GetMarketCommentsRequest) GetMarketId() string {
@@ -2860,7 +3049,7 @@ type Comment struct {
 
 func (x *Comment) Reset() {
 	*x = Comment{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[33]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2872,7 +3061,7 @@ func (x *Comment) String() string {
 func (*Comment) ProtoMessage() {}
 
 func (x *Comment) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[33]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2885,7 +3074,7 @@ func (x *Comment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Comment.ProtoReflect.Descriptor instead.
 func (*Comment) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{33}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *Comment) GetId() string {
@@ -2954,7 +3143,7 @@ type GetMarketCommentsResponse struct {
 
 func (x *GetMarketCommentsResponse) Reset() {
 	*x = GetMarketCommentsResponse{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2966,7 +3155,7 @@ func (x *GetMarketCommentsResponse) String() string {
 func (*GetMarketCommentsResponse) ProtoMessage() {}
 
 func (x *GetMarketCommentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2979,7 +3168,7 @@ func (x *GetMarketCommentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMarketCommentsResponse.ProtoReflect.Descriptor instead.
 func (*GetMarketCommentsResponse) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{34}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *GetMarketCommentsResponse) GetComments() []*Comment {
@@ -3005,7 +3194,7 @@ type StreamMarketPricesRequest struct {
 
 func (x *StreamMarketPricesRequest) Reset() {
 	*x = StreamMarketPricesRequest{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3017,7 +3206,7 @@ func (x *StreamMarketPricesRequest) String() string {
 func (*StreamMarketPricesRequest) ProtoMessage() {}
 
 func (x *StreamMarketPricesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3030,7 +3219,7 @@ func (x *StreamMarketPricesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamMarketPricesRequest.ProtoReflect.Descriptor instead.
 func (*StreamMarketPricesRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{35}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *StreamMarketPricesRequest) GetTokenIds() []string {
@@ -3051,7 +3240,7 @@ type MarketPriceUpdate struct {
 
 func (x *MarketPriceUpdate) Reset() {
 	*x = MarketPriceUpdate{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3063,7 +3252,7 @@ func (x *MarketPriceUpdate) String() string {
 func (*MarketPriceUpdate) ProtoMessage() {}
 
 func (x *MarketPriceUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3076,7 +3265,7 @@ func (x *MarketPriceUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketPriceUpdate.ProtoReflect.Descriptor instead.
 func (*MarketPriceUpdate) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{36}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *MarketPriceUpdate) GetTokenId() string {
@@ -3113,7 +3302,7 @@ type GetPageViewRequest struct {
 
 func (x *GetPageViewRequest) Reset() {
 	*x = GetPageViewRequest{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3125,7 +3314,7 @@ func (x *GetPageViewRequest) String() string {
 func (*GetPageViewRequest) ProtoMessage() {}
 
 func (x *GetPageViewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3138,7 +3327,7 @@ func (x *GetPageViewRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPageViewRequest.ProtoReflect.Descriptor instead.
 func (*GetPageViewRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{37}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *GetPageViewRequest) GetPageId() string {
@@ -3193,7 +3382,7 @@ type PageView struct {
 
 func (x *PageView) Reset() {
 	*x = PageView{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3205,7 +3394,7 @@ func (x *PageView) String() string {
 func (*PageView) ProtoMessage() {}
 
 func (x *PageView) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3218,7 +3407,7 @@ func (x *PageView) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageView.ProtoReflect.Descriptor instead.
 func (*PageView) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{38}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *PageView) GetPageId() string {
@@ -3297,7 +3486,7 @@ type PageTab struct {
 
 func (x *PageTab) Reset() {
 	*x = PageTab{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3309,7 +3498,7 @@ func (x *PageTab) String() string {
 func (*PageTab) ProtoMessage() {}
 
 func (x *PageTab) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3322,7 +3511,7 @@ func (x *PageTab) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageTab.ProtoReflect.Descriptor instead.
 func (*PageTab) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{39}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *PageTab) GetId() string {
@@ -3370,6 +3559,7 @@ type PageSection struct {
 	//	*PageSection_CategoryNav
 	//	*PageSection_StatsBar
 	//	*PageSection_MarketList
+	//	*PageSection_SportsGames
 	Content       isPageSection_Content `protobuf_oneof:"content"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -3377,7 +3567,7 @@ type PageSection struct {
 
 func (x *PageSection) Reset() {
 	*x = PageSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3389,7 +3579,7 @@ func (x *PageSection) String() string {
 func (*PageSection) ProtoMessage() {}
 
 func (x *PageSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3402,7 +3592,7 @@ func (x *PageSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageSection.ProtoReflect.Descriptor instead.
 func (*PageSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{40}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *PageSection) GetSectionId() string {
@@ -3462,6 +3652,15 @@ func (x *PageSection) GetMarketList() *MarketListSection {
 	return nil
 }
 
+func (x *PageSection) GetSportsGames() *SportsGameSection {
+	if x != nil {
+		if x, ok := x.Content.(*PageSection_SportsGames); ok {
+			return x.SportsGames
+		}
+	}
+	return nil
+}
+
 type isPageSection_Content interface {
 	isPageSection_Content()
 }
@@ -3482,6 +3681,10 @@ type PageSection_MarketList struct {
 	MarketList *MarketListSection `protobuf:"bytes,13,opt,name=market_list,json=marketList,proto3,oneof"`
 }
 
+type PageSection_SportsGames struct {
+	SportsGames *SportsGameSection `protobuf:"bytes,14,opt,name=sports_games,json=sportsGames,proto3,oneof"`
+}
+
 func (*PageSection_EventGrid) isPageSection_Content() {}
 
 func (*PageSection_CategoryNav) isPageSection_Content() {}
@@ -3489,6 +3692,8 @@ func (*PageSection_CategoryNav) isPageSection_Content() {}
 func (*PageSection_StatsBar) isPageSection_Content() {}
 
 func (*PageSection_MarketList) isPageSection_Content() {}
+
+func (*PageSection_SportsGames) isPageSection_Content() {}
 
 type EventGridSection struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -3502,7 +3707,7 @@ type EventGridSection struct {
 
 func (x *EventGridSection) Reset() {
 	*x = EventGridSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3514,7 +3719,7 @@ func (x *EventGridSection) String() string {
 func (*EventGridSection) ProtoMessage() {}
 
 func (x *EventGridSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3527,7 +3732,7 @@ func (x *EventGridSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventGridSection.ProtoReflect.Descriptor instead.
 func (*EventGridSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{41}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *EventGridSection) GetEvents() []*EventResult {
@@ -3568,7 +3773,7 @@ type CategoryNavSection struct {
 
 func (x *CategoryNavSection) Reset() {
 	*x = CategoryNavSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3580,7 +3785,7 @@ func (x *CategoryNavSection) String() string {
 func (*CategoryNavSection) ProtoMessage() {}
 
 func (x *CategoryNavSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3593,7 +3798,7 @@ func (x *CategoryNavSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryNavSection.ProtoReflect.Descriptor instead.
 func (*CategoryNavSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{42}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *CategoryNavSection) GetCategories() []*PageTab {
@@ -3619,7 +3824,7 @@ type StatsBarSection struct {
 
 func (x *StatsBarSection) Reset() {
 	*x = StatsBarSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3631,7 +3836,7 @@ func (x *StatsBarSection) String() string {
 func (*StatsBarSection) ProtoMessage() {}
 
 func (x *StatsBarSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3644,7 +3849,7 @@ func (x *StatsBarSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatsBarSection.ProtoReflect.Descriptor instead.
 func (*StatsBarSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{43}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *StatsBarSection) GetStats() []*StatItem {
@@ -3665,7 +3870,7 @@ type StatItem struct {
 
 func (x *StatItem) Reset() {
 	*x = StatItem{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3677,7 +3882,7 @@ func (x *StatItem) String() string {
 func (*StatItem) ProtoMessage() {}
 
 func (x *StatItem) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3690,7 +3895,7 @@ func (x *StatItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatItem.ProtoReflect.Descriptor instead.
 func (*StatItem) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{44}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *StatItem) GetLabel() string {
@@ -3724,7 +3929,7 @@ type MarketListSection struct {
 
 func (x *MarketListSection) Reset() {
 	*x = MarketListSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3736,7 +3941,7 @@ func (x *MarketListSection) String() string {
 func (*MarketListSection) ProtoMessage() {}
 
 func (x *MarketListSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3749,7 +3954,7 @@ func (x *MarketListSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketListSection.ProtoReflect.Descriptor instead.
 func (*MarketListSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{45}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *MarketListSection) GetMarkets() []*MarketRow {
@@ -3764,6 +3969,446 @@ func (x *MarketListSection) GetTotalCount() int32 {
 		return x.TotalCount
 	}
 	return 0
+}
+
+type SportsGameSection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	League        string                 `protobuf:"bytes,1,opt,name=league,proto3" json:"league,omitempty"`
+	DateLabel     string                 `protobuf:"bytes,2,opt,name=date_label,json=dateLabel,proto3" json:"date_label,omitempty"`
+	Games         []*SportsGame          `protobuf:"bytes,3,rep,name=games,proto3" json:"games,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,4,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SportsGameSection) Reset() {
+	*x = SportsGameSection{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SportsGameSection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SportsGameSection) ProtoMessage() {}
+
+func (x *SportsGameSection) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SportsGameSection.ProtoReflect.Descriptor instead.
+func (*SportsGameSection) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *SportsGameSection) GetLeague() string {
+	if x != nil {
+		return x.League
+	}
+	return ""
+}
+
+func (x *SportsGameSection) GetDateLabel() string {
+	if x != nil {
+		return x.DateLabel
+	}
+	return ""
+}
+
+func (x *SportsGameSection) GetGames() []*SportsGame {
+	if x != nil {
+		return x.Games
+	}
+	return nil
+}
+
+func (x *SportsGameSection) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+type SportsGame struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EventId       string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	EventSlug     string                 `protobuf:"bytes,2,opt,name=event_slug,json=eventSlug,proto3" json:"event_slug,omitempty"`
+	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	HomeTeam      *Team                  `protobuf:"bytes,4,opt,name=home_team,json=homeTeam,proto3" json:"home_team,omitempty"`
+	AwayTeam      *Team                  `protobuf:"bytes,5,opt,name=away_team,json=awayTeam,proto3" json:"away_team,omitempty"`
+	Score         string                 `protobuf:"bytes,6,opt,name=score,proto3" json:"score,omitempty"`
+	HomeScore     string                 `protobuf:"bytes,7,opt,name=home_score,json=homeScore,proto3" json:"home_score,omitempty"`
+	AwayScore     string                 `protobuf:"bytes,8,opt,name=away_score,json=awayScore,proto3" json:"away_score,omitempty"`
+	Period        string                 `protobuf:"bytes,9,opt,name=period,proto3" json:"period,omitempty"`
+	Elapsed       string                 `protobuf:"bytes,10,opt,name=elapsed,proto3" json:"elapsed,omitempty"`
+	Live          bool                   `protobuf:"varint,11,opt,name=live,proto3" json:"live,omitempty"`
+	Ended         bool                   `protobuf:"varint,12,opt,name=ended,proto3" json:"ended,omitempty"`
+	StartTime     string                 `protobuf:"bytes,13,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	Moneyline     *OddsColumn            `protobuf:"bytes,14,opt,name=moneyline,proto3" json:"moneyline,omitempty"`
+	Spread        *OddsColumn            `protobuf:"bytes,15,opt,name=spread,proto3" json:"spread,omitempty"`
+	Total         *OddsColumn            `protobuf:"bytes,16,opt,name=total,proto3" json:"total,omitempty"`
+	Volume        string                 `protobuf:"bytes,17,opt,name=volume,proto3" json:"volume,omitempty"`
+	Volume_24H    string                 `protobuf:"bytes,18,opt,name=volume_24h,json=volume24h,proto3" json:"volume_24h,omitempty"`
+	MarketCount   int32                  `protobuf:"varint,19,opt,name=market_count,json=marketCount,proto3" json:"market_count,omitempty"`
+	Image         string                 `protobuf:"bytes,20,opt,name=image,proto3" json:"image,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SportsGame) Reset() {
+	*x = SportsGame{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SportsGame) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SportsGame) ProtoMessage() {}
+
+func (x *SportsGame) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SportsGame.ProtoReflect.Descriptor instead.
+func (*SportsGame) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *SportsGame) GetEventId() string {
+	if x != nil {
+		return x.EventId
+	}
+	return ""
+}
+
+func (x *SportsGame) GetEventSlug() string {
+	if x != nil {
+		return x.EventSlug
+	}
+	return ""
+}
+
+func (x *SportsGame) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *SportsGame) GetHomeTeam() *Team {
+	if x != nil {
+		return x.HomeTeam
+	}
+	return nil
+}
+
+func (x *SportsGame) GetAwayTeam() *Team {
+	if x != nil {
+		return x.AwayTeam
+	}
+	return nil
+}
+
+func (x *SportsGame) GetScore() string {
+	if x != nil {
+		return x.Score
+	}
+	return ""
+}
+
+func (x *SportsGame) GetHomeScore() string {
+	if x != nil {
+		return x.HomeScore
+	}
+	return ""
+}
+
+func (x *SportsGame) GetAwayScore() string {
+	if x != nil {
+		return x.AwayScore
+	}
+	return ""
+}
+
+func (x *SportsGame) GetPeriod() string {
+	if x != nil {
+		return x.Period
+	}
+	return ""
+}
+
+func (x *SportsGame) GetElapsed() string {
+	if x != nil {
+		return x.Elapsed
+	}
+	return ""
+}
+
+func (x *SportsGame) GetLive() bool {
+	if x != nil {
+		return x.Live
+	}
+	return false
+}
+
+func (x *SportsGame) GetEnded() bool {
+	if x != nil {
+		return x.Ended
+	}
+	return false
+}
+
+func (x *SportsGame) GetStartTime() string {
+	if x != nil {
+		return x.StartTime
+	}
+	return ""
+}
+
+func (x *SportsGame) GetMoneyline() *OddsColumn {
+	if x != nil {
+		return x.Moneyline
+	}
+	return nil
+}
+
+func (x *SportsGame) GetSpread() *OddsColumn {
+	if x != nil {
+		return x.Spread
+	}
+	return nil
+}
+
+func (x *SportsGame) GetTotal() *OddsColumn {
+	if x != nil {
+		return x.Total
+	}
+	return nil
+}
+
+func (x *SportsGame) GetVolume() string {
+	if x != nil {
+		return x.Volume
+	}
+	return ""
+}
+
+func (x *SportsGame) GetVolume_24H() string {
+	if x != nil {
+		return x.Volume_24H
+	}
+	return ""
+}
+
+func (x *SportsGame) GetMarketCount() int32 {
+	if x != nil {
+		return x.MarketCount
+	}
+	return 0
+}
+
+func (x *SportsGame) GetImage() string {
+	if x != nil {
+		return x.Image
+	}
+	return ""
+}
+
+type OddsColumn struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MarketType    string                 `protobuf:"bytes,1,opt,name=market_type,json=marketType,proto3" json:"market_type,omitempty"`
+	ConditionId   string                 `protobuf:"bytes,2,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"`
+	Line          string                 `protobuf:"bytes,3,opt,name=line,proto3" json:"line,omitempty"`
+	HomePrice     string                 `protobuf:"bytes,4,opt,name=home_price,json=homePrice,proto3" json:"home_price,omitempty"`
+	AwayPrice     string                 `protobuf:"bytes,5,opt,name=away_price,json=awayPrice,proto3" json:"away_price,omitempty"`
+	HomeLabel     string                 `protobuf:"bytes,6,opt,name=home_label,json=homeLabel,proto3" json:"home_label,omitempty"`
+	AwayLabel     string                 `protobuf:"bytes,7,opt,name=away_label,json=awayLabel,proto3" json:"away_label,omitempty"`
+	ClobTokenIds  []string               `protobuf:"bytes,8,rep,name=clob_token_ids,json=clobTokenIds,proto3" json:"clob_token_ids,omitempty"`
+	AltLines      []*OddsLine            `protobuf:"bytes,9,rep,name=alt_lines,json=altLines,proto3" json:"alt_lines,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OddsColumn) Reset() {
+	*x = OddsColumn{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OddsColumn) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OddsColumn) ProtoMessage() {}
+
+func (x *OddsColumn) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OddsColumn.ProtoReflect.Descriptor instead.
+func (*OddsColumn) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *OddsColumn) GetMarketType() string {
+	if x != nil {
+		return x.MarketType
+	}
+	return ""
+}
+
+func (x *OddsColumn) GetConditionId() string {
+	if x != nil {
+		return x.ConditionId
+	}
+	return ""
+}
+
+func (x *OddsColumn) GetLine() string {
+	if x != nil {
+		return x.Line
+	}
+	return ""
+}
+
+func (x *OddsColumn) GetHomePrice() string {
+	if x != nil {
+		return x.HomePrice
+	}
+	return ""
+}
+
+func (x *OddsColumn) GetAwayPrice() string {
+	if x != nil {
+		return x.AwayPrice
+	}
+	return ""
+}
+
+func (x *OddsColumn) GetHomeLabel() string {
+	if x != nil {
+		return x.HomeLabel
+	}
+	return ""
+}
+
+func (x *OddsColumn) GetAwayLabel() string {
+	if x != nil {
+		return x.AwayLabel
+	}
+	return ""
+}
+
+func (x *OddsColumn) GetClobTokenIds() []string {
+	if x != nil {
+		return x.ClobTokenIds
+	}
+	return nil
+}
+
+func (x *OddsColumn) GetAltLines() []*OddsLine {
+	if x != nil {
+		return x.AltLines
+	}
+	return nil
+}
+
+type OddsLine struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Line          string                 `protobuf:"bytes,1,opt,name=line,proto3" json:"line,omitempty"`
+	HomePrice     string                 `protobuf:"bytes,2,opt,name=home_price,json=homePrice,proto3" json:"home_price,omitempty"`
+	AwayPrice     string                 `protobuf:"bytes,3,opt,name=away_price,json=awayPrice,proto3" json:"away_price,omitempty"`
+	ConditionId   string                 `protobuf:"bytes,4,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OddsLine) Reset() {
+	*x = OddsLine{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OddsLine) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OddsLine) ProtoMessage() {}
+
+func (x *OddsLine) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OddsLine.ProtoReflect.Descriptor instead.
+func (*OddsLine) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *OddsLine) GetLine() string {
+	if x != nil {
+		return x.Line
+	}
+	return ""
+}
+
+func (x *OddsLine) GetHomePrice() string {
+	if x != nil {
+		return x.HomePrice
+	}
+	return ""
+}
+
+func (x *OddsLine) GetAwayPrice() string {
+	if x != nil {
+		return x.AwayPrice
+	}
+	return ""
+}
+
+func (x *OddsLine) GetConditionId() string {
+	if x != nil {
+		return x.ConditionId
+	}
+	return ""
 }
 
 type MarketRow struct {
@@ -3787,7 +4432,7 @@ type MarketRow struct {
 
 func (x *MarketRow) Reset() {
 	*x = MarketRow{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3799,7 +4444,7 @@ func (x *MarketRow) String() string {
 func (*MarketRow) ProtoMessage() {}
 
 func (x *MarketRow) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3812,7 +4457,7 @@ func (x *MarketRow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketRow.ProtoReflect.Descriptor instead.
 func (*MarketRow) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{46}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *MarketRow) GetRank() int32 {
@@ -3916,7 +4561,7 @@ type PricePoint struct {
 
 func (x *PricePoint) Reset() {
 	*x = PricePoint{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3928,7 +4573,7 @@ func (x *PricePoint) String() string {
 func (*PricePoint) ProtoMessage() {}
 
 func (x *PricePoint) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3941,7 +4586,7 @@ func (x *PricePoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PricePoint.ProtoReflect.Descriptor instead.
 func (*PricePoint) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{47}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *PricePoint) GetTimestamp() int64 {
@@ -4116,7 +4761,7 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x04slug\x18\x01 \x01(\tH\x00R\x04slug\x12\x1b\n" +
 	"\bevent_id\x18\x02 \x01(\tH\x00R\aeventIdB\f\n" +
 	"\n" +
-	"identifier\"\xfc\x04\n" +
+	"identifier\"\xbe\x06\n" +
 	"\x05Event\x12\x19\n" +
 	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
@@ -4144,12 +4789,21 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x06is_new\x18\x13 \x01(\bR\x05isNew\x12\x1e\n" +
 	"\n" +
 	"recurrence\x18\x14 \x01(\tR\n" +
-	"recurrence\"[\n" +
+	"recurrence\x12\x14\n" +
+	"\x05score\x18\x15 \x01(\tR\x05score\x12\x16\n" +
+	"\x06period\x18\x16 \x01(\tR\x06period\x12\x18\n" +
+	"\aelapsed\x18\x17 \x01(\tR\aelapsed\x12\x12\n" +
+	"\x04live\x18\x18 \x01(\bR\x04live\x12\x14\n" +
+	"\x05ended\x18\x19 \x01(\bR\x05ended\x12\x17\n" +
+	"\agame_id\x18\x1a \x01(\x05R\x06gameId\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\x1b \x01(\tR\tstartTime\x12\x16\n" +
+	"\x06league\x18\x1c \x01(\tR\x06league\"[\n" +
 	"\x10GetMarketRequest\x12#\n" +
 	"\fcondition_id\x18\x01 \x01(\tH\x00R\vconditionId\x12\x14\n" +
 	"\x04slug\x18\x02 \x01(\tH\x00R\x04slugB\f\n" +
 	"\n" +
-	"identifier\"\xd5\x06\n" +
+	"identifier\"\xdb\a\n" +
 	"\x06Market\x12!\n" +
 	"\fcondition_id\x18\x01 \x01(\tR\vconditionId\x12\x1a\n" +
 	"\bquestion\x18\x02 \x01(\tR\bquestion\x12\x12\n" +
@@ -4179,7 +4833,19 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\bend_date\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\x129\n" +
 	"\n" +
 	"created_at\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12(\n" +
-	"\x10group_item_title\x18\x19 \x01(\tR\x0egroupItemTitle\"/\n" +
+	"\x10group_item_title\x18\x19 \x01(\tR\x0egroupItemTitle\x12,\n" +
+	"\x12sports_market_type\x18\x1a \x01(\tR\x10sportsMarketType\x12\x12\n" +
+	"\x04line\x18\x1b \x01(\tR\x04line\x12&\n" +
+	"\x0fgame_start_time\x18\x1c \x01(\tR\rgameStartTime\x12\x1a\n" +
+	"\boutcomes\x18\x1d \x03(\tR\boutcomes\"\xa8\x01\n" +
+	"\x04Team\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
+	"\x06league\x18\x03 \x01(\tR\x06league\x12\x16\n" +
+	"\x06record\x18\x04 \x01(\tR\x06record\x12\x12\n" +
+	"\x04logo\x18\x05 \x01(\tR\x04logo\x12\"\n" +
+	"\fabbreviation\x18\x06 \x01(\tR\fabbreviation\x12\x14\n" +
+	"\x05color\x18\a \x01(\tR\x05color\"/\n" +
 	"\x19GetMarketAnalyticsRequest\x12\x12\n" +
 	"\x04slug\x18\x01 \x01(\tR\x04slug\"\xb6\x02\n" +
 	"\x0fMarketAnalytics\x12\x16\n" +
@@ -4265,7 +4931,7 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12\x12\n" +
 	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x14\n" +
 	"\x05count\x18\x04 \x01(\x05R\x05count\x12\x12\n" +
-	"\x04icon\x18\x05 \x01(\tR\x04icon\"\xcf\x02\n" +
+	"\x04icon\x18\x05 \x01(\tR\x04icon\"\x93\x03\n" +
 	"\vPageSection\x12\x1d\n" +
 	"\n" +
 	"section_id\x18\x01 \x01(\tR\tsectionId\x12\x14\n" +
@@ -4276,7 +4942,8 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\fcategory_nav\x18\v \x01(\v2\x1e.bullpen.v1.CategoryNavSectionH\x00R\vcategoryNav\x12:\n" +
 	"\tstats_bar\x18\f \x01(\v2\x1b.bullpen.v1.StatsBarSectionH\x00R\bstatsBar\x12@\n" +
 	"\vmarket_list\x18\r \x01(\v2\x1d.bullpen.v1.MarketListSectionH\x00R\n" +
-	"marketListB\t\n" +
+	"marketList\x12B\n" +
+	"\fsports_games\x18\x0e \x01(\v2\x1d.bullpen.v1.SportsGameSectionH\x00R\vsportsGamesB\t\n" +
 	"\acontent\"\xbd\x01\n" +
 	"\x10EventGridSection\x12/\n" +
 	"\x06events\x18\x01 \x03(\v2\x17.bullpen.v1.EventResultR\x06events\x12\x1f\n" +
@@ -4298,7 +4965,65 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x11MarketListSection\x12/\n" +
 	"\amarkets\x18\x01 \x03(\v2\x15.bullpen.v1.MarketRowR\amarkets\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
-	"totalCount\"\xb3\x03\n" +
+	"totalCount\"\x99\x01\n" +
+	"\x11SportsGameSection\x12\x16\n" +
+	"\x06league\x18\x01 \x01(\tR\x06league\x12\x1d\n" +
+	"\n" +
+	"date_label\x18\x02 \x01(\tR\tdateLabel\x12,\n" +
+	"\x05games\x18\x03 \x03(\v2\x16.bullpen.v1.SportsGameR\x05games\x12\x1f\n" +
+	"\vtotal_count\x18\x04 \x01(\x05R\n" +
+	"totalCount\"\x8d\x05\n" +
+	"\n" +
+	"SportsGame\x12\x19\n" +
+	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x1d\n" +
+	"\n" +
+	"event_slug\x18\x02 \x01(\tR\teventSlug\x12\x14\n" +
+	"\x05title\x18\x03 \x01(\tR\x05title\x12-\n" +
+	"\thome_team\x18\x04 \x01(\v2\x10.bullpen.v1.TeamR\bhomeTeam\x12-\n" +
+	"\taway_team\x18\x05 \x01(\v2\x10.bullpen.v1.TeamR\bawayTeam\x12\x14\n" +
+	"\x05score\x18\x06 \x01(\tR\x05score\x12\x1d\n" +
+	"\n" +
+	"home_score\x18\a \x01(\tR\thomeScore\x12\x1d\n" +
+	"\n" +
+	"away_score\x18\b \x01(\tR\tawayScore\x12\x16\n" +
+	"\x06period\x18\t \x01(\tR\x06period\x12\x18\n" +
+	"\aelapsed\x18\n" +
+	" \x01(\tR\aelapsed\x12\x12\n" +
+	"\x04live\x18\v \x01(\bR\x04live\x12\x14\n" +
+	"\x05ended\x18\f \x01(\bR\x05ended\x12\x1d\n" +
+	"\n" +
+	"start_time\x18\r \x01(\tR\tstartTime\x124\n" +
+	"\tmoneyline\x18\x0e \x01(\v2\x16.bullpen.v1.OddsColumnR\tmoneyline\x12.\n" +
+	"\x06spread\x18\x0f \x01(\v2\x16.bullpen.v1.OddsColumnR\x06spread\x12,\n" +
+	"\x05total\x18\x10 \x01(\v2\x16.bullpen.v1.OddsColumnR\x05total\x12\x16\n" +
+	"\x06volume\x18\x11 \x01(\tR\x06volume\x12\x1d\n" +
+	"\n" +
+	"volume_24h\x18\x12 \x01(\tR\tvolume24h\x12!\n" +
+	"\fmarket_count\x18\x13 \x01(\x05R\vmarketCount\x12\x14\n" +
+	"\x05image\x18\x14 \x01(\tR\x05image\"\xb9\x02\n" +
+	"\n" +
+	"OddsColumn\x12\x1f\n" +
+	"\vmarket_type\x18\x01 \x01(\tR\n" +
+	"marketType\x12!\n" +
+	"\fcondition_id\x18\x02 \x01(\tR\vconditionId\x12\x12\n" +
+	"\x04line\x18\x03 \x01(\tR\x04line\x12\x1d\n" +
+	"\n" +
+	"home_price\x18\x04 \x01(\tR\thomePrice\x12\x1d\n" +
+	"\n" +
+	"away_price\x18\x05 \x01(\tR\tawayPrice\x12\x1d\n" +
+	"\n" +
+	"home_label\x18\x06 \x01(\tR\thomeLabel\x12\x1d\n" +
+	"\n" +
+	"away_label\x18\a \x01(\tR\tawayLabel\x12$\n" +
+	"\x0eclob_token_ids\x18\b \x03(\tR\fclobTokenIds\x121\n" +
+	"\talt_lines\x18\t \x03(\v2\x14.bullpen.v1.OddsLineR\baltLines\"\x7f\n" +
+	"\bOddsLine\x12\x12\n" +
+	"\x04line\x18\x01 \x01(\tR\x04line\x12\x1d\n" +
+	"\n" +
+	"home_price\x18\x02 \x01(\tR\thomePrice\x12\x1d\n" +
+	"\n" +
+	"away_price\x18\x03 \x01(\tR\tawayPrice\x12!\n" +
+	"\fcondition_id\x18\x04 \x01(\tR\vconditionId\"\xb3\x03\n" +
 	"\tMarketRow\x12\x12\n" +
 	"\x04rank\x18\x01 \x01(\x05R\x04rank\x12\x12\n" +
 	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x1d\n" +
@@ -4393,7 +5118,7 @@ func file_bullpen_v1_polymarket_explore_proto_rawDescGZIP() []byte {
 }
 
 var file_bullpen_v1_polymarket_explore_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_bullpen_v1_polymarket_explore_proto_msgTypes = make([]protoimpl.MessageInfo, 50)
+var file_bullpen_v1_polymarket_explore_proto_msgTypes = make([]protoimpl.MessageInfo, 55)
 var file_bullpen_v1_polymarket_explore_proto_goTypes = []any{
 	(ScoringFunction)(0),              // 0: bullpen.v1.ScoringFunction
 	(ScoringDimension)(0),             // 1: bullpen.v1.ScoringDimension
@@ -4425,136 +5150,149 @@ var file_bullpen_v1_polymarket_explore_proto_goTypes = []any{
 	(*Event)(nil),                     // 27: bullpen.v1.Event
 	(*GetMarketRequest)(nil),          // 28: bullpen.v1.GetMarketRequest
 	(*Market)(nil),                    // 29: bullpen.v1.Market
-	(*GetMarketAnalyticsRequest)(nil), // 30: bullpen.v1.GetMarketAnalyticsRequest
-	(*MarketAnalytics)(nil),           // 31: bullpen.v1.MarketAnalytics
-	(*GetCategoriesRequest)(nil),      // 32: bullpen.v1.GetCategoriesRequest
-	(*Category)(nil),                  // 33: bullpen.v1.Category
-	(*SubCategory)(nil),               // 34: bullpen.v1.SubCategory
-	(*GetCategoriesResponse)(nil),     // 35: bullpen.v1.GetCategoriesResponse
-	(*GetMarketCommentsRequest)(nil),  // 36: bullpen.v1.GetMarketCommentsRequest
-	(*Comment)(nil),                   // 37: bullpen.v1.Comment
-	(*GetMarketCommentsResponse)(nil), // 38: bullpen.v1.GetMarketCommentsResponse
-	(*StreamMarketPricesRequest)(nil), // 39: bullpen.v1.StreamMarketPricesRequest
-	(*MarketPriceUpdate)(nil),         // 40: bullpen.v1.MarketPriceUpdate
-	(*GetPageViewRequest)(nil),        // 41: bullpen.v1.GetPageViewRequest
-	(*PageView)(nil),                  // 42: bullpen.v1.PageView
-	(*PageTab)(nil),                   // 43: bullpen.v1.PageTab
-	(*PageSection)(nil),               // 44: bullpen.v1.PageSection
-	(*EventGridSection)(nil),          // 45: bullpen.v1.EventGridSection
-	(*CategoryNavSection)(nil),        // 46: bullpen.v1.CategoryNavSection
-	(*StatsBarSection)(nil),           // 47: bullpen.v1.StatsBarSection
-	(*StatItem)(nil),                  // 48: bullpen.v1.StatItem
-	(*MarketListSection)(nil),         // 49: bullpen.v1.MarketListSection
-	(*MarketRow)(nil),                 // 50: bullpen.v1.MarketRow
-	(*PricePoint)(nil),                // 51: bullpen.v1.PricePoint
-	nil,                               // 52: bullpen.v1.ResultAggregates.FieldRangesEntry
-	nil,                               // 53: bullpen.v1.GetPageViewRequest.ParamsEntry
-	(*PaginationRequest)(nil),         // 54: bullpen.v1.PaginationRequest
-	(*PaginationResponse)(nil),        // 55: bullpen.v1.PaginationResponse
-	(*timestamppb.Timestamp)(nil),     // 56: google.protobuf.Timestamp
-	(TimeWindow)(0),                   // 57: bullpen.v1.TimeWindow
-	(SortOrder)(0),                    // 58: bullpen.v1.SortOrder
-	(*TraderTag)(nil),                 // 59: bullpen.v1.TraderTag
+	(*Team)(nil),                      // 30: bullpen.v1.Team
+	(*GetMarketAnalyticsRequest)(nil), // 31: bullpen.v1.GetMarketAnalyticsRequest
+	(*MarketAnalytics)(nil),           // 32: bullpen.v1.MarketAnalytics
+	(*GetCategoriesRequest)(nil),      // 33: bullpen.v1.GetCategoriesRequest
+	(*Category)(nil),                  // 34: bullpen.v1.Category
+	(*SubCategory)(nil),               // 35: bullpen.v1.SubCategory
+	(*GetCategoriesResponse)(nil),     // 36: bullpen.v1.GetCategoriesResponse
+	(*GetMarketCommentsRequest)(nil),  // 37: bullpen.v1.GetMarketCommentsRequest
+	(*Comment)(nil),                   // 38: bullpen.v1.Comment
+	(*GetMarketCommentsResponse)(nil), // 39: bullpen.v1.GetMarketCommentsResponse
+	(*StreamMarketPricesRequest)(nil), // 40: bullpen.v1.StreamMarketPricesRequest
+	(*MarketPriceUpdate)(nil),         // 41: bullpen.v1.MarketPriceUpdate
+	(*GetPageViewRequest)(nil),        // 42: bullpen.v1.GetPageViewRequest
+	(*PageView)(nil),                  // 43: bullpen.v1.PageView
+	(*PageTab)(nil),                   // 44: bullpen.v1.PageTab
+	(*PageSection)(nil),               // 45: bullpen.v1.PageSection
+	(*EventGridSection)(nil),          // 46: bullpen.v1.EventGridSection
+	(*CategoryNavSection)(nil),        // 47: bullpen.v1.CategoryNavSection
+	(*StatsBarSection)(nil),           // 48: bullpen.v1.StatsBarSection
+	(*StatItem)(nil),                  // 49: bullpen.v1.StatItem
+	(*MarketListSection)(nil),         // 50: bullpen.v1.MarketListSection
+	(*SportsGameSection)(nil),         // 51: bullpen.v1.SportsGameSection
+	(*SportsGame)(nil),                // 52: bullpen.v1.SportsGame
+	(*OddsColumn)(nil),                // 53: bullpen.v1.OddsColumn
+	(*OddsLine)(nil),                  // 54: bullpen.v1.OddsLine
+	(*MarketRow)(nil),                 // 55: bullpen.v1.MarketRow
+	(*PricePoint)(nil),                // 56: bullpen.v1.PricePoint
+	nil,                               // 57: bullpen.v1.ResultAggregates.FieldRangesEntry
+	nil,                               // 58: bullpen.v1.GetPageViewRequest.ParamsEntry
+	(*PaginationRequest)(nil),         // 59: bullpen.v1.PaginationRequest
+	(*PaginationResponse)(nil),        // 60: bullpen.v1.PaginationResponse
+	(*timestamppb.Timestamp)(nil),     // 61: google.protobuf.Timestamp
+	(TimeWindow)(0),                   // 62: bullpen.v1.TimeWindow
+	(SortOrder)(0),                    // 63: bullpen.v1.SortOrder
+	(*TraderTag)(nil),                 // 64: bullpen.v1.TraderTag
 }
 var file_bullpen_v1_polymarket_explore_proto_depIdxs = []int32{
 	8,  // 0: bullpen.v1.QueryMarketsRequest.filter:type_name -> bullpen.v1.MarketFilter
 	11, // 1: bullpen.v1.QueryMarketsRequest.scoring:type_name -> bullpen.v1.ScoringConfig
 	13, // 2: bullpen.v1.QueryMarketsRequest.sort:type_name -> bullpen.v1.SortConfig
 	14, // 3: bullpen.v1.QueryMarketsRequest.enrichment:type_name -> bullpen.v1.EnrichmentConfig
-	54, // 4: bullpen.v1.QueryMarketsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	59, // 4: bullpen.v1.QueryMarketsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
 	15, // 5: bullpen.v1.QueryMarketsResponse.markets:type_name -> bullpen.v1.MarketResult
-	55, // 6: bullpen.v1.QueryMarketsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	60, // 6: bullpen.v1.QueryMarketsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
 	17, // 7: bullpen.v1.QueryMarketsResponse.aggregates:type_name -> bullpen.v1.ResultAggregates
 	8,  // 8: bullpen.v1.QueryEventsRequest.filter:type_name -> bullpen.v1.MarketFilter
 	11, // 9: bullpen.v1.QueryEventsRequest.scoring:type_name -> bullpen.v1.ScoringConfig
 	13, // 10: bullpen.v1.QueryEventsRequest.sort:type_name -> bullpen.v1.SortConfig
 	14, // 11: bullpen.v1.QueryEventsRequest.enrichment:type_name -> bullpen.v1.EnrichmentConfig
-	54, // 12: bullpen.v1.QueryEventsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	59, // 12: bullpen.v1.QueryEventsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
 	16, // 13: bullpen.v1.QueryEventsResponse.events:type_name -> bullpen.v1.EventResult
-	55, // 14: bullpen.v1.QueryEventsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	60, // 14: bullpen.v1.QueryEventsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
 	17, // 15: bullpen.v1.QueryEventsResponse.aggregates:type_name -> bullpen.v1.ResultAggregates
 	9,  // 16: bullpen.v1.MarketFilter.status:type_name -> bullpen.v1.StatusFilter
 	10, // 17: bullpen.v1.MarketFilter.time_range:type_name -> bullpen.v1.TimeRangeFilter
-	56, // 18: bullpen.v1.TimeRangeFilter.ends_before:type_name -> google.protobuf.Timestamp
-	56, // 19: bullpen.v1.TimeRangeFilter.ends_after:type_name -> google.protobuf.Timestamp
-	56, // 20: bullpen.v1.TimeRangeFilter.created_after:type_name -> google.protobuf.Timestamp
-	56, // 21: bullpen.v1.TimeRangeFilter.created_before:type_name -> google.protobuf.Timestamp
+	61, // 18: bullpen.v1.TimeRangeFilter.ends_before:type_name -> google.protobuf.Timestamp
+	61, // 19: bullpen.v1.TimeRangeFilter.ends_after:type_name -> google.protobuf.Timestamp
+	61, // 20: bullpen.v1.TimeRangeFilter.created_after:type_name -> google.protobuf.Timestamp
+	61, // 21: bullpen.v1.TimeRangeFilter.created_before:type_name -> google.protobuf.Timestamp
 	0,  // 22: bullpen.v1.ScoringConfig.function:type_name -> bullpen.v1.ScoringFunction
-	57, // 23: bullpen.v1.ScoringConfig.window:type_name -> bullpen.v1.TimeWindow
+	62, // 23: bullpen.v1.ScoringConfig.window:type_name -> bullpen.v1.TimeWindow
 	12, // 24: bullpen.v1.ScoringConfig.weights:type_name -> bullpen.v1.ScoringWeight
 	1,  // 25: bullpen.v1.ScoringWeight.dimension:type_name -> bullpen.v1.ScoringDimension
 	2,  // 26: bullpen.v1.SortConfig.field:type_name -> bullpen.v1.SortField
-	58, // 27: bullpen.v1.SortConfig.order:type_name -> bullpen.v1.SortOrder
+	63, // 27: bullpen.v1.SortConfig.order:type_name -> bullpen.v1.SortOrder
 	29, // 28: bullpen.v1.MarketResult.market:type_name -> bullpen.v1.Market
-	31, // 29: bullpen.v1.MarketResult.analytics:type_name -> bullpen.v1.MarketAnalytics
+	32, // 29: bullpen.v1.MarketResult.analytics:type_name -> bullpen.v1.MarketAnalytics
 	20, // 30: bullpen.v1.MarketResult.strength:type_name -> bullpen.v1.MarketStrength
 	27, // 31: bullpen.v1.EventResult.event:type_name -> bullpen.v1.Event
-	31, // 32: bullpen.v1.EventResult.analytics:type_name -> bullpen.v1.MarketAnalytics
+	32, // 32: bullpen.v1.EventResult.analytics:type_name -> bullpen.v1.MarketAnalytics
 	20, // 33: bullpen.v1.EventResult.strength:type_name -> bullpen.v1.MarketStrength
-	52, // 34: bullpen.v1.ResultAggregates.field_ranges:type_name -> bullpen.v1.ResultAggregates.FieldRangesEntry
+	57, // 34: bullpen.v1.ResultAggregates.field_ranges:type_name -> bullpen.v1.ResultAggregates.FieldRangesEntry
 	21, // 35: bullpen.v1.MarketStrength.dimensions:type_name -> bullpen.v1.StrengthDimension
 	22, // 36: bullpen.v1.MarketStrength.yes_holders:type_name -> bullpen.v1.TaggedHolder
 	22, // 37: bullpen.v1.MarketStrength.no_holders:type_name -> bullpen.v1.TaggedHolder
-	59, // 38: bullpen.v1.TaggedHolder.tags:type_name -> bullpen.v1.TraderTag
+	64, // 38: bullpen.v1.TaggedHolder.tags:type_name -> bullpen.v1.TraderTag
 	3,  // 39: bullpen.v1.GetFeaturedLensRequest.lens:type_name -> bullpen.v1.FeaturedLens
-	57, // 40: bullpen.v1.GetFeaturedLensRequest.window:type_name -> bullpen.v1.TimeWindow
+	62, // 40: bullpen.v1.GetFeaturedLensRequest.window:type_name -> bullpen.v1.TimeWindow
 	29, // 41: bullpen.v1.Event.markets:type_name -> bullpen.v1.Market
-	56, // 42: bullpen.v1.Event.end_date:type_name -> google.protobuf.Timestamp
-	56, // 43: bullpen.v1.Event.created_at:type_name -> google.protobuf.Timestamp
-	56, // 44: bullpen.v1.Market.end_date:type_name -> google.protobuf.Timestamp
-	56, // 45: bullpen.v1.Market.created_at:type_name -> google.protobuf.Timestamp
-	34, // 46: bullpen.v1.Category.sub_categories:type_name -> bullpen.v1.SubCategory
-	33, // 47: bullpen.v1.GetCategoriesResponse.categories:type_name -> bullpen.v1.Category
-	54, // 48: bullpen.v1.GetMarketCommentsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	37, // 49: bullpen.v1.Comment.replies:type_name -> bullpen.v1.Comment
-	56, // 50: bullpen.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
-	37, // 51: bullpen.v1.GetMarketCommentsResponse.comments:type_name -> bullpen.v1.Comment
-	55, // 52: bullpen.v1.GetMarketCommentsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
-	56, // 53: bullpen.v1.MarketPriceUpdate.timestamp:type_name -> google.protobuf.Timestamp
-	54, // 54: bullpen.v1.GetPageViewRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	53, // 55: bullpen.v1.GetPageViewRequest.params:type_name -> bullpen.v1.GetPageViewRequest.ParamsEntry
-	43, // 56: bullpen.v1.PageView.tabs:type_name -> bullpen.v1.PageTab
-	44, // 57: bullpen.v1.PageView.sections:type_name -> bullpen.v1.PageSection
-	45, // 58: bullpen.v1.PageSection.event_grid:type_name -> bullpen.v1.EventGridSection
-	46, // 59: bullpen.v1.PageSection.category_nav:type_name -> bullpen.v1.CategoryNavSection
-	47, // 60: bullpen.v1.PageSection.stats_bar:type_name -> bullpen.v1.StatsBarSection
-	49, // 61: bullpen.v1.PageSection.market_list:type_name -> bullpen.v1.MarketListSection
-	16, // 62: bullpen.v1.EventGridSection.events:type_name -> bullpen.v1.EventResult
-	13, // 63: bullpen.v1.EventGridSection.applied_sort:type_name -> bullpen.v1.SortConfig
-	43, // 64: bullpen.v1.CategoryNavSection.categories:type_name -> bullpen.v1.PageTab
-	48, // 65: bullpen.v1.StatsBarSection.stats:type_name -> bullpen.v1.StatItem
-	50, // 66: bullpen.v1.MarketListSection.markets:type_name -> bullpen.v1.MarketRow
-	51, // 67: bullpen.v1.MarketRow.history:type_name -> bullpen.v1.PricePoint
-	18, // 68: bullpen.v1.ResultAggregates.FieldRangesEntry.value:type_name -> bullpen.v1.FieldRange
-	4,  // 69: bullpen.v1.PolymarketExploreService.QueryMarkets:input_type -> bullpen.v1.QueryMarketsRequest
-	6,  // 70: bullpen.v1.PolymarketExploreService.QueryEvents:input_type -> bullpen.v1.QueryEventsRequest
-	24, // 71: bullpen.v1.PolymarketExploreService.GetHomepageSummary:input_type -> bullpen.v1.GetHomepageSummaryRequest
-	23, // 72: bullpen.v1.PolymarketExploreService.GetFeaturedLens:input_type -> bullpen.v1.GetFeaturedLensRequest
-	26, // 73: bullpen.v1.PolymarketExploreService.GetEvent:input_type -> bullpen.v1.GetEventRequest
-	28, // 74: bullpen.v1.PolymarketExploreService.GetMarket:input_type -> bullpen.v1.GetMarketRequest
-	30, // 75: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:input_type -> bullpen.v1.GetMarketAnalyticsRequest
-	19, // 76: bullpen.v1.PolymarketExploreService.GetMarketStrength:input_type -> bullpen.v1.GetMarketStrengthRequest
-	32, // 77: bullpen.v1.PolymarketExploreService.GetCategories:input_type -> bullpen.v1.GetCategoriesRequest
-	36, // 78: bullpen.v1.PolymarketExploreService.GetMarketComments:input_type -> bullpen.v1.GetMarketCommentsRequest
-	39, // 79: bullpen.v1.PolymarketExploreService.StreamMarketPrices:input_type -> bullpen.v1.StreamMarketPricesRequest
-	41, // 80: bullpen.v1.PolymarketExploreService.GetPageView:input_type -> bullpen.v1.GetPageViewRequest
-	5,  // 81: bullpen.v1.PolymarketExploreService.QueryMarkets:output_type -> bullpen.v1.QueryMarketsResponse
-	7,  // 82: bullpen.v1.PolymarketExploreService.QueryEvents:output_type -> bullpen.v1.QueryEventsResponse
-	25, // 83: bullpen.v1.PolymarketExploreService.GetHomepageSummary:output_type -> bullpen.v1.HomepageSummary
-	5,  // 84: bullpen.v1.PolymarketExploreService.GetFeaturedLens:output_type -> bullpen.v1.QueryMarketsResponse
-	27, // 85: bullpen.v1.PolymarketExploreService.GetEvent:output_type -> bullpen.v1.Event
-	29, // 86: bullpen.v1.PolymarketExploreService.GetMarket:output_type -> bullpen.v1.Market
-	31, // 87: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:output_type -> bullpen.v1.MarketAnalytics
-	20, // 88: bullpen.v1.PolymarketExploreService.GetMarketStrength:output_type -> bullpen.v1.MarketStrength
-	35, // 89: bullpen.v1.PolymarketExploreService.GetCategories:output_type -> bullpen.v1.GetCategoriesResponse
-	38, // 90: bullpen.v1.PolymarketExploreService.GetMarketComments:output_type -> bullpen.v1.GetMarketCommentsResponse
-	40, // 91: bullpen.v1.PolymarketExploreService.StreamMarketPrices:output_type -> bullpen.v1.MarketPriceUpdate
-	42, // 92: bullpen.v1.PolymarketExploreService.GetPageView:output_type -> bullpen.v1.PageView
-	81, // [81:93] is the sub-list for method output_type
-	69, // [69:81] is the sub-list for method input_type
-	69, // [69:69] is the sub-list for extension type_name
-	69, // [69:69] is the sub-list for extension extendee
-	0,  // [0:69] is the sub-list for field type_name
+	61, // 42: bullpen.v1.Event.end_date:type_name -> google.protobuf.Timestamp
+	61, // 43: bullpen.v1.Event.created_at:type_name -> google.protobuf.Timestamp
+	61, // 44: bullpen.v1.Market.end_date:type_name -> google.protobuf.Timestamp
+	61, // 45: bullpen.v1.Market.created_at:type_name -> google.protobuf.Timestamp
+	35, // 46: bullpen.v1.Category.sub_categories:type_name -> bullpen.v1.SubCategory
+	34, // 47: bullpen.v1.GetCategoriesResponse.categories:type_name -> bullpen.v1.Category
+	59, // 48: bullpen.v1.GetMarketCommentsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	38, // 49: bullpen.v1.Comment.replies:type_name -> bullpen.v1.Comment
+	61, // 50: bullpen.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
+	38, // 51: bullpen.v1.GetMarketCommentsResponse.comments:type_name -> bullpen.v1.Comment
+	60, // 52: bullpen.v1.GetMarketCommentsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	61, // 53: bullpen.v1.MarketPriceUpdate.timestamp:type_name -> google.protobuf.Timestamp
+	59, // 54: bullpen.v1.GetPageViewRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	58, // 55: bullpen.v1.GetPageViewRequest.params:type_name -> bullpen.v1.GetPageViewRequest.ParamsEntry
+	44, // 56: bullpen.v1.PageView.tabs:type_name -> bullpen.v1.PageTab
+	45, // 57: bullpen.v1.PageView.sections:type_name -> bullpen.v1.PageSection
+	46, // 58: bullpen.v1.PageSection.event_grid:type_name -> bullpen.v1.EventGridSection
+	47, // 59: bullpen.v1.PageSection.category_nav:type_name -> bullpen.v1.CategoryNavSection
+	48, // 60: bullpen.v1.PageSection.stats_bar:type_name -> bullpen.v1.StatsBarSection
+	50, // 61: bullpen.v1.PageSection.market_list:type_name -> bullpen.v1.MarketListSection
+	51, // 62: bullpen.v1.PageSection.sports_games:type_name -> bullpen.v1.SportsGameSection
+	16, // 63: bullpen.v1.EventGridSection.events:type_name -> bullpen.v1.EventResult
+	13, // 64: bullpen.v1.EventGridSection.applied_sort:type_name -> bullpen.v1.SortConfig
+	44, // 65: bullpen.v1.CategoryNavSection.categories:type_name -> bullpen.v1.PageTab
+	49, // 66: bullpen.v1.StatsBarSection.stats:type_name -> bullpen.v1.StatItem
+	55, // 67: bullpen.v1.MarketListSection.markets:type_name -> bullpen.v1.MarketRow
+	52, // 68: bullpen.v1.SportsGameSection.games:type_name -> bullpen.v1.SportsGame
+	30, // 69: bullpen.v1.SportsGame.home_team:type_name -> bullpen.v1.Team
+	30, // 70: bullpen.v1.SportsGame.away_team:type_name -> bullpen.v1.Team
+	53, // 71: bullpen.v1.SportsGame.moneyline:type_name -> bullpen.v1.OddsColumn
+	53, // 72: bullpen.v1.SportsGame.spread:type_name -> bullpen.v1.OddsColumn
+	53, // 73: bullpen.v1.SportsGame.total:type_name -> bullpen.v1.OddsColumn
+	54, // 74: bullpen.v1.OddsColumn.alt_lines:type_name -> bullpen.v1.OddsLine
+	56, // 75: bullpen.v1.MarketRow.history:type_name -> bullpen.v1.PricePoint
+	18, // 76: bullpen.v1.ResultAggregates.FieldRangesEntry.value:type_name -> bullpen.v1.FieldRange
+	4,  // 77: bullpen.v1.PolymarketExploreService.QueryMarkets:input_type -> bullpen.v1.QueryMarketsRequest
+	6,  // 78: bullpen.v1.PolymarketExploreService.QueryEvents:input_type -> bullpen.v1.QueryEventsRequest
+	24, // 79: bullpen.v1.PolymarketExploreService.GetHomepageSummary:input_type -> bullpen.v1.GetHomepageSummaryRequest
+	23, // 80: bullpen.v1.PolymarketExploreService.GetFeaturedLens:input_type -> bullpen.v1.GetFeaturedLensRequest
+	26, // 81: bullpen.v1.PolymarketExploreService.GetEvent:input_type -> bullpen.v1.GetEventRequest
+	28, // 82: bullpen.v1.PolymarketExploreService.GetMarket:input_type -> bullpen.v1.GetMarketRequest
+	31, // 83: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:input_type -> bullpen.v1.GetMarketAnalyticsRequest
+	19, // 84: bullpen.v1.PolymarketExploreService.GetMarketStrength:input_type -> bullpen.v1.GetMarketStrengthRequest
+	33, // 85: bullpen.v1.PolymarketExploreService.GetCategories:input_type -> bullpen.v1.GetCategoriesRequest
+	37, // 86: bullpen.v1.PolymarketExploreService.GetMarketComments:input_type -> bullpen.v1.GetMarketCommentsRequest
+	40, // 87: bullpen.v1.PolymarketExploreService.StreamMarketPrices:input_type -> bullpen.v1.StreamMarketPricesRequest
+	42, // 88: bullpen.v1.PolymarketExploreService.GetPageView:input_type -> bullpen.v1.GetPageViewRequest
+	5,  // 89: bullpen.v1.PolymarketExploreService.QueryMarkets:output_type -> bullpen.v1.QueryMarketsResponse
+	7,  // 90: bullpen.v1.PolymarketExploreService.QueryEvents:output_type -> bullpen.v1.QueryEventsResponse
+	25, // 91: bullpen.v1.PolymarketExploreService.GetHomepageSummary:output_type -> bullpen.v1.HomepageSummary
+	5,  // 92: bullpen.v1.PolymarketExploreService.GetFeaturedLens:output_type -> bullpen.v1.QueryMarketsResponse
+	27, // 93: bullpen.v1.PolymarketExploreService.GetEvent:output_type -> bullpen.v1.Event
+	29, // 94: bullpen.v1.PolymarketExploreService.GetMarket:output_type -> bullpen.v1.Market
+	32, // 95: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:output_type -> bullpen.v1.MarketAnalytics
+	20, // 96: bullpen.v1.PolymarketExploreService.GetMarketStrength:output_type -> bullpen.v1.MarketStrength
+	36, // 97: bullpen.v1.PolymarketExploreService.GetCategories:output_type -> bullpen.v1.GetCategoriesResponse
+	39, // 98: bullpen.v1.PolymarketExploreService.GetMarketComments:output_type -> bullpen.v1.GetMarketCommentsResponse
+	41, // 99: bullpen.v1.PolymarketExploreService.StreamMarketPrices:output_type -> bullpen.v1.MarketPriceUpdate
+	43, // 100: bullpen.v1.PolymarketExploreService.GetPageView:output_type -> bullpen.v1.PageView
+	89, // [89:101] is the sub-list for method output_type
+	77, // [77:89] is the sub-list for method input_type
+	77, // [77:77] is the sub-list for extension type_name
+	77, // [77:77] is the sub-list for extension extendee
+	0,  // [0:77] is the sub-list for field type_name
 }
 
 func init() { file_bullpen_v1_polymarket_explore_proto_init() }
@@ -4571,11 +5309,12 @@ func file_bullpen_v1_polymarket_explore_proto_init() {
 		(*GetMarketRequest_ConditionId)(nil),
 		(*GetMarketRequest_Slug)(nil),
 	}
-	file_bullpen_v1_polymarket_explore_proto_msgTypes[40].OneofWrappers = []any{
+	file_bullpen_v1_polymarket_explore_proto_msgTypes[41].OneofWrappers = []any{
 		(*PageSection_EventGrid)(nil),
 		(*PageSection_CategoryNav)(nil),
 		(*PageSection_StatsBar)(nil),
 		(*PageSection_MarketList)(nil),
+		(*PageSection_SportsGames)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -4583,7 +5322,7 @@ func file_bullpen_v1_polymarket_explore_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_bullpen_v1_polymarket_explore_proto_rawDesc), len(file_bullpen_v1_polymarket_explore_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   50,
+			NumMessages:   55,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

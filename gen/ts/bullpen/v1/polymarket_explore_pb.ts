@@ -1743,6 +1743,64 @@ export class Event extends Message<Event> {
    */
   recurrence = "";
 
+  /**
+   * Sports-specific fields
+   *
+   * "93-114" (away-home)
+   *
+   * @generated from field: string score = 21;
+   */
+  score = "";
+
+  /**
+   * "Q4", "H2", "P1", "HT"
+   *
+   * @generated from field: string period = 22;
+   */
+  period = "";
+
+  /**
+   * "04:51" time remaining/elapsed
+   *
+   * @generated from field: string elapsed = 23;
+   */
+  elapsed = "";
+
+  /**
+   * true if game is in-progress
+   *
+   * @generated from field: bool live = 24;
+   */
+  live = false;
+
+  /**
+   * true if game has ended
+   *
+   * @generated from field: bool ended = 25;
+   */
+  ended = false;
+
+  /**
+   * Gamma gameId
+   *
+   * @generated from field: int32 game_id = 26;
+   */
+  gameId = 0;
+
+  /**
+   * ISO timestamp of game start
+   *
+   * @generated from field: string start_time = 27;
+   */
+  startTime = "";
+
+  /**
+   * "NBA", "EPL", "NHL" etc.
+   *
+   * @generated from field: string league = 28;
+   */
+  league = "";
+
   constructor(data?: PartialMessage<Event>) {
     super();
     proto3.util.initPartial(data, this);
@@ -1771,6 +1829,14 @@ export class Event extends Message<Event> {
     { no: 18, name: "created_at", kind: "message", T: Timestamp },
     { no: 19, name: "is_new", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 20, name: "recurrence", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 21, name: "score", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 22, name: "period", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 23, name: "elapsed", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 24, name: "live", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 25, name: "ended", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 26, name: "game_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 27, name: "start_time", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 28, name: "league", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Event {
@@ -1969,6 +2035,34 @@ export class Market extends Message<Market> {
    */
   groupItemTitle = "";
 
+  /**
+   * "moneyline", "spread", "totals"
+   *
+   * @generated from field: string sports_market_type = 26;
+   */
+  sportsMarketType = "";
+
+  /**
+   * "-3.5", "+3.5", "227.5"
+   *
+   * @generated from field: string line = 27;
+   */
+  line = "";
+
+  /**
+   * ISO timestamp
+   *
+   * @generated from field: string game_start_time = 28;
+   */
+  gameStartTime = "";
+
+  /**
+   * ["Trail Blazers", "Timberwolves"]
+   *
+   * @generated from field: repeated string outcomes = 29;
+   */
+  outcomes: string[] = [];
+
   constructor(data?: PartialMessage<Market>) {
     super();
     proto3.util.initPartial(data, this);
@@ -2002,6 +2096,10 @@ export class Market extends Message<Market> {
     { no: 23, name: "end_date", kind: "message", T: Timestamp },
     { no: 24, name: "created_at", kind: "message", T: Timestamp },
     { no: 25, name: "group_item_title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 26, name: "sports_market_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 27, name: "line", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 28, name: "game_start_time", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 29, name: "outcomes", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Market {
@@ -2018,6 +2116,79 @@ export class Market extends Message<Market> {
 
   static equals(a: Market | PlainMessage<Market> | undefined, b: Market | PlainMessage<Market> | undefined): boolean {
     return proto3.util.equals(Market, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.Team
+ */
+export class Team extends Message<Team> {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id = 0;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: string league = 3;
+   */
+  league = "";
+
+  /**
+   * @generated from field: string record = 4;
+   */
+  record = "";
+
+  /**
+   * @generated from field: string logo = 5;
+   */
+  logo = "";
+
+  /**
+   * @generated from field: string abbreviation = 6;
+   */
+  abbreviation = "";
+
+  /**
+   * @generated from field: string color = 7;
+   */
+  color = "";
+
+  constructor(data?: PartialMessage<Team>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.Team";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "league", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "record", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "logo", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "abbreviation", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "color", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Team {
+    return new Team().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Team {
+    return new Team().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Team {
+    return new Team().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Team | PlainMessage<Team> | undefined, b: Team | PlainMessage<Team> | undefined): boolean {
+    return proto3.util.equals(Team, a, b);
   }
 }
 
@@ -2820,6 +2991,12 @@ export class PageSection extends Message<PageSection> {
      */
     value: MarketListSection;
     case: "marketList";
+  } | {
+    /**
+     * @generated from field: bullpen.v1.SportsGameSection sports_games = 14;
+     */
+    value: SportsGameSection;
+    case: "sportsGames";
   } | { case: undefined; value?: undefined } = { case: undefined };
 
   constructor(data?: PartialMessage<PageSection>) {
@@ -2836,6 +3013,7 @@ export class PageSection extends Message<PageSection> {
     { no: 11, name: "category_nav", kind: "message", T: CategoryNavSection, oneof: "content" },
     { no: 12, name: "stats_bar", kind: "message", T: StatsBarSection, oneof: "content" },
     { no: 13, name: "market_list", kind: "message", T: MarketListSection, oneof: "content" },
+    { no: 14, name: "sports_games", kind: "message", T: SportsGameSection, oneof: "content" },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PageSection {
@@ -3079,6 +3257,352 @@ export class MarketListSection extends Message<MarketListSection> {
 
   static equals(a: MarketListSection | PlainMessage<MarketListSection> | undefined, b: MarketListSection | PlainMessage<MarketListSection> | undefined): boolean {
     return proto3.util.equals(MarketListSection, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.SportsGameSection
+ */
+export class SportsGameSection extends Message<SportsGameSection> {
+  /**
+   * @generated from field: string league = 1;
+   */
+  league = "";
+
+  /**
+   * @generated from field: string date_label = 2;
+   */
+  dateLabel = "";
+
+  /**
+   * @generated from field: repeated bullpen.v1.SportsGame games = 3;
+   */
+  games: SportsGame[] = [];
+
+  /**
+   * @generated from field: int32 total_count = 4;
+   */
+  totalCount = 0;
+
+  constructor(data?: PartialMessage<SportsGameSection>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.SportsGameSection";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "league", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "date_label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "games", kind: "message", T: SportsGame, repeated: true },
+    { no: 4, name: "total_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SportsGameSection {
+    return new SportsGameSection().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SportsGameSection {
+    return new SportsGameSection().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SportsGameSection {
+    return new SportsGameSection().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: SportsGameSection | PlainMessage<SportsGameSection> | undefined, b: SportsGameSection | PlainMessage<SportsGameSection> | undefined): boolean {
+    return proto3.util.equals(SportsGameSection, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.SportsGame
+ */
+export class SportsGame extends Message<SportsGame> {
+  /**
+   * @generated from field: string event_id = 1;
+   */
+  eventId = "";
+
+  /**
+   * @generated from field: string event_slug = 2;
+   */
+  eventSlug = "";
+
+  /**
+   * @generated from field: string title = 3;
+   */
+  title = "";
+
+  /**
+   * @generated from field: bullpen.v1.Team home_team = 4;
+   */
+  homeTeam?: Team;
+
+  /**
+   * @generated from field: bullpen.v1.Team away_team = 5;
+   */
+  awayTeam?: Team;
+
+  /**
+   * @generated from field: string score = 6;
+   */
+  score = "";
+
+  /**
+   * @generated from field: string home_score = 7;
+   */
+  homeScore = "";
+
+  /**
+   * @generated from field: string away_score = 8;
+   */
+  awayScore = "";
+
+  /**
+   * @generated from field: string period = 9;
+   */
+  period = "";
+
+  /**
+   * @generated from field: string elapsed = 10;
+   */
+  elapsed = "";
+
+  /**
+   * @generated from field: bool live = 11;
+   */
+  live = false;
+
+  /**
+   * @generated from field: bool ended = 12;
+   */
+  ended = false;
+
+  /**
+   * @generated from field: string start_time = 13;
+   */
+  startTime = "";
+
+  /**
+   * @generated from field: bullpen.v1.OddsColumn moneyline = 14;
+   */
+  moneyline?: OddsColumn;
+
+  /**
+   * @generated from field: bullpen.v1.OddsColumn spread = 15;
+   */
+  spread?: OddsColumn;
+
+  /**
+   * @generated from field: bullpen.v1.OddsColumn total = 16;
+   */
+  total?: OddsColumn;
+
+  /**
+   * @generated from field: string volume = 17;
+   */
+  volume = "";
+
+  /**
+   * @generated from field: string volume_24h = 18;
+   */
+  volume24h = "";
+
+  /**
+   * @generated from field: int32 market_count = 19;
+   */
+  marketCount = 0;
+
+  /**
+   * @generated from field: string image = 20;
+   */
+  image = "";
+
+  constructor(data?: PartialMessage<SportsGame>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.SportsGame";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "event_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "event_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "home_team", kind: "message", T: Team },
+    { no: 5, name: "away_team", kind: "message", T: Team },
+    { no: 6, name: "score", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "home_score", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 8, name: "away_score", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "period", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 10, name: "elapsed", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "live", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 12, name: "ended", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 13, name: "start_time", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 14, name: "moneyline", kind: "message", T: OddsColumn },
+    { no: 15, name: "spread", kind: "message", T: OddsColumn },
+    { no: 16, name: "total", kind: "message", T: OddsColumn },
+    { no: 17, name: "volume", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 18, name: "volume_24h", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 19, name: "market_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 20, name: "image", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SportsGame {
+    return new SportsGame().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SportsGame {
+    return new SportsGame().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SportsGame {
+    return new SportsGame().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: SportsGame | PlainMessage<SportsGame> | undefined, b: SportsGame | PlainMessage<SportsGame> | undefined): boolean {
+    return proto3.util.equals(SportsGame, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.OddsColumn
+ */
+export class OddsColumn extends Message<OddsColumn> {
+  /**
+   * @generated from field: string market_type = 1;
+   */
+  marketType = "";
+
+  /**
+   * @generated from field: string condition_id = 2;
+   */
+  conditionId = "";
+
+  /**
+   * @generated from field: string line = 3;
+   */
+  line = "";
+
+  /**
+   * @generated from field: string home_price = 4;
+   */
+  homePrice = "";
+
+  /**
+   * @generated from field: string away_price = 5;
+   */
+  awayPrice = "";
+
+  /**
+   * @generated from field: string home_label = 6;
+   */
+  homeLabel = "";
+
+  /**
+   * @generated from field: string away_label = 7;
+   */
+  awayLabel = "";
+
+  /**
+   * @generated from field: repeated string clob_token_ids = 8;
+   */
+  clobTokenIds: string[] = [];
+
+  /**
+   * @generated from field: repeated bullpen.v1.OddsLine alt_lines = 9;
+   */
+  altLines: OddsLine[] = [];
+
+  constructor(data?: PartialMessage<OddsColumn>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.OddsColumn";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "market_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "condition_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "line", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "home_price", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "away_price", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "home_label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "away_label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 8, name: "clob_token_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 9, name: "alt_lines", kind: "message", T: OddsLine, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OddsColumn {
+    return new OddsColumn().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OddsColumn {
+    return new OddsColumn().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OddsColumn {
+    return new OddsColumn().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: OddsColumn | PlainMessage<OddsColumn> | undefined, b: OddsColumn | PlainMessage<OddsColumn> | undefined): boolean {
+    return proto3.util.equals(OddsColumn, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.OddsLine
+ */
+export class OddsLine extends Message<OddsLine> {
+  /**
+   * @generated from field: string line = 1;
+   */
+  line = "";
+
+  /**
+   * @generated from field: string home_price = 2;
+   */
+  homePrice = "";
+
+  /**
+   * @generated from field: string away_price = 3;
+   */
+  awayPrice = "";
+
+  /**
+   * @generated from field: string condition_id = 4;
+   */
+  conditionId = "";
+
+  constructor(data?: PartialMessage<OddsLine>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.OddsLine";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "line", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "home_price", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "away_price", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "condition_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OddsLine {
+    return new OddsLine().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OddsLine {
+    return new OddsLine().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OddsLine {
+    return new OddsLine().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: OddsLine | PlainMessage<OddsLine> | undefined, b: OddsLine | PlainMessage<OddsLine> | undefined): boolean {
+    return proto3.util.equals(OddsLine, a, b);
   }
 }
 
