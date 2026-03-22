@@ -344,6 +344,16 @@ message Event {
   google.protobuf.Timestamp created_at = 18;
   bool is_new = 19;
   string recurrence = 20;
+
+  // Sports-specific fields
+  string score = 21;              // "93-114" (away-home)
+  string period = 22;             // "Q4", "H2", "P1", "HT"
+  string elapsed = 23;            // "04:51" time remaining/elapsed
+  bool live = 24;                 // true if game is in-progress
+  bool ended = 25;                // true if game has ended
+  int32 game_id = 26;             // Gamma gameId
+  string start_time = 27;         // ISO timestamp of game start
+  string league = 28;             // "NBA", "EPL", "NHL" etc.
 }
 
 message GetMarketRequest {
@@ -379,6 +389,20 @@ message Market {
   google.protobuf.Timestamp end_date = 23;
   google.protobuf.Timestamp created_at = 24;
   string group_item_title = 25;
+  string sports_market_type = 26; // "moneyline", "spread", "totals"
+  string line = 27;               // "-3.5", "+3.5", "227.5"
+  string game_start_time = 28;    // ISO timestamp
+  repeated string outcomes = 29;  // ["Trail Blazers", "Timberwolves"]
+}
+
+message Team {
+  int32 id = 1;
+  string name = 2;
+  string league = 3;
+  string record = 4;
+  string logo = 5;
+  string abbreviation = 6;
+  string color = 7;
 }
 
 message GetMarketAnalyticsRequest {
@@ -494,6 +518,7 @@ message PageSection {
     CategoryNavSection category_nav = 11;
     StatsBarSection stats_bar = 12;
     MarketListSection market_list = 13;
+    SportsGameSection sports_games = 14;
   }
 }
 
@@ -522,6 +547,55 @@ message StatItem {
 message MarketListSection {
   repeated MarketRow markets = 1;
   int32 total_count = 2;
+}
+
+message SportsGameSection {
+  string league = 1;
+  string date_label = 2;
+  repeated SportsGame games = 3;
+  int32 total_count = 4;
+}
+
+message SportsGame {
+  string event_id = 1;
+  string event_slug = 2;
+  string title = 3;
+  Team home_team = 4;
+  Team away_team = 5;
+  string score = 6;
+  string home_score = 7;
+  string away_score = 8;
+  string period = 9;
+  string elapsed = 10;
+  bool live = 11;
+  bool ended = 12;
+  string start_time = 13;
+  OddsColumn moneyline = 14;
+  OddsColumn spread = 15;
+  OddsColumn total = 16;
+  string volume = 17;
+  string volume_24h = 18;
+  int32 market_count = 19;
+  string image = 20;
+}
+
+message OddsColumn {
+  string market_type = 1;
+  string condition_id = 2;
+  string line = 3;
+  string home_price = 4;
+  string away_price = 5;
+  string home_label = 6;
+  string away_label = 7;
+  repeated string clob_token_ids = 8;
+  repeated OddsLine alt_lines = 9;
+}
+
+message OddsLine {
+  string line = 1;
+  string home_price = 2;
+  string away_price = 3;
+  string condition_id = 4;
 }
 
 message MarketRow {
