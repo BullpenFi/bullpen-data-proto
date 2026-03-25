@@ -1801,6 +1801,18 @@ export class Event extends Message<Event> {
    */
   league = "";
 
+  /**
+   * Team data for game events (populated for "Team A vs. Team B" events)
+   *
+   * @generated from field: bullpen.v1.Team home_team = 29;
+   */
+  homeTeam?: Team;
+
+  /**
+   * @generated from field: bullpen.v1.Team away_team = 30;
+   */
+  awayTeam?: Team;
+
   constructor(data?: PartialMessage<Event>) {
     super();
     proto3.util.initPartial(data, this);
@@ -1837,6 +1849,8 @@ export class Event extends Message<Event> {
     { no: 26, name: "game_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 27, name: "start_time", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 28, name: "league", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 29, name: "home_team", kind: "message", T: Team },
+    { no: 30, name: "away_team", kind: "message", T: Team },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Event {

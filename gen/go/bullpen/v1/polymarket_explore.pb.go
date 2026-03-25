@@ -1933,14 +1933,17 @@ type Event struct {
 	IsNew         bool                   `protobuf:"varint,19,opt,name=is_new,json=isNew,proto3" json:"is_new,omitempty"`
 	Recurrence    string                 `protobuf:"bytes,20,opt,name=recurrence,proto3" json:"recurrence,omitempty"`
 	// Sports-specific fields
-	Score         string `protobuf:"bytes,21,opt,name=score,proto3" json:"score,omitempty"`                          // "93-114" (away-home)
-	Period        string `protobuf:"bytes,22,opt,name=period,proto3" json:"period,omitempty"`                        // "Q4", "H2", "P1", "HT"
-	Elapsed       string `protobuf:"bytes,23,opt,name=elapsed,proto3" json:"elapsed,omitempty"`                      // "04:51" time remaining/elapsed
-	Live          bool   `protobuf:"varint,24,opt,name=live,proto3" json:"live,omitempty"`                           // true if game is in-progress
-	Ended         bool   `protobuf:"varint,25,opt,name=ended,proto3" json:"ended,omitempty"`                         // true if game has ended
-	GameId        int32  `protobuf:"varint,26,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`         // Gamma gameId
-	StartTime     string `protobuf:"bytes,27,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"` // ISO timestamp of game start
-	League        string `protobuf:"bytes,28,opt,name=league,proto3" json:"league,omitempty"`                        // "NBA", "EPL", "NHL" etc.
+	Score     string `protobuf:"bytes,21,opt,name=score,proto3" json:"score,omitempty"`                          // "93-114" (away-home)
+	Period    string `protobuf:"bytes,22,opt,name=period,proto3" json:"period,omitempty"`                        // "Q4", "H2", "P1", "HT"
+	Elapsed   string `protobuf:"bytes,23,opt,name=elapsed,proto3" json:"elapsed,omitempty"`                      // "04:51" time remaining/elapsed
+	Live      bool   `protobuf:"varint,24,opt,name=live,proto3" json:"live,omitempty"`                           // true if game is in-progress
+	Ended     bool   `protobuf:"varint,25,opt,name=ended,proto3" json:"ended,omitempty"`                         // true if game has ended
+	GameId    int32  `protobuf:"varint,26,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`         // Gamma gameId
+	StartTime string `protobuf:"bytes,27,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"` // ISO timestamp of game start
+	League    string `protobuf:"bytes,28,opt,name=league,proto3" json:"league,omitempty"`                        // "NBA", "EPL", "NHL" etc.
+	// Team data for game events (populated for "Team A vs. Team B" events)
+	HomeTeam      *Team `protobuf:"bytes,29,opt,name=home_team,json=homeTeam,proto3" json:"home_team,omitempty"`
+	AwayTeam      *Team `protobuf:"bytes,30,opt,name=away_team,json=awayTeam,proto3" json:"away_team,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2169,6 +2172,20 @@ func (x *Event) GetLeague() string {
 		return x.League
 	}
 	return ""
+}
+
+func (x *Event) GetHomeTeam() *Team {
+	if x != nil {
+		return x.HomeTeam
+	}
+	return nil
+}
+
+func (x *Event) GetAwayTeam() *Team {
+	if x != nil {
+		return x.AwayTeam
+	}
+	return nil
 }
 
 type GetMarketRequest struct {
@@ -4779,7 +4796,7 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x04slug\x18\x01 \x01(\tH\x00R\x04slug\x12\x1b\n" +
 	"\bevent_id\x18\x02 \x01(\tH\x00R\aeventIdB\f\n" +
 	"\n" +
-	"identifier\"\xbe\x06\n" +
+	"identifier\"\x9c\a\n" +
 	"\x05Event\x12\x19\n" +
 	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
@@ -4816,7 +4833,9 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\agame_id\x18\x1a \x01(\x05R\x06gameId\x12\x1d\n" +
 	"\n" +
 	"start_time\x18\x1b \x01(\tR\tstartTime\x12\x16\n" +
-	"\x06league\x18\x1c \x01(\tR\x06league\"[\n" +
+	"\x06league\x18\x1c \x01(\tR\x06league\x12-\n" +
+	"\thome_team\x18\x1d \x01(\v2\x10.bullpen.v1.TeamR\bhomeTeam\x12-\n" +
+	"\taway_team\x18\x1e \x01(\v2\x10.bullpen.v1.TeamR\bawayTeam\"[\n" +
 	"\x10GetMarketRequest\x12#\n" +
 	"\fcondition_id\x18\x01 \x01(\tH\x00R\vconditionId\x12\x14\n" +
 	"\x04slug\x18\x02 \x01(\tH\x00R\x04slugB\f\n" +
@@ -5251,68 +5270,70 @@ var file_bullpen_v1_polymarket_explore_proto_depIdxs = []int32{
 	29, // 41: bullpen.v1.Event.markets:type_name -> bullpen.v1.Market
 	61, // 42: bullpen.v1.Event.end_date:type_name -> google.protobuf.Timestamp
 	61, // 43: bullpen.v1.Event.created_at:type_name -> google.protobuf.Timestamp
-	61, // 44: bullpen.v1.Market.end_date:type_name -> google.protobuf.Timestamp
-	61, // 45: bullpen.v1.Market.created_at:type_name -> google.protobuf.Timestamp
-	35, // 46: bullpen.v1.Category.sub_categories:type_name -> bullpen.v1.SubCategory
-	34, // 47: bullpen.v1.GetCategoriesResponse.categories:type_name -> bullpen.v1.Category
-	59, // 48: bullpen.v1.GetMarketCommentsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	38, // 49: bullpen.v1.Comment.replies:type_name -> bullpen.v1.Comment
-	61, // 50: bullpen.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
-	38, // 51: bullpen.v1.GetMarketCommentsResponse.comments:type_name -> bullpen.v1.Comment
-	60, // 52: bullpen.v1.GetMarketCommentsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
-	61, // 53: bullpen.v1.MarketPriceUpdate.timestamp:type_name -> google.protobuf.Timestamp
-	59, // 54: bullpen.v1.GetPageViewRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	58, // 55: bullpen.v1.GetPageViewRequest.params:type_name -> bullpen.v1.GetPageViewRequest.ParamsEntry
-	44, // 56: bullpen.v1.PageView.tabs:type_name -> bullpen.v1.PageTab
-	45, // 57: bullpen.v1.PageView.sections:type_name -> bullpen.v1.PageSection
-	46, // 58: bullpen.v1.PageSection.event_grid:type_name -> bullpen.v1.EventGridSection
-	47, // 59: bullpen.v1.PageSection.category_nav:type_name -> bullpen.v1.CategoryNavSection
-	48, // 60: bullpen.v1.PageSection.stats_bar:type_name -> bullpen.v1.StatsBarSection
-	50, // 61: bullpen.v1.PageSection.market_list:type_name -> bullpen.v1.MarketListSection
-	51, // 62: bullpen.v1.PageSection.sports_games:type_name -> bullpen.v1.SportsGameSection
-	16, // 63: bullpen.v1.EventGridSection.events:type_name -> bullpen.v1.EventResult
-	13, // 64: bullpen.v1.EventGridSection.applied_sort:type_name -> bullpen.v1.SortConfig
-	44, // 65: bullpen.v1.CategoryNavSection.categories:type_name -> bullpen.v1.PageTab
-	49, // 66: bullpen.v1.StatsBarSection.stats:type_name -> bullpen.v1.StatItem
-	55, // 67: bullpen.v1.MarketListSection.markets:type_name -> bullpen.v1.MarketRow
-	52, // 68: bullpen.v1.SportsGameSection.games:type_name -> bullpen.v1.SportsGame
-	30, // 69: bullpen.v1.SportsGame.home_team:type_name -> bullpen.v1.Team
-	30, // 70: bullpen.v1.SportsGame.away_team:type_name -> bullpen.v1.Team
-	53, // 71: bullpen.v1.SportsGame.moneyline:type_name -> bullpen.v1.OddsColumn
-	53, // 72: bullpen.v1.SportsGame.spread:type_name -> bullpen.v1.OddsColumn
-	53, // 73: bullpen.v1.SportsGame.total:type_name -> bullpen.v1.OddsColumn
-	54, // 74: bullpen.v1.OddsColumn.alt_lines:type_name -> bullpen.v1.OddsLine
-	56, // 75: bullpen.v1.MarketRow.history:type_name -> bullpen.v1.PricePoint
-	18, // 76: bullpen.v1.ResultAggregates.FieldRangesEntry.value:type_name -> bullpen.v1.FieldRange
-	4,  // 77: bullpen.v1.PolymarketExploreService.QueryMarkets:input_type -> bullpen.v1.QueryMarketsRequest
-	6,  // 78: bullpen.v1.PolymarketExploreService.QueryEvents:input_type -> bullpen.v1.QueryEventsRequest
-	24, // 79: bullpen.v1.PolymarketExploreService.GetHomepageSummary:input_type -> bullpen.v1.GetHomepageSummaryRequest
-	23, // 80: bullpen.v1.PolymarketExploreService.GetFeaturedLens:input_type -> bullpen.v1.GetFeaturedLensRequest
-	26, // 81: bullpen.v1.PolymarketExploreService.GetEvent:input_type -> bullpen.v1.GetEventRequest
-	28, // 82: bullpen.v1.PolymarketExploreService.GetMarket:input_type -> bullpen.v1.GetMarketRequest
-	31, // 83: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:input_type -> bullpen.v1.GetMarketAnalyticsRequest
-	19, // 84: bullpen.v1.PolymarketExploreService.GetMarketStrength:input_type -> bullpen.v1.GetMarketStrengthRequest
-	33, // 85: bullpen.v1.PolymarketExploreService.GetCategories:input_type -> bullpen.v1.GetCategoriesRequest
-	37, // 86: bullpen.v1.PolymarketExploreService.GetMarketComments:input_type -> bullpen.v1.GetMarketCommentsRequest
-	40, // 87: bullpen.v1.PolymarketExploreService.StreamMarketPrices:input_type -> bullpen.v1.StreamMarketPricesRequest
-	42, // 88: bullpen.v1.PolymarketExploreService.GetPageView:input_type -> bullpen.v1.GetPageViewRequest
-	5,  // 89: bullpen.v1.PolymarketExploreService.QueryMarkets:output_type -> bullpen.v1.QueryMarketsResponse
-	7,  // 90: bullpen.v1.PolymarketExploreService.QueryEvents:output_type -> bullpen.v1.QueryEventsResponse
-	25, // 91: bullpen.v1.PolymarketExploreService.GetHomepageSummary:output_type -> bullpen.v1.HomepageSummary
-	5,  // 92: bullpen.v1.PolymarketExploreService.GetFeaturedLens:output_type -> bullpen.v1.QueryMarketsResponse
-	27, // 93: bullpen.v1.PolymarketExploreService.GetEvent:output_type -> bullpen.v1.Event
-	29, // 94: bullpen.v1.PolymarketExploreService.GetMarket:output_type -> bullpen.v1.Market
-	32, // 95: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:output_type -> bullpen.v1.MarketAnalytics
-	20, // 96: bullpen.v1.PolymarketExploreService.GetMarketStrength:output_type -> bullpen.v1.MarketStrength
-	36, // 97: bullpen.v1.PolymarketExploreService.GetCategories:output_type -> bullpen.v1.GetCategoriesResponse
-	39, // 98: bullpen.v1.PolymarketExploreService.GetMarketComments:output_type -> bullpen.v1.GetMarketCommentsResponse
-	41, // 99: bullpen.v1.PolymarketExploreService.StreamMarketPrices:output_type -> bullpen.v1.MarketPriceUpdate
-	43, // 100: bullpen.v1.PolymarketExploreService.GetPageView:output_type -> bullpen.v1.PageView
-	89, // [89:101] is the sub-list for method output_type
-	77, // [77:89] is the sub-list for method input_type
-	77, // [77:77] is the sub-list for extension type_name
-	77, // [77:77] is the sub-list for extension extendee
-	0,  // [0:77] is the sub-list for field type_name
+	30, // 44: bullpen.v1.Event.home_team:type_name -> bullpen.v1.Team
+	30, // 45: bullpen.v1.Event.away_team:type_name -> bullpen.v1.Team
+	61, // 46: bullpen.v1.Market.end_date:type_name -> google.protobuf.Timestamp
+	61, // 47: bullpen.v1.Market.created_at:type_name -> google.protobuf.Timestamp
+	35, // 48: bullpen.v1.Category.sub_categories:type_name -> bullpen.v1.SubCategory
+	34, // 49: bullpen.v1.GetCategoriesResponse.categories:type_name -> bullpen.v1.Category
+	59, // 50: bullpen.v1.GetMarketCommentsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	38, // 51: bullpen.v1.Comment.replies:type_name -> bullpen.v1.Comment
+	61, // 52: bullpen.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
+	38, // 53: bullpen.v1.GetMarketCommentsResponse.comments:type_name -> bullpen.v1.Comment
+	60, // 54: bullpen.v1.GetMarketCommentsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	61, // 55: bullpen.v1.MarketPriceUpdate.timestamp:type_name -> google.protobuf.Timestamp
+	59, // 56: bullpen.v1.GetPageViewRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	58, // 57: bullpen.v1.GetPageViewRequest.params:type_name -> bullpen.v1.GetPageViewRequest.ParamsEntry
+	44, // 58: bullpen.v1.PageView.tabs:type_name -> bullpen.v1.PageTab
+	45, // 59: bullpen.v1.PageView.sections:type_name -> bullpen.v1.PageSection
+	46, // 60: bullpen.v1.PageSection.event_grid:type_name -> bullpen.v1.EventGridSection
+	47, // 61: bullpen.v1.PageSection.category_nav:type_name -> bullpen.v1.CategoryNavSection
+	48, // 62: bullpen.v1.PageSection.stats_bar:type_name -> bullpen.v1.StatsBarSection
+	50, // 63: bullpen.v1.PageSection.market_list:type_name -> bullpen.v1.MarketListSection
+	51, // 64: bullpen.v1.PageSection.sports_games:type_name -> bullpen.v1.SportsGameSection
+	16, // 65: bullpen.v1.EventGridSection.events:type_name -> bullpen.v1.EventResult
+	13, // 66: bullpen.v1.EventGridSection.applied_sort:type_name -> bullpen.v1.SortConfig
+	44, // 67: bullpen.v1.CategoryNavSection.categories:type_name -> bullpen.v1.PageTab
+	49, // 68: bullpen.v1.StatsBarSection.stats:type_name -> bullpen.v1.StatItem
+	55, // 69: bullpen.v1.MarketListSection.markets:type_name -> bullpen.v1.MarketRow
+	52, // 70: bullpen.v1.SportsGameSection.games:type_name -> bullpen.v1.SportsGame
+	30, // 71: bullpen.v1.SportsGame.home_team:type_name -> bullpen.v1.Team
+	30, // 72: bullpen.v1.SportsGame.away_team:type_name -> bullpen.v1.Team
+	53, // 73: bullpen.v1.SportsGame.moneyline:type_name -> bullpen.v1.OddsColumn
+	53, // 74: bullpen.v1.SportsGame.spread:type_name -> bullpen.v1.OddsColumn
+	53, // 75: bullpen.v1.SportsGame.total:type_name -> bullpen.v1.OddsColumn
+	54, // 76: bullpen.v1.OddsColumn.alt_lines:type_name -> bullpen.v1.OddsLine
+	56, // 77: bullpen.v1.MarketRow.history:type_name -> bullpen.v1.PricePoint
+	18, // 78: bullpen.v1.ResultAggregates.FieldRangesEntry.value:type_name -> bullpen.v1.FieldRange
+	4,  // 79: bullpen.v1.PolymarketExploreService.QueryMarkets:input_type -> bullpen.v1.QueryMarketsRequest
+	6,  // 80: bullpen.v1.PolymarketExploreService.QueryEvents:input_type -> bullpen.v1.QueryEventsRequest
+	24, // 81: bullpen.v1.PolymarketExploreService.GetHomepageSummary:input_type -> bullpen.v1.GetHomepageSummaryRequest
+	23, // 82: bullpen.v1.PolymarketExploreService.GetFeaturedLens:input_type -> bullpen.v1.GetFeaturedLensRequest
+	26, // 83: bullpen.v1.PolymarketExploreService.GetEvent:input_type -> bullpen.v1.GetEventRequest
+	28, // 84: bullpen.v1.PolymarketExploreService.GetMarket:input_type -> bullpen.v1.GetMarketRequest
+	31, // 85: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:input_type -> bullpen.v1.GetMarketAnalyticsRequest
+	19, // 86: bullpen.v1.PolymarketExploreService.GetMarketStrength:input_type -> bullpen.v1.GetMarketStrengthRequest
+	33, // 87: bullpen.v1.PolymarketExploreService.GetCategories:input_type -> bullpen.v1.GetCategoriesRequest
+	37, // 88: bullpen.v1.PolymarketExploreService.GetMarketComments:input_type -> bullpen.v1.GetMarketCommentsRequest
+	40, // 89: bullpen.v1.PolymarketExploreService.StreamMarketPrices:input_type -> bullpen.v1.StreamMarketPricesRequest
+	42, // 90: bullpen.v1.PolymarketExploreService.GetPageView:input_type -> bullpen.v1.GetPageViewRequest
+	5,  // 91: bullpen.v1.PolymarketExploreService.QueryMarkets:output_type -> bullpen.v1.QueryMarketsResponse
+	7,  // 92: bullpen.v1.PolymarketExploreService.QueryEvents:output_type -> bullpen.v1.QueryEventsResponse
+	25, // 93: bullpen.v1.PolymarketExploreService.GetHomepageSummary:output_type -> bullpen.v1.HomepageSummary
+	5,  // 94: bullpen.v1.PolymarketExploreService.GetFeaturedLens:output_type -> bullpen.v1.QueryMarketsResponse
+	27, // 95: bullpen.v1.PolymarketExploreService.GetEvent:output_type -> bullpen.v1.Event
+	29, // 96: bullpen.v1.PolymarketExploreService.GetMarket:output_type -> bullpen.v1.Market
+	32, // 97: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:output_type -> bullpen.v1.MarketAnalytics
+	20, // 98: bullpen.v1.PolymarketExploreService.GetMarketStrength:output_type -> bullpen.v1.MarketStrength
+	36, // 99: bullpen.v1.PolymarketExploreService.GetCategories:output_type -> bullpen.v1.GetCategoriesResponse
+	39, // 100: bullpen.v1.PolymarketExploreService.GetMarketComments:output_type -> bullpen.v1.GetMarketCommentsResponse
+	41, // 101: bullpen.v1.PolymarketExploreService.StreamMarketPrices:output_type -> bullpen.v1.MarketPriceUpdate
+	43, // 102: bullpen.v1.PolymarketExploreService.GetPageView:output_type -> bullpen.v1.PageView
+	91, // [91:103] is the sub-list for method output_type
+	79, // [79:91] is the sub-list for method input_type
+	79, // [79:79] is the sub-list for extension type_name
+	79, // [79:79] is the sub-list for extension extendee
+	0,  // [0:79] is the sub-list for field type_name
 }
 
 func init() { file_bullpen_v1_polymarket_explore_proto_init() }
