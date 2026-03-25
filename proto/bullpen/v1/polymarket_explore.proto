@@ -354,6 +354,10 @@ message Event {
   int32 game_id = 26;             // Gamma gameId
   string start_time = 27;         // ISO timestamp of game start
   string league = 28;             // "NBA", "EPL", "NHL" etc.
+
+  // Team data for game events (populated for "Team A vs. Team B" events)
+  Team home_team = 29;
+  Team away_team = 30;
 }
 
 message GetMarketRequest {
