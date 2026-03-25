@@ -393,6 +393,7 @@ message Market {
   string line = 27;               // "-3.5", "+3.5", "227.5"
   string game_start_time = 28;    // ISO timestamp
   repeated string outcomes = 29;  // ["Trail Blazers", "Timberwolves"]
+  repeated string outcome_prices = 30;  // Full outcome price array for 3+ outcome markets
 }
 
 message Team {
@@ -508,6 +509,9 @@ message PageTab {
   string slug = 3;
   int32 count = 4;
   string icon = 5;
+  // Volume of trading activity for this topic/category (USD).
+  // When set, the frontend shows "$12.0K today" in green instead of "X mkts".
+  double volume = 6;
 }
 
 message PageSection {
