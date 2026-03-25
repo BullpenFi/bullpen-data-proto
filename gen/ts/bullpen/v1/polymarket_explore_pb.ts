@@ -2063,6 +2063,13 @@ export class Market extends Message<Market> {
    */
   outcomes: string[] = [];
 
+  /**
+   * Full outcome price array for 3+ outcome markets
+   *
+   * @generated from field: repeated string outcome_prices = 30;
+   */
+  outcomePrices: string[] = [];
+
   constructor(data?: PartialMessage<Market>) {
     super();
     proto3.util.initPartial(data, this);
@@ -2100,6 +2107,7 @@ export class Market extends Message<Market> {
     { no: 27, name: "line", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 28, name: "game_start_time", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 29, name: "outcomes", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 30, name: "outcome_prices", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Market {
@@ -2918,6 +2926,14 @@ export class PageTab extends Message<PageTab> {
    */
   icon = "";
 
+  /**
+   * Volume of trading activity for this topic/category (USD).
+   * When set, the frontend shows "$12.0K today" in green instead of "X mkts".
+   *
+   * @generated from field: double volume = 6;
+   */
+  volume = 0;
+
   constructor(data?: PartialMessage<PageTab>) {
     super();
     proto3.util.initPartial(data, this);
@@ -2931,6 +2947,7 @@ export class PageTab extends Message<PageTab> {
     { no: 3, name: "slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 5, name: "icon", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PageTab {

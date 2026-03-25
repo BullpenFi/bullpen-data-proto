@@ -2284,6 +2284,7 @@ type Market struct {
 	Line             string                 `protobuf:"bytes,27,opt,name=line,proto3" json:"line,omitempty"`                                                   // "-3.5", "+3.5", "227.5"
 	GameStartTime    string                 `protobuf:"bytes,28,opt,name=game_start_time,json=gameStartTime,proto3" json:"game_start_time,omitempty"`          // ISO timestamp
 	Outcomes         []string               `protobuf:"bytes,29,rep,name=outcomes,proto3" json:"outcomes,omitempty"`                                           // ["Trail Blazers", "Timberwolves"]
+	OutcomePrices    []string               `protobuf:"bytes,30,rep,name=outcome_prices,json=outcomePrices,proto3" json:"outcome_prices,omitempty"`            // Full outcome price array for 3+ outcome markets
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -2517,6 +2518,13 @@ func (x *Market) GetGameStartTime() string {
 func (x *Market) GetOutcomes() []string {
 	if x != nil {
 		return x.Outcomes
+	}
+	return nil
+}
+
+func (x *Market) GetOutcomePrices() []string {
+	if x != nil {
+		return x.OutcomePrices
 	}
 	return nil
 }
@@ -3474,12 +3482,15 @@ func (x *PageView) GetActiveDate() string {
 }
 
 type PageTab struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Label         string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
-	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
-	Count         int32                  `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`
-	Icon          string                 `protobuf:"bytes,5,opt,name=icon,proto3" json:"icon,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Label string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	Slug  string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
+	Count int32                  `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`
+	Icon  string                 `protobuf:"bytes,5,opt,name=icon,proto3" json:"icon,omitempty"`
+	// Volume of trading activity for this topic/category (USD).
+	// When set, the frontend shows "$12.0K today" in green instead of "X mkts".
+	Volume        float64 `protobuf:"fixed64,6,opt,name=volume,proto3" json:"volume,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3547,6 +3558,13 @@ func (x *PageTab) GetIcon() string {
 		return x.Icon
 	}
 	return ""
+}
+
+func (x *PageTab) GetVolume() float64 {
+	if x != nil {
+		return x.Volume
+	}
+	return 0
 }
 
 type PageSection struct {
@@ -4803,7 +4821,7 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\fcondition_id\x18\x01 \x01(\tH\x00R\vconditionId\x12\x14\n" +
 	"\x04slug\x18\x02 \x01(\tH\x00R\x04slugB\f\n" +
 	"\n" +
-	"identifier\"\xdb\a\n" +
+	"identifier\"\x82\b\n" +
 	"\x06Market\x12!\n" +
 	"\fcondition_id\x18\x01 \x01(\tR\vconditionId\x12\x1a\n" +
 	"\bquestion\x18\x02 \x01(\tR\bquestion\x12\x12\n" +
@@ -4837,7 +4855,8 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x12sports_market_type\x18\x1a \x01(\tR\x10sportsMarketType\x12\x12\n" +
 	"\x04line\x18\x1b \x01(\tR\x04line\x12&\n" +
 	"\x0fgame_start_time\x18\x1c \x01(\tR\rgameStartTime\x12\x1a\n" +
-	"\boutcomes\x18\x1d \x03(\tR\boutcomes\"\xa8\x01\n" +
+	"\boutcomes\x18\x1d \x03(\tR\boutcomes\x12%\n" +
+	"\x0eoutcome_prices\x18\x1e \x03(\tR\routcomePrices\"\xa8\x01\n" +
 	"\x04Team\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
@@ -4925,13 +4944,14 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x11cache_ttl_seconds\x18\a \x01(\x05R\x0fcacheTtlSeconds\x12'\n" +
 	"\x0favailable_dates\x18\b \x03(\tR\x0eavailableDates\x12\x1f\n" +
 	"\vactive_date\x18\t \x01(\tR\n" +
-	"activeDate\"m\n" +
+	"activeDate\"\x85\x01\n" +
 	"\aPageTab\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12\x12\n" +
 	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x14\n" +
 	"\x05count\x18\x04 \x01(\x05R\x05count\x12\x12\n" +
-	"\x04icon\x18\x05 \x01(\tR\x04icon\"\x93\x03\n" +
+	"\x04icon\x18\x05 \x01(\tR\x04icon\x12\x16\n" +
+	"\x06volume\x18\x06 \x01(\x01R\x06volume\"\x93\x03\n" +
 	"\vPageSection\x12\x1d\n" +
 	"\n" +
 	"section_id\x18\x01 \x01(\tR\tsectionId\x12\x14\n" +
