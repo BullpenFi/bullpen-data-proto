@@ -23,6 +23,10 @@ service PolymarketTradeInfoService {
   rpc GetOpenInterest(GetOpenInterestRequest) returns (OpenInterest);
   rpc GetMarketPrices(GetMarketPricesRequest) returns (GetMarketPricesResponse);
 
+  // Batch CLOB pricing (Phase 5)
+  rpc GetMidpoints(GetMidpointsRequest) returns (GetMidpointsResponse);
+  rpc GetSpreads(GetSpreadsRequest) returns (GetSpreadsResponse);
+
   // Market participants
   rpc GetMarketHolders(GetMarketHoldersRequest) returns (GetMarketHoldersResponse);
   rpc GetRecentTrades(GetRecentTradesRequest) returns (GetRecentTradesResponse);
@@ -123,6 +127,30 @@ message TokenPrice {
 
 message GetMarketPricesResponse {
   repeated TokenPrice prices = 1;
+}
+
+// ---------------------------------------------------------------------------
+// Batch CLOB pricing (Phase 5)
+// ---------------------------------------------------------------------------
+
+message GetMidpointsRequest {
+  // CLOB token IDs to query midpoints for (POST /midpoints).
+  repeated string token_ids = 1;
+}
+
+message GetMidpointsResponse {
+  // Map of token_id → midpoint price string (e.g. "0.5250").
+  map<string, string> midpoints = 1;
+}
+
+message GetSpreadsRequest {
+  // CLOB token IDs to query spreads for (POST /spreads).
+  repeated string token_ids = 1;
+}
+
+message GetSpreadsResponse {
+  // Map of token_id → spread string (e.g. "0.009").
+  map<string, string> spreads = 1;
 }
 
 // ---------------------------------------------------------------------------

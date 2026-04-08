@@ -158,6 +158,7 @@ message Balances {
   string total_position_value = 2;
   string unrealized_pnl = 3;
   string total_pnl = 4;
+  string proxy_address = 5;  // The Gnosis Safe address (deposit target for USDC.e)
 }
 
 // ---------------------------------------------------------------------------

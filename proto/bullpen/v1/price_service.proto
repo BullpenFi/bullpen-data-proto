@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package bullpen.v1;
+
+service PriceService {
+  rpc GetPrice(GetPriceRequest) returns (GetPriceResponse);
+  rpc GetPriceHistory(GetPriceHistoryRequest) returns (GetPriceHistoryResponse);
+}
+
+message GetPriceRequest {
+  repeated string token_ids = 1;
+}
+
+message GetPriceResponse {
+  repeated LatestTokenPrice prices = 1;
+}
+
+message LatestTokenPrice {
+  string token_id = 1;
+  double price = 2;
+  int64 updated_at_ms = 3;
+  string source = 4;
+  bool is_resolved = 5;
+}
+
+message GetPriceHistoryRequest {
+  string token_id = 1;
+  string range = 2;
+  string interval = 3;
+}
+
+message GetPriceHistoryResponse {
+  string token_id = 1;
+  string interval = 2;
+  repeated Candle candles = 3;
+}
+
+message Candle {
+  int64 timestamp_ms = 1;
+  double open = 2;
+  double high = 3;
+  double low = 4;
+  double close = 5;
+  uint64 tick_count = 6;
+}

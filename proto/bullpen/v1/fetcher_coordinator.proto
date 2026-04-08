@@ -1,0 +1,84 @@
+syntax = "proto3";
+package bullpen.v1;
+
+service FetcherCoordinatorService {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc GetWork(GetWorkRequest) returns (GetWorkResponse);
+  rpc PushData(PushDataRequest) returns (PushDataResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+}
+
+enum FetchType {
+  FETCH_TYPE_UNSPECIFIED = 0;
+  PRICE_HISTORY = 1;
+  ORDERBOOK = 2;
+  MARKET_DATA = 3;
+}
+
+message FetchTask {
+  string task_id = 1;
+  FetchType fetch_type = 2;
+  string url = 3;
+  map<string, string> metadata = 4;
+  int32 priority = 5;
+  int64 deadline_ms = 6;
+}
+
+message FetchResult {
+  string task_id = 1;
+  bytes raw_json = 2;
+  int32 http_status = 3;
+  int64 fetch_latency_ms = 4;
+  string error_message = 5;
+  bool success = 6;
+}
+
+message RegisterRequest {
+  string worker_id = 1;
+  double max_rps = 2;
+  repeated FetchType fetch_types = 3;
+  string version = 4;
+  string queue = 5;
+}
+
+message RegisterResponse {
+  string session_id = 1;
+  int32 heartbeat_interval_s = 2;
+  int32 max_batch_size = 3;
+}
+
+message GetWorkRequest {
+  string session_id = 1;
+  string worker_id = 2;
+  int32 capacity = 3;
+}
+
+message GetWorkResponse {
+  repeated FetchTask tasks = 1;
+  int64 retry_after_ms = 2;
+}
+
+message PushDataRequest {
+  string session_id = 1;
+  string worker_id = 2;
+  repeated FetchResult results = 3;
+}
+
+message PushDataResponse {
+  int32 accepted = 1;
+  int32 rejected = 2;
+}
+
+message HeartbeatRequest {
+  string session_id = 1;
+  string worker_id = 2;
+  int64 uptime_s = 3;
+  int64 total_fetches = 4;
+  int64 total_errors = 5;
+  double current_rps = 6;
+}
+
+message HeartbeatResponse {
+  bool should_continue = 1;
+  double throttle_rps = 2;
+}

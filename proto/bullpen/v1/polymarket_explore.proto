@@ -33,6 +33,46 @@ service PolymarketExploreService {
   // ---- Social ----
   rpc GetMarketComments(GetMarketCommentsRequest) returns (GetMarketCommentsResponse);
 
+  // ---- Gamma Auth (SIWE login for commenting) ----
+  rpc GetGammaNonce(GetGammaNonceRequest) returns (GetGammaNonceResponse);
+  rpc GammaLogin(GammaLoginRequest) returns (GammaLoginResponse);
+  rpc PostComment(PostCommentRequest) returns (PostCommentResponse);
+  rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
+  rpc ReactToComment(ReactToCommentRequest) returns (ReactToCommentResponse);
+  rpc DeleteComment(DeleteCommentRequest) returns (DeleteCommentResponse);
+  rpc ReplyToComment(ReplyToCommentRequest) returns (PostCommentResponse);
+
+  // ---- Device Auth (Bullpen device flow → Gamma session) ----
+  rpc InitDeviceAuth(InitDeviceAuthRequest) returns (InitDeviceAuthResponse);
+  rpc PollDeviceSession(PollDeviceSessionRequest) returns (PollDeviceSessionResponse);
+
+  // ---- Positions ----
+  rpc RedeemPosition(RedeemPositionRequest) returns (RedeemPositionResponse);
+
+  // ---- Bookmarks ----
+  rpc ToggleBookmark(ToggleBookmarkRequest) returns (ToggleBookmarkResponse);
+  rpc GetBookmarks(GetBookmarksRequest) returns (GetBookmarksResponse);
+
+  // ---- Trade Analytics ----
+  rpc GetTradeAnalytics(GetTradeAnalyticsRequest) returns (TradeAnalyticsResponse);
+  rpc GetPnlLeaderboard(GetPnlLeaderboardRequest) returns (PnlLeaderboardResponse);
+  rpc GetWalletProfile(GetWalletProfileRequest) returns (WalletProfile);
+
+  // ---- Trader Discovery & Smart Money ----
+  rpc GetTraderDiscovery(GetTraderDiscoveryRequest) returns (GetTraderDiscoveryResponse);
+  rpc GetSmartMoneySignals(GetSmartMoneySignalsRequest) returns (GetSmartMoneySignalsResponse);
+  rpc GetWalletTaxonomy(GetWalletTaxonomyRequest) returns (WalletTaxonomy);
+  rpc GetSignificantTrades(GetSignificantTradesRequest) returns (GetSignificantTradesResponse);
+
+  // ---- Event-level aggregation ----
+  rpc GetEventAnalytics(GetEventAnalyticsRequest) returns (EventAnalytics);
+
+  // ---- Wallet Positions ----
+  rpc GetWalletPositions(GetWalletPositionsRequest) returns (GetWalletPositionsResponse);
+
+  // ---- Pipeline Stats (dashboard) ----
+  rpc GetPipelineStats(GetPipelineStatsRequest) returns (PipelineStats);
+
   // ---- Streaming ----
   rpc StreamMarketPrices(StreamMarketPricesRequest) returns (stream MarketPriceUpdate);
 
@@ -321,6 +361,7 @@ message GetEventRequest {
     string slug = 1;
     string event_id = 2;
   }
+  string locale = 3;
 }
 
 message Event {
@@ -358,6 +399,14 @@ message Event {
   // Team data for game events (populated for "Team A vs. Team B" events)
   Team home_team = 29;
   Team away_team = 30;
+
+  // AI-generated market context (from Gamma eventMetadata)
+  string context_description = 31;  // AI summary text
+  string context_updated_at = 32;   // ISO timestamp of last context update
+
+  // Classification fields
+  string display_type = 33;  // 'sports_game', 'crypto_updown', 'multi_outcome', 'binary'
+  string category = 34;      // top-level category (e.g. 'Sports', 'Politics')
 }
 
 message GetMarketRequest {
@@ -455,6 +504,19 @@ message GetMarketCommentsRequest {
   bool holders_only = 3;
 }
 
+message CommentPositionBadge {
+  string name = 1;       // outcome name: "Croatia", "Finland"
+  string size_label = 2; // formatted: "142.8K", "16.7K"
+  bool is_yes = 3;       // true = Yes side (green), false = No side (red)
+}
+
+message CommentMedia {
+  string url = 1;
+  string alt_text = 2;
+  string media_type = 3;   // "gif", "image", etc.
+  string provider = 4;     // "giphy", etc.
+}
+
 message Comment {
   string id = 1;
   string body = 2;
@@ -464,11 +526,115 @@ message Comment {
   int32 reaction_count = 6;
   repeated Comment replies = 7;
   google.protobuf.Timestamp created_at = 8;
+  CommentPositionBadge top_position = 9;           // largest position badge (for inline display)
+  repeated CommentPositionBadge all_positions = 10; // top 8 for dropdown
+  repeated CommentMedia media = 11;                // GIFs, images from Giphy etc.
 }
 
 message GetMarketCommentsResponse {
   repeated Comment comments = 1;
   PaginationResponse pagination = 2;
+}
+
+// Gamma Auth
+
+message GetGammaNonceRequest {
+  string wallet_address = 1;
+}
+
+message GetGammaNonceResponse {
+  string nonce = 1;
+  string siwe_message = 2;  // The SIWE text to sign with personal_sign
+  string issued_at = 3;     // Timestamp used in the message
+}
+
+message GammaLoginRequest {
+  string wallet_address = 1;
+  string nonce = 2;
+  string signature = 3;      // The personal_sign result (0x-prefixed hex)
+  string issued_at = 4;      // Must match the issued_at from GetGammaNonceResponse
+}
+
+message GammaLoginResponse {
+  bool success = 1;
+  string address = 2;
+}
+
+message PostCommentRequest {
+  string wallet_address = 1;  // Must have active Gamma session
+  int64 event_id = 2;         // Gamma event numeric ID
+  string body = 3;            // Comment text
+}
+
+message PostCommentResponse {
+  string comment_id = 1;
+  string body = 2;
+  string user_address = 3;
+  string created_at = 4;
+}
+
+message GetCommentsRequest {
+  int64 event_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+  bool holders_only = 4;
+  bool ascending = 5;
+}
+
+message GetCommentsResponse {
+  repeated Comment comments = 1;
+  int32 total_count = 2;
+}
+
+message ReactToCommentRequest {
+  string wallet_address = 1;
+  int64 comment_id = 2;
+  string reaction_type = 3;
+}
+
+message ReactToCommentResponse {
+  string reaction_id = 1;
+  int64 comment_id = 2;
+  string reaction_type = 3;
+  string user_address = 4;
+  string created_at = 5;
+}
+
+message DeleteCommentRequest {
+  string wallet_address = 1;
+  string comment_id = 2;
+}
+
+message DeleteCommentResponse {}
+
+message ReplyToCommentRequest {
+  string wallet_address = 1;
+  int64 event_id = 2;
+  string body = 3;
+  string parent_comment_id = 4;
+  string reply_address = 5;
+}
+
+// Device Auth
+
+message InitDeviceAuthRequest {}
+
+message InitDeviceAuthResponse {
+  string device_code = 1;
+  string user_code = 2;
+  string verification_uri = 3;
+  int32 expires_in = 4;
+  int32 interval = 5;
+}
+
+message PollDeviceSessionRequest {
+  string device_code = 1;
+}
+
+message PollDeviceSessionResponse {
+  string status = 1;           // "pending", "completed", "expired"
+  string wallet_address = 2;   // Set when status=completed
+  bool gamma_authenticated = 3; // Whether Gamma session is active
 }
 
 // Streaming
@@ -493,6 +659,7 @@ message GetPageViewRequest {
   string date_filter = 3;
   PaginationRequest pagination = 4;
   map<string, string> params = 5;
+  string locale = 6;
 }
 
 message PageView {
@@ -625,4 +792,513 @@ message MarketRow {
 message PricePoint {
   int64 timestamp = 1;
   string price = 2;
+}
+
+// Bookmarks
+
+message ToggleBookmarkRequest {
+  string event_id = 1;
+  string event_slug = 2;
+}
+
+message ToggleBookmarkResponse {
+  bool bookmarked = 1;
+}
+
+message GetBookmarksRequest {}
+
+message GetBookmarksResponse {
+  repeated string event_slugs = 1;
+}
+
+// Redeem
+
+message RedeemPositionRequest {
+  string condition_id = 1;
+  int32 outcome_index = 2;
+}
+
+message RedeemPositionResponse {
+  bool success = 1;
+  string message = 2;
+  string tx_hash = 3;
+}
+
+// =============================================================================
+// Trade Analytics
+// =============================================================================
+
+message GetTradeAnalyticsRequest {
+  // Empty = return all analytics. Optional filters:
+  string period = 1;          // "7d", "30d", "90d", "all" (default: "30d")
+}
+
+message TradeAnalyticsResponse {
+  // Volume over time (daily)
+  repeated DailyVolume daily_volume = 1;
+
+  // Trade size distribution
+  repeated TradeSizeBucket size_distribution = 2;
+
+  // Hourly trading pattern
+  repeated HourlyPattern hourly_pattern = 3;
+
+  // Top traders
+  repeated TopTrader top_traders = 4;
+
+  // Summary stats
+  AnalyticsSummary summary = 5;
+
+  // Market calibration (win rate vs price)
+  repeated CalibrationPoint calibration = 6;
+
+  // Maker vs taker excess returns by price bucket
+  repeated MakerTakerBucket maker_taker = 7;
+
+  // Calibration quality metrics
+  CalibrationMetrics calibration_metrics = 8;
+}
+
+message DailyVolume {
+  string date = 1;             // "2026-03-30"
+  int64 trade_count = 2;
+  double total_volume = 3;     // USDC
+  int64 unique_traders = 4;
+  double buy_volume = 5;
+  double sell_volume = 6;
+}
+
+message TradeSizeBucket {
+  string bucket = 1;           // "<$10", "$10-100", "$100-1K", "$1K-10K", "$10K+"
+  string side = 2;             // "BUY" or "SELL"
+  int64 trade_count = 3;
+  double total_volume = 4;
+}
+
+message HourlyPattern {
+  int32 hour = 1;              // 0-23 UTC
+  int64 trade_count = 2;
+  double total_volume = 3;
+  double avg_size = 4;
+}
+
+message TopTrader {
+  string address = 1;
+  string name = 2;             // pseudonym if available
+  string profile_image = 3;
+  int64 trade_count = 4;
+  double total_volume = 5;
+  double buy_volume = 6;
+  double sell_volume = 7;
+  int64 unique_markets = 8;
+  double avg_trade_size = 9;
+}
+
+message AnalyticsSummary {
+  int64 total_trades = 1;
+  double total_volume = 2;
+  int64 unique_traders = 3;
+  int64 active_markets = 4;
+  double avg_trade_size = 5;
+  double median_trade_size = 6;
+  string period = 7;           // the period these stats cover
+}
+
+message CalibrationPoint {
+  int32 price = 1;            // 1-99 cents
+  int64 total_trades = 2;
+  int64 wins = 3;
+  double win_rate = 4;        // percentage (0-100)
+}
+
+message MakerTakerBucket {
+  int32 price_bucket = 1;     // 5, 10, ..., 95
+  string role = 2;            // "maker" or "taker"
+  int64 total_trades = 3;
+  int64 wins = 4;
+  int64 losses = 5;
+  double avg_return = 6;
+  double total_volume = 7;
+}
+
+message CalibrationMetrics {
+  double brier_score = 1;
+  double log_loss = 2;
+  double ece = 3;
+  int64 total_resolved_trades = 4;
+}
+
+message GetPnlLeaderboardRequest {
+  string period = 1;
+  string category = 2;
+  int32 limit = 3;
+}
+
+message PnlLeaderboardResponse {
+  repeated PnlLeaderboardEntry entries = 1;
+}
+
+message PnlLeaderboardEntry {
+  string address = 1;
+  string name = 2;
+  double unrealized_pnl = 3;
+  double realized_pnl = 4;
+  double total_pnl = 5;
+  double total_invested = 6;
+  double roi = 7;
+  int32 open_positions = 8;
+  int64 trade_count = 9;
+}
+
+// =============================================================================
+// Wallet Profile
+// =============================================================================
+
+message GetWalletProfileRequest {
+  string address = 1;
+}
+
+message WalletProfile {
+  string address = 1;
+  string name = 2;
+  string profile_image = 3;
+
+  // P&L overview
+  double unrealized_pnl = 4;
+  double realized_pnl = 5;
+  double total_pnl = 6;
+  double total_invested = 7;
+  double roi = 8;
+  int32 open_positions = 9;
+
+  // P&L windows
+  double pnl_change_24h = 10;
+  double pnl_change_7d = 11;
+  double pnl_change_30d = 12;
+
+  // Trade activity
+  int64 first_trade_at_unix = 13;
+  int64 last_trade_at_unix = 14;
+  int64 total_trades = 15;
+  int64 trades_last_7d = 16;
+  int64 trades_last_30d = 17;
+  double trades_per_week = 18;
+  double trades_per_month = 19;
+  double sell_frequency = 20;
+  int64 unique_markets = 21;
+
+  // Resolved market performance
+  int32 resolved_positions = 22;
+  int32 wins = 23;
+  int32 losses = 24;
+  double win_rate = 25;
+  double profit_factor = 26;
+  double avg_hold_duration_hours = 27;
+  double biggest_win = 28;
+  double biggest_loss = 29;
+  string current_streak_type = 30;
+  int32 current_streak_count = 31;
+  int32 longest_win_streak = 32;
+  int32 longest_loss_streak = 33;
+
+  // Per-category breakdown
+  repeated WalletCategoryBreakdown category_breakdown = 34;
+
+  // Staleness indicator: seconds since the P&L snapshot was last computed.
+  // -1 means snapshot_time is unknown. Frontend uses this to show a stale-data warning.
+  int64 snapshot_age_seconds = 35;
+
+  // Extended P&L analytics (from wallet_pnl_snapshot extended columns)
+  double max_drawdown = 36;
+  double roi_stored = 37;
+  double pnl_volatility = 38;
+  double roi_risk_adjusted = 39;
+  double pnl_change_90d = 40;
+  double usdc_balance = 41;
+
+  // Taxonomy (from wallet_taxonomy)
+  string trader_archetype = 42;
+  string risk_profile = 43;
+  double copyability_score = 44;
+  string strategy_badge = 45;
+  string trader_tier = 46;
+  string summary = 47;
+
+  // Additional taxonomy fields
+  bool is_bot = 48;
+  bool is_smart_money = 49;
+  string specialist_generalist = 50;
+  double avg_trade_size = 51;
+  repeated string category_tags = 52;
+
+  // CLV (Closing Line Value) stats
+  double avg_clv = 53;
+  double clv_positive_rate = 54;
+
+  // Similar traders (from wallet_similar_traders)
+  repeated SimilarTrader similar_traders = 55;
+}
+
+message SimilarTrader {
+  string address = 1;
+  string name = 2;
+  double similarity_score = 3;
+  int32 shared_markets = 4;
+}
+
+message WalletCategoryBreakdown {
+  string category = 1;
+  int64 trade_count = 2;
+  double total_volume = 3;
+  double unrealized_pnl = 4;
+  double realized_pnl = 5;
+  bool is_primary = 6;
+}
+
+// =============================================================================
+// Trader Discovery
+// =============================================================================
+
+message GetTraderDiscoveryRequest {
+  string category = 1;           // filter by category tag (empty = all)
+  string archetype = 2;          // filter: value_hunter, contrarian, scalper, etc.
+  string risk_profile = 3;       // filter: conservative, moderate, aggressive
+  string trader_tier = 4;        // filter: whale, large, medium, small
+  double min_pnl = 5;            // minimum lifetime P&L
+  double min_win_rate = 6;       // minimum win rate (0-1)
+  bool smart_money_only = 7;     // only smart money wallets
+  double min_copyability = 8;    // minimum copyability score (0-1)
+  string sort_by = 9;            // pnl, win_rate, copyability, volume (default: pnl)
+  bool ascending = 10;
+  PaginationRequest pagination = 11;
+}
+
+message TraderCard {
+  string address = 1;
+  string name = 2;
+  string profile_image = 3;
+  // P&L
+  double total_pnl = 4;
+  double unrealized_pnl = 5;
+  double realized_pnl = 6;
+  double pnl_change_24h = 7;
+  double pnl_change_7d = 8;
+  double pnl_change_30d = 9;
+  double roi = 10;
+  double max_drawdown = 11;
+  // Performance
+  double win_rate = 12;
+  double profit_factor = 13;
+  int32 resolved_positions = 14;
+  int32 open_positions = 15;
+  // Taxonomy
+  string trader_archetype = 16;
+  string risk_profile = 17;
+  string trader_tier = 18;
+  string strategy_badge = 19;
+  double copyability_score = 20;
+  bool is_smart_money = 21;
+  bool is_bot = 22;
+  string specialist_generalist = 23;
+  repeated string category_tags = 24;
+  string summary = 25;
+  // Activity
+  double trades_per_week = 26;
+  double avg_trade_size = 27;
+  double avg_hold_duration_hours = 28;
+}
+
+message GetTraderDiscoveryResponse {
+  repeated TraderCard traders = 1;
+  int32 total_count = 2;
+}
+
+// =============================================================================
+// Smart Money Signals
+// =============================================================================
+
+message GetSmartMoneySignalsRequest {
+  string category = 1;            // filter by category (empty = all)
+  double min_signal_strength = 2; // minimum signal strength (0-1)
+  int32 min_trader_count = 3;     // minimum smart traders (default 2)
+  string sort_by = 4;             // signal_strength, net_flow, trader_count
+  PaginationRequest pagination = 5;
+}
+
+message SmartMoneyMarket {
+  string condition_id = 1;
+  string title = 2;
+  string slug = 3;
+  string event_slug = 4;
+  string category = 5;
+  double current_price = 6;
+  double smart_buy_volume = 7;
+  double smart_sell_volume = 8;
+  double smart_net_flow = 9;
+  int32 smart_trader_count = 10;
+  double smart_avg_entry_price = 11;
+  double signal_strength = 12;
+  string signal_direction = 13;    // "bullish" or "bearish"
+}
+
+message GetSmartMoneySignalsResponse {
+  repeated SmartMoneyMarket markets = 1;
+  int32 total_count = 2;
+}
+
+// =============================================================================
+// Wallet Taxonomy
+// =============================================================================
+
+message GetWalletTaxonomyRequest {
+  string address = 1;
+}
+
+message WalletTaxonomy {
+  string address = 1;
+  string trader_archetype = 2;
+  string risk_profile = 3;
+  string strategy_badge = 4;
+  double copyability_score = 5;
+  bool is_bot = 6;
+  bool is_smart_money = 7;
+  string trader_tier = 8;
+  string summary = 9;
+  repeated string category_tags = 10;
+  string specialist_generalist = 11;
+}
+
+// =============================================================================
+// Pipeline Stats
+// =============================================================================
+
+message GetPipelineStatsRequest {}
+
+message TableStat {
+  string name = 1;
+  int64 row_count = 2;
+  string last_updated = 3;  // ISO timestamp from max(modification_time)
+}
+
+message CronJobStat {
+  string name = 1;
+  string interval = 2;
+  string last_run = 3;      // ISO timestamp
+  string status = 4;        // "ok" or "warn"
+  int64 rows_processed = 5;
+}
+
+message PipelineStats {
+  // Entity counts
+  int64 events_count = 1;
+  int64 markets_count = 2;
+  int64 trades_count = 3;
+  int64 wallets_tracked = 4;
+  int64 positions_count = 5;
+  int64 interesting_wallets_count = 6;
+  int64 smart_money_markets = 7;
+  int64 taxonomy_wallets = 8;
+  // Table details
+  repeated TableStat tables = 9;
+  // Cron jobs
+  repeated CronJobStat cron_jobs = 10;
+}
+
+// =============================================================================
+// Event Analytics — aggregated across all child markets
+// =============================================================================
+
+message GetEventAnalyticsRequest {
+  string event_slug = 1;
+}
+
+message EventAnalytics {
+  string event_slug = 1;
+  double total_volume = 2;
+  double total_volume_24h = 3;
+  double total_open_interest = 4;
+  double total_liquidity = 5;
+  int64 total_unique_bettors = 6;
+  int32 market_count = 7;
+  double smart_net_flow = 8;
+  int32 smart_trader_count = 9;
+  string smart_signal_direction = 10;
+  repeated EventTopWallet top_wallets = 11;
+}
+
+message EventTopWallet {
+  string address = 1;
+  string name = 2;
+  double total_value = 3;
+  double unrealized_pnl = 4;
+  int32 markets_count = 5;
+}
+
+// =============================================================================
+// Wallet Positions
+// =============================================================================
+
+message GetWalletPositionsRequest {
+  string address = 1;
+  bool include_closed = 2;
+  string sort_by = 3;
+  PaginationRequest pagination = 4;
+}
+
+message WalletPosition {
+  string condition_id = 1;
+  string token_id = 2;
+  string market_title = 3;
+  string market_slug = 4;
+  string event_slug = 5;
+  string outcome = 6;
+  double size = 7;
+  double avg_entry_price = 8;
+  double current_price = 9;
+  double cost_basis = 10;
+  double current_value = 11;
+  double unrealized_pnl = 12;
+  double unrealized_pnl_pct = 13;
+  string category = 14;
+  int64 first_trade_unix = 15;
+  int64 last_trade_unix = 16;
+  int32 trade_count = 17;
+}
+
+message GetWalletPositionsResponse {
+  repeated WalletPosition positions = 1;
+  int32 total_count = 2;
+  double total_value = 3;
+  double total_unrealized_pnl = 4;
+}
+
+// =============================================================================
+// Significant Trades
+// =============================================================================
+
+message GetSignificantTradesRequest {
+  string signal_type = 1;
+  int32 limit = 2;
+}
+
+message SignificantTrade {
+  string trader_address = 1;
+  string condition_id = 2;
+  string market_title = 3;
+  string market_slug = 4;
+  string event_slug = 5;
+  string side = 6;
+  double size = 7;
+  double price = 8;
+  double usdc_value = 9;
+  string signal_type = 10;
+  string trader_tier = 11;
+  bool is_smart_money = 12;
+  int64 timestamp_unix = 13;
+  string transaction_hash = 14;
+}
+
+message GetSignificantTradesResponse {
+  repeated SignificantTrade trades = 1;
+  int32 total_count = 2;
 }
