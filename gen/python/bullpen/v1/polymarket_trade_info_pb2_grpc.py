@@ -55,6 +55,16 @@ class PolymarketTradeInfoServiceStub(object):
                 request_serializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMarketPricesRequest.SerializeToString,
                 response_deserializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMarketPricesResponse.FromString,
                 _registered_method=True)
+        self.GetMidpoints = channel.unary_unary(
+                '/bullpen.v1.PolymarketTradeInfoService/GetMidpoints',
+                request_serializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMidpointsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMidpointsResponse.FromString,
+                _registered_method=True)
+        self.GetSpreads = channel.unary_unary(
+                '/bullpen.v1.PolymarketTradeInfoService/GetSpreads',
+                request_serializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetSpreadsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetSpreadsResponse.FromString,
+                _registered_method=True)
         self.GetMarketHolders = channel.unary_unary(
                 '/bullpen.v1.PolymarketTradeInfoService/GetMarketHolders',
                 request_serializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMarketHoldersRequest.SerializeToString,
@@ -120,6 +130,19 @@ class PolymarketTradeInfoServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetMidpoints(self, request, context):
+        """Batch CLOB pricing (Phase 5)
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetSpreads(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetMarketHolders(self, request, context):
         """Market participants
         """
@@ -170,6 +193,16 @@ def add_PolymarketTradeInfoServiceServicer_to_server(servicer, server):
                     servicer.GetMarketPrices,
                     request_deserializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMarketPricesRequest.FromString,
                     response_serializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMarketPricesResponse.SerializeToString,
+            ),
+            'GetMidpoints': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetMidpoints,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMidpointsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMidpointsResponse.SerializeToString,
+            ),
+            'GetSpreads': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSpreads,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetSpreadsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetSpreadsResponse.SerializeToString,
             ),
             'GetMarketHolders': grpc.unary_unary_rpc_method_handler(
                     servicer.GetMarketHolders,
@@ -377,6 +410,60 @@ class PolymarketTradeInfoService(object):
             '/bullpen.v1.PolymarketTradeInfoService/GetMarketPrices',
             bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMarketPricesRequest.SerializeToString,
             bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMarketPricesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetMidpoints(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketTradeInfoService/GetMidpoints',
+            bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMidpointsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetMidpointsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetSpreads(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketTradeInfoService/GetSpreads',
+            bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetSpreadsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__trade__info__pb2.GetSpreadsResponse.FromString,
             options,
             channel_credentials,
             insecure,

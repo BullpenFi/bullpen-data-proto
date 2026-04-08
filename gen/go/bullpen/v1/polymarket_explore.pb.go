@@ -1835,6 +1835,7 @@ type GetEventRequest struct {
 	//	*GetEventRequest_Slug
 	//	*GetEventRequest_EventId
 	Identifier    isGetEventRequest_Identifier `protobuf_oneof:"identifier"`
+	Locale        string                       `protobuf:"bytes,3,opt,name=locale,proto3" json:"locale,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1894,6 +1895,13 @@ func (x *GetEventRequest) GetEventId() string {
 	return ""
 }
 
+func (x *GetEventRequest) GetLocale() string {
+	if x != nil {
+		return x.Locale
+	}
+	return ""
+}
+
 type isGetEventRequest_Identifier interface {
 	isGetEventRequest_Identifier()
 }
@@ -1942,8 +1950,14 @@ type Event struct {
 	StartTime string `protobuf:"bytes,27,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"` // ISO timestamp of game start
 	League    string `protobuf:"bytes,28,opt,name=league,proto3" json:"league,omitempty"`                        // "NBA", "EPL", "NHL" etc.
 	// Team data for game events (populated for "Team A vs. Team B" events)
-	HomeTeam      *Team `protobuf:"bytes,29,opt,name=home_team,json=homeTeam,proto3" json:"home_team,omitempty"`
-	AwayTeam      *Team `protobuf:"bytes,30,opt,name=away_team,json=awayTeam,proto3" json:"away_team,omitempty"`
+	HomeTeam *Team `protobuf:"bytes,29,opt,name=home_team,json=homeTeam,proto3" json:"home_team,omitempty"`
+	AwayTeam *Team `protobuf:"bytes,30,opt,name=away_team,json=awayTeam,proto3" json:"away_team,omitempty"`
+	// AI-generated market context (from Gamma eventMetadata)
+	ContextDescription string `protobuf:"bytes,31,opt,name=context_description,json=contextDescription,proto3" json:"context_description,omitempty"` // AI summary text
+	ContextUpdatedAt   string `protobuf:"bytes,32,opt,name=context_updated_at,json=contextUpdatedAt,proto3" json:"context_updated_at,omitempty"`     // ISO timestamp of last context update
+	// Classification fields
+	DisplayType   string `protobuf:"bytes,33,opt,name=display_type,json=displayType,proto3" json:"display_type,omitempty"` // 'sports_game', 'crypto_updown', 'multi_outcome', 'binary'
+	Category      string `protobuf:"bytes,34,opt,name=category,proto3" json:"category,omitempty"`                          // top-level category (e.g. 'Sports', 'Politics')
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2186,6 +2200,34 @@ func (x *Event) GetAwayTeam() *Team {
 		return x.AwayTeam
 	}
 	return nil
+}
+
+func (x *Event) GetContextDescription() string {
+	if x != nil {
+		return x.ContextDescription
+	}
+	return ""
+}
+
+func (x *Event) GetContextUpdatedAt() string {
+	if x != nil {
+		return x.ContextUpdatedAt
+	}
+	return ""
+}
+
+func (x *Event) GetDisplayType() string {
+	if x != nil {
+		return x.DisplayType
+	}
+	return ""
+}
+
+func (x *Event) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
 }
 
 type GetMarketRequest struct {
@@ -3058,23 +3100,154 @@ func (x *GetMarketCommentsRequest) GetHoldersOnly() bool {
 	return false
 }
 
-type Comment struct {
+type CommentPositionBadge struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
-	UserAddress   string                 `protobuf:"bytes,3,opt,name=user_address,json=userAddress,proto3" json:"user_address,omitempty"`
-	UserName      string                 `protobuf:"bytes,4,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
-	UserImage     string                 `protobuf:"bytes,5,opt,name=user_image,json=userImage,proto3" json:"user_image,omitempty"`
-	ReactionCount int32                  `protobuf:"varint,6,opt,name=reaction_count,json=reactionCount,proto3" json:"reaction_count,omitempty"`
-	Replies       []*Comment             `protobuf:"bytes,7,rep,name=replies,proto3" json:"replies,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                            // outcome name: "Croatia", "Finland"
+	SizeLabel     string                 `protobuf:"bytes,2,opt,name=size_label,json=sizeLabel,proto3" json:"size_label,omitempty"` // formatted: "142.8K", "16.7K"
+	IsYes         bool                   `protobuf:"varint,3,opt,name=is_yes,json=isYes,proto3" json:"is_yes,omitempty"`            // true = Yes side (green), false = No side (red)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CommentPositionBadge) Reset() {
+	*x = CommentPositionBadge{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CommentPositionBadge) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CommentPositionBadge) ProtoMessage() {}
+
+func (x *CommentPositionBadge) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CommentPositionBadge.ProtoReflect.Descriptor instead.
+func (*CommentPositionBadge) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *CommentPositionBadge) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CommentPositionBadge) GetSizeLabel() string {
+	if x != nil {
+		return x.SizeLabel
+	}
+	return ""
+}
+
+func (x *CommentPositionBadge) GetIsYes() bool {
+	if x != nil {
+		return x.IsYes
+	}
+	return false
+}
+
+type CommentMedia struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	AltText       string                 `protobuf:"bytes,2,opt,name=alt_text,json=altText,proto3" json:"alt_text,omitempty"`
+	MediaType     string                 `protobuf:"bytes,3,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"` // "gif", "image", etc.
+	Provider      string                 `protobuf:"bytes,4,opt,name=provider,proto3" json:"provider,omitempty"`                    // "giphy", etc.
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CommentMedia) Reset() {
+	*x = CommentMedia{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CommentMedia) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CommentMedia) ProtoMessage() {}
+
+func (x *CommentMedia) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CommentMedia.ProtoReflect.Descriptor instead.
+func (*CommentMedia) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *CommentMedia) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *CommentMedia) GetAltText() string {
+	if x != nil {
+		return x.AltText
+	}
+	return ""
+}
+
+func (x *CommentMedia) GetMediaType() string {
+	if x != nil {
+		return x.MediaType
+	}
+	return ""
+}
+
+func (x *CommentMedia) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+type Comment struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	Id            string                  `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Body          string                  `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	UserAddress   string                  `protobuf:"bytes,3,opt,name=user_address,json=userAddress,proto3" json:"user_address,omitempty"`
+	UserName      string                  `protobuf:"bytes,4,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	UserImage     string                  `protobuf:"bytes,5,opt,name=user_image,json=userImage,proto3" json:"user_image,omitempty"`
+	ReactionCount int32                   `protobuf:"varint,6,opt,name=reaction_count,json=reactionCount,proto3" json:"reaction_count,omitempty"`
+	Replies       []*Comment              `protobuf:"bytes,7,rep,name=replies,proto3" json:"replies,omitempty"`
+	CreatedAt     *timestamppb.Timestamp  `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	TopPosition   *CommentPositionBadge   `protobuf:"bytes,9,opt,name=top_position,json=topPosition,proto3" json:"top_position,omitempty"`     // largest position badge (for inline display)
+	AllPositions  []*CommentPositionBadge `protobuf:"bytes,10,rep,name=all_positions,json=allPositions,proto3" json:"all_positions,omitempty"` // top 8 for dropdown
+	Media         []*CommentMedia         `protobuf:"bytes,11,rep,name=media,proto3" json:"media,omitempty"`                                   // GIFs, images from Giphy etc.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Comment) Reset() {
 	*x = Comment{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3086,7 +3259,7 @@ func (x *Comment) String() string {
 func (*Comment) ProtoMessage() {}
 
 func (x *Comment) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[34]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3099,7 +3272,7 @@ func (x *Comment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Comment.ProtoReflect.Descriptor instead.
 func (*Comment) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{34}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *Comment) GetId() string {
@@ -3158,6 +3331,27 @@ func (x *Comment) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Comment) GetTopPosition() *CommentPositionBadge {
+	if x != nil {
+		return x.TopPosition
+	}
+	return nil
+}
+
+func (x *Comment) GetAllPositions() []*CommentPositionBadge {
+	if x != nil {
+		return x.AllPositions
+	}
+	return nil
+}
+
+func (x *Comment) GetMedia() []*CommentMedia {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
 type GetMarketCommentsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Comments      []*Comment             `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
@@ -3168,7 +3362,7 @@ type GetMarketCommentsResponse struct {
 
 func (x *GetMarketCommentsResponse) Reset() {
 	*x = GetMarketCommentsResponse{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3180,7 +3374,7 @@ func (x *GetMarketCommentsResponse) String() string {
 func (*GetMarketCommentsResponse) ProtoMessage() {}
 
 func (x *GetMarketCommentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[35]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3193,7 +3387,7 @@ func (x *GetMarketCommentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMarketCommentsResponse.ProtoReflect.Descriptor instead.
 func (*GetMarketCommentsResponse) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{35}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *GetMarketCommentsResponse) GetComments() []*Comment {
@@ -3210,6 +3404,1002 @@ func (x *GetMarketCommentsResponse) GetPagination() *PaginationResponse {
 	return nil
 }
 
+type GetGammaNonceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WalletAddress string                 `protobuf:"bytes,1,opt,name=wallet_address,json=walletAddress,proto3" json:"wallet_address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetGammaNonceRequest) Reset() {
+	*x = GetGammaNonceRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGammaNonceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGammaNonceRequest) ProtoMessage() {}
+
+func (x *GetGammaNonceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGammaNonceRequest.ProtoReflect.Descriptor instead.
+func (*GetGammaNonceRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *GetGammaNonceRequest) GetWalletAddress() string {
+	if x != nil {
+		return x.WalletAddress
+	}
+	return ""
+}
+
+type GetGammaNonceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Nonce         string                 `protobuf:"bytes,1,opt,name=nonce,proto3" json:"nonce,omitempty"`
+	SiweMessage   string                 `protobuf:"bytes,2,opt,name=siwe_message,json=siweMessage,proto3" json:"siwe_message,omitempty"` // The SIWE text to sign with personal_sign
+	IssuedAt      string                 `protobuf:"bytes,3,opt,name=issued_at,json=issuedAt,proto3" json:"issued_at,omitempty"`          // Timestamp used in the message
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetGammaNonceResponse) Reset() {
+	*x = GetGammaNonceResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGammaNonceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGammaNonceResponse) ProtoMessage() {}
+
+func (x *GetGammaNonceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGammaNonceResponse.ProtoReflect.Descriptor instead.
+func (*GetGammaNonceResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *GetGammaNonceResponse) GetNonce() string {
+	if x != nil {
+		return x.Nonce
+	}
+	return ""
+}
+
+func (x *GetGammaNonceResponse) GetSiweMessage() string {
+	if x != nil {
+		return x.SiweMessage
+	}
+	return ""
+}
+
+func (x *GetGammaNonceResponse) GetIssuedAt() string {
+	if x != nil {
+		return x.IssuedAt
+	}
+	return ""
+}
+
+type GammaLoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WalletAddress string                 `protobuf:"bytes,1,opt,name=wallet_address,json=walletAddress,proto3" json:"wallet_address,omitempty"`
+	Nonce         string                 `protobuf:"bytes,2,opt,name=nonce,proto3" json:"nonce,omitempty"`
+	Signature     string                 `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`               // The personal_sign result (0x-prefixed hex)
+	IssuedAt      string                 `protobuf:"bytes,4,opt,name=issued_at,json=issuedAt,proto3" json:"issued_at,omitempty"` // Must match the issued_at from GetGammaNonceResponse
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GammaLoginRequest) Reset() {
+	*x = GammaLoginRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GammaLoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GammaLoginRequest) ProtoMessage() {}
+
+func (x *GammaLoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GammaLoginRequest.ProtoReflect.Descriptor instead.
+func (*GammaLoginRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *GammaLoginRequest) GetWalletAddress() string {
+	if x != nil {
+		return x.WalletAddress
+	}
+	return ""
+}
+
+func (x *GammaLoginRequest) GetNonce() string {
+	if x != nil {
+		return x.Nonce
+	}
+	return ""
+}
+
+func (x *GammaLoginRequest) GetSignature() string {
+	if x != nil {
+		return x.Signature
+	}
+	return ""
+}
+
+func (x *GammaLoginRequest) GetIssuedAt() string {
+	if x != nil {
+		return x.IssuedAt
+	}
+	return ""
+}
+
+type GammaLoginResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Address       string                 `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GammaLoginResponse) Reset() {
+	*x = GammaLoginResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GammaLoginResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GammaLoginResponse) ProtoMessage() {}
+
+func (x *GammaLoginResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GammaLoginResponse.ProtoReflect.Descriptor instead.
+func (*GammaLoginResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *GammaLoginResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *GammaLoginResponse) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+type PostCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WalletAddress string                 `protobuf:"bytes,1,opt,name=wallet_address,json=walletAddress,proto3" json:"wallet_address,omitempty"` // Must have active Gamma session
+	EventId       int64                  `protobuf:"varint,2,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`                  // Gamma event numeric ID
+	Body          string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`                                        // Comment text
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PostCommentRequest) Reset() {
+	*x = PostCommentRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PostCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PostCommentRequest) ProtoMessage() {}
+
+func (x *PostCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PostCommentRequest.ProtoReflect.Descriptor instead.
+func (*PostCommentRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *PostCommentRequest) GetWalletAddress() string {
+	if x != nil {
+		return x.WalletAddress
+	}
+	return ""
+}
+
+func (x *PostCommentRequest) GetEventId() int64 {
+	if x != nil {
+		return x.EventId
+	}
+	return 0
+}
+
+func (x *PostCommentRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type PostCommentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CommentId     string                 `protobuf:"bytes,1,opt,name=comment_id,json=commentId,proto3" json:"comment_id,omitempty"`
+	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	UserAddress   string                 `protobuf:"bytes,3,opt,name=user_address,json=userAddress,proto3" json:"user_address,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PostCommentResponse) Reset() {
+	*x = PostCommentResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PostCommentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PostCommentResponse) ProtoMessage() {}
+
+func (x *PostCommentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PostCommentResponse.ProtoReflect.Descriptor instead.
+func (*PostCommentResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *PostCommentResponse) GetCommentId() string {
+	if x != nil {
+		return x.CommentId
+	}
+	return ""
+}
+
+func (x *PostCommentResponse) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *PostCommentResponse) GetUserAddress() string {
+	if x != nil {
+		return x.UserAddress
+	}
+	return ""
+}
+
+func (x *PostCommentResponse) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+type GetCommentsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EventId       int64                  `protobuf:"varint,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	HoldersOnly   bool                   `protobuf:"varint,4,opt,name=holders_only,json=holdersOnly,proto3" json:"holders_only,omitempty"`
+	Ascending     bool                   `protobuf:"varint,5,opt,name=ascending,proto3" json:"ascending,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCommentsRequest) Reset() {
+	*x = GetCommentsRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCommentsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCommentsRequest) ProtoMessage() {}
+
+func (x *GetCommentsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCommentsRequest.ProtoReflect.Descriptor instead.
+func (*GetCommentsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *GetCommentsRequest) GetEventId() int64 {
+	if x != nil {
+		return x.EventId
+	}
+	return 0
+}
+
+func (x *GetCommentsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *GetCommentsRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+func (x *GetCommentsRequest) GetHoldersOnly() bool {
+	if x != nil {
+		return x.HoldersOnly
+	}
+	return false
+}
+
+func (x *GetCommentsRequest) GetAscending() bool {
+	if x != nil {
+		return x.Ascending
+	}
+	return false
+}
+
+type GetCommentsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Comments      []*Comment             `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCommentsResponse) Reset() {
+	*x = GetCommentsResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCommentsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCommentsResponse) ProtoMessage() {}
+
+func (x *GetCommentsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCommentsResponse.ProtoReflect.Descriptor instead.
+func (*GetCommentsResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *GetCommentsResponse) GetComments() []*Comment {
+	if x != nil {
+		return x.Comments
+	}
+	return nil
+}
+
+func (x *GetCommentsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+type ReactToCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WalletAddress string                 `protobuf:"bytes,1,opt,name=wallet_address,json=walletAddress,proto3" json:"wallet_address,omitempty"`
+	CommentId     int64                  `protobuf:"varint,2,opt,name=comment_id,json=commentId,proto3" json:"comment_id,omitempty"`
+	ReactionType  string                 `protobuf:"bytes,3,opt,name=reaction_type,json=reactionType,proto3" json:"reaction_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReactToCommentRequest) Reset() {
+	*x = ReactToCommentRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReactToCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReactToCommentRequest) ProtoMessage() {}
+
+func (x *ReactToCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReactToCommentRequest.ProtoReflect.Descriptor instead.
+func (*ReactToCommentRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *ReactToCommentRequest) GetWalletAddress() string {
+	if x != nil {
+		return x.WalletAddress
+	}
+	return ""
+}
+
+func (x *ReactToCommentRequest) GetCommentId() int64 {
+	if x != nil {
+		return x.CommentId
+	}
+	return 0
+}
+
+func (x *ReactToCommentRequest) GetReactionType() string {
+	if x != nil {
+		return x.ReactionType
+	}
+	return ""
+}
+
+type ReactToCommentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReactionId    string                 `protobuf:"bytes,1,opt,name=reaction_id,json=reactionId,proto3" json:"reaction_id,omitempty"`
+	CommentId     int64                  `protobuf:"varint,2,opt,name=comment_id,json=commentId,proto3" json:"comment_id,omitempty"`
+	ReactionType  string                 `protobuf:"bytes,3,opt,name=reaction_type,json=reactionType,proto3" json:"reaction_type,omitempty"`
+	UserAddress   string                 `protobuf:"bytes,4,opt,name=user_address,json=userAddress,proto3" json:"user_address,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReactToCommentResponse) Reset() {
+	*x = ReactToCommentResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReactToCommentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReactToCommentResponse) ProtoMessage() {}
+
+func (x *ReactToCommentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReactToCommentResponse.ProtoReflect.Descriptor instead.
+func (*ReactToCommentResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *ReactToCommentResponse) GetReactionId() string {
+	if x != nil {
+		return x.ReactionId
+	}
+	return ""
+}
+
+func (x *ReactToCommentResponse) GetCommentId() int64 {
+	if x != nil {
+		return x.CommentId
+	}
+	return 0
+}
+
+func (x *ReactToCommentResponse) GetReactionType() string {
+	if x != nil {
+		return x.ReactionType
+	}
+	return ""
+}
+
+func (x *ReactToCommentResponse) GetUserAddress() string {
+	if x != nil {
+		return x.UserAddress
+	}
+	return ""
+}
+
+func (x *ReactToCommentResponse) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+type DeleteCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WalletAddress string                 `protobuf:"bytes,1,opt,name=wallet_address,json=walletAddress,proto3" json:"wallet_address,omitempty"`
+	CommentId     string                 `protobuf:"bytes,2,opt,name=comment_id,json=commentId,proto3" json:"comment_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteCommentRequest) Reset() {
+	*x = DeleteCommentRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteCommentRequest) ProtoMessage() {}
+
+func (x *DeleteCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteCommentRequest.ProtoReflect.Descriptor instead.
+func (*DeleteCommentRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *DeleteCommentRequest) GetWalletAddress() string {
+	if x != nil {
+		return x.WalletAddress
+	}
+	return ""
+}
+
+func (x *DeleteCommentRequest) GetCommentId() string {
+	if x != nil {
+		return x.CommentId
+	}
+	return ""
+}
+
+type DeleteCommentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteCommentResponse) Reset() {
+	*x = DeleteCommentResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteCommentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteCommentResponse) ProtoMessage() {}
+
+func (x *DeleteCommentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteCommentResponse.ProtoReflect.Descriptor instead.
+func (*DeleteCommentResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{49}
+}
+
+type ReplyToCommentRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	WalletAddress   string                 `protobuf:"bytes,1,opt,name=wallet_address,json=walletAddress,proto3" json:"wallet_address,omitempty"`
+	EventId         int64                  `protobuf:"varint,2,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	Body            string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
+	ParentCommentId string                 `protobuf:"bytes,4,opt,name=parent_comment_id,json=parentCommentId,proto3" json:"parent_comment_id,omitempty"`
+	ReplyAddress    string                 `protobuf:"bytes,5,opt,name=reply_address,json=replyAddress,proto3" json:"reply_address,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ReplyToCommentRequest) Reset() {
+	*x = ReplyToCommentRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplyToCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplyToCommentRequest) ProtoMessage() {}
+
+func (x *ReplyToCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplyToCommentRequest.ProtoReflect.Descriptor instead.
+func (*ReplyToCommentRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *ReplyToCommentRequest) GetWalletAddress() string {
+	if x != nil {
+		return x.WalletAddress
+	}
+	return ""
+}
+
+func (x *ReplyToCommentRequest) GetEventId() int64 {
+	if x != nil {
+		return x.EventId
+	}
+	return 0
+}
+
+func (x *ReplyToCommentRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *ReplyToCommentRequest) GetParentCommentId() string {
+	if x != nil {
+		return x.ParentCommentId
+	}
+	return ""
+}
+
+func (x *ReplyToCommentRequest) GetReplyAddress() string {
+	if x != nil {
+		return x.ReplyAddress
+	}
+	return ""
+}
+
+type InitDeviceAuthRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InitDeviceAuthRequest) Reset() {
+	*x = InitDeviceAuthRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InitDeviceAuthRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InitDeviceAuthRequest) ProtoMessage() {}
+
+func (x *InitDeviceAuthRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InitDeviceAuthRequest.ProtoReflect.Descriptor instead.
+func (*InitDeviceAuthRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{51}
+}
+
+type InitDeviceAuthResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	DeviceCode      string                 `protobuf:"bytes,1,opt,name=device_code,json=deviceCode,proto3" json:"device_code,omitempty"`
+	UserCode        string                 `protobuf:"bytes,2,opt,name=user_code,json=userCode,proto3" json:"user_code,omitempty"`
+	VerificationUri string                 `protobuf:"bytes,3,opt,name=verification_uri,json=verificationUri,proto3" json:"verification_uri,omitempty"`
+	ExpiresIn       int32                  `protobuf:"varint,4,opt,name=expires_in,json=expiresIn,proto3" json:"expires_in,omitempty"`
+	Interval        int32                  `protobuf:"varint,5,opt,name=interval,proto3" json:"interval,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *InitDeviceAuthResponse) Reset() {
+	*x = InitDeviceAuthResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InitDeviceAuthResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InitDeviceAuthResponse) ProtoMessage() {}
+
+func (x *InitDeviceAuthResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InitDeviceAuthResponse.ProtoReflect.Descriptor instead.
+func (*InitDeviceAuthResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *InitDeviceAuthResponse) GetDeviceCode() string {
+	if x != nil {
+		return x.DeviceCode
+	}
+	return ""
+}
+
+func (x *InitDeviceAuthResponse) GetUserCode() string {
+	if x != nil {
+		return x.UserCode
+	}
+	return ""
+}
+
+func (x *InitDeviceAuthResponse) GetVerificationUri() string {
+	if x != nil {
+		return x.VerificationUri
+	}
+	return ""
+}
+
+func (x *InitDeviceAuthResponse) GetExpiresIn() int32 {
+	if x != nil {
+		return x.ExpiresIn
+	}
+	return 0
+}
+
+func (x *InitDeviceAuthResponse) GetInterval() int32 {
+	if x != nil {
+		return x.Interval
+	}
+	return 0
+}
+
+type PollDeviceSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DeviceCode    string                 `protobuf:"bytes,1,opt,name=device_code,json=deviceCode,proto3" json:"device_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PollDeviceSessionRequest) Reset() {
+	*x = PollDeviceSessionRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PollDeviceSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PollDeviceSessionRequest) ProtoMessage() {}
+
+func (x *PollDeviceSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PollDeviceSessionRequest.ProtoReflect.Descriptor instead.
+func (*PollDeviceSessionRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *PollDeviceSessionRequest) GetDeviceCode() string {
+	if x != nil {
+		return x.DeviceCode
+	}
+	return ""
+}
+
+type PollDeviceSessionResponse struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Status             string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`                                                    // "pending", "completed", "expired"
+	WalletAddress      string                 `protobuf:"bytes,2,opt,name=wallet_address,json=walletAddress,proto3" json:"wallet_address,omitempty"`                 // Set when status=completed
+	GammaAuthenticated bool                   `protobuf:"varint,3,opt,name=gamma_authenticated,json=gammaAuthenticated,proto3" json:"gamma_authenticated,omitempty"` // Whether Gamma session is active
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *PollDeviceSessionResponse) Reset() {
+	*x = PollDeviceSessionResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PollDeviceSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PollDeviceSessionResponse) ProtoMessage() {}
+
+func (x *PollDeviceSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PollDeviceSessionResponse.ProtoReflect.Descriptor instead.
+func (*PollDeviceSessionResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *PollDeviceSessionResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *PollDeviceSessionResponse) GetWalletAddress() string {
+	if x != nil {
+		return x.WalletAddress
+	}
+	return ""
+}
+
+func (x *PollDeviceSessionResponse) GetGammaAuthenticated() bool {
+	if x != nil {
+		return x.GammaAuthenticated
+	}
+	return false
+}
+
 type StreamMarketPricesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TokenIds      []string               `protobuf:"bytes,1,rep,name=token_ids,json=tokenIds,proto3" json:"token_ids,omitempty"`
@@ -3219,7 +4409,7 @@ type StreamMarketPricesRequest struct {
 
 func (x *StreamMarketPricesRequest) Reset() {
 	*x = StreamMarketPricesRequest{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3231,7 +4421,7 @@ func (x *StreamMarketPricesRequest) String() string {
 func (*StreamMarketPricesRequest) ProtoMessage() {}
 
 func (x *StreamMarketPricesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[36]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3244,7 +4434,7 @@ func (x *StreamMarketPricesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamMarketPricesRequest.ProtoReflect.Descriptor instead.
 func (*StreamMarketPricesRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{36}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *StreamMarketPricesRequest) GetTokenIds() []string {
@@ -3265,7 +4455,7 @@ type MarketPriceUpdate struct {
 
 func (x *MarketPriceUpdate) Reset() {
 	*x = MarketPriceUpdate{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3277,7 +4467,7 @@ func (x *MarketPriceUpdate) String() string {
 func (*MarketPriceUpdate) ProtoMessage() {}
 
 func (x *MarketPriceUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[37]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3290,7 +4480,7 @@ func (x *MarketPriceUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketPriceUpdate.ProtoReflect.Descriptor instead.
 func (*MarketPriceUpdate) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{37}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *MarketPriceUpdate) GetTokenId() string {
@@ -3321,13 +4511,14 @@ type GetPageViewRequest struct {
 	DateFilter    string                 `protobuf:"bytes,3,opt,name=date_filter,json=dateFilter,proto3" json:"date_filter,omitempty"`
 	Pagination    *PaginationRequest     `protobuf:"bytes,4,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	Params        map[string]string      `protobuf:"bytes,5,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Locale        string                 `protobuf:"bytes,6,opt,name=locale,proto3" json:"locale,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetPageViewRequest) Reset() {
 	*x = GetPageViewRequest{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3339,7 +4530,7 @@ func (x *GetPageViewRequest) String() string {
 func (*GetPageViewRequest) ProtoMessage() {}
 
 func (x *GetPageViewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[38]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3352,7 +4543,7 @@ func (x *GetPageViewRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPageViewRequest.ProtoReflect.Descriptor instead.
 func (*GetPageViewRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{38}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *GetPageViewRequest) GetPageId() string {
@@ -3390,6 +4581,13 @@ func (x *GetPageViewRequest) GetParams() map[string]string {
 	return nil
 }
 
+func (x *GetPageViewRequest) GetLocale() string {
+	if x != nil {
+		return x.Locale
+	}
+	return ""
+}
+
 type PageView struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	PageId          string                 `protobuf:"bytes,1,opt,name=page_id,json=pageId,proto3" json:"page_id,omitempty"`
@@ -3407,7 +4605,7 @@ type PageView struct {
 
 func (x *PageView) Reset() {
 	*x = PageView{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3419,7 +4617,7 @@ func (x *PageView) String() string {
 func (*PageView) ProtoMessage() {}
 
 func (x *PageView) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[39]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3432,7 +4630,7 @@ func (x *PageView) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageView.ProtoReflect.Descriptor instead.
 func (*PageView) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{39}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *PageView) GetPageId() string {
@@ -3514,7 +4712,7 @@ type PageTab struct {
 
 func (x *PageTab) Reset() {
 	*x = PageTab{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3526,7 +4724,7 @@ func (x *PageTab) String() string {
 func (*PageTab) ProtoMessage() {}
 
 func (x *PageTab) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[40]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3539,7 +4737,7 @@ func (x *PageTab) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageTab.ProtoReflect.Descriptor instead.
 func (*PageTab) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{40}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *PageTab) GetId() string {
@@ -3602,7 +4800,7 @@ type PageSection struct {
 
 func (x *PageSection) Reset() {
 	*x = PageSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3614,7 +4812,7 @@ func (x *PageSection) String() string {
 func (*PageSection) ProtoMessage() {}
 
 func (x *PageSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[41]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3627,7 +4825,7 @@ func (x *PageSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageSection.ProtoReflect.Descriptor instead.
 func (*PageSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{41}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *PageSection) GetSectionId() string {
@@ -3742,7 +4940,7 @@ type EventGridSection struct {
 
 func (x *EventGridSection) Reset() {
 	*x = EventGridSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3754,7 +4952,7 @@ func (x *EventGridSection) String() string {
 func (*EventGridSection) ProtoMessage() {}
 
 func (x *EventGridSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[42]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3767,7 +4965,7 @@ func (x *EventGridSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventGridSection.ProtoReflect.Descriptor instead.
 func (*EventGridSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{42}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *EventGridSection) GetEvents() []*EventResult {
@@ -3808,7 +5006,7 @@ type CategoryNavSection struct {
 
 func (x *CategoryNavSection) Reset() {
 	*x = CategoryNavSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3820,7 +5018,7 @@ func (x *CategoryNavSection) String() string {
 func (*CategoryNavSection) ProtoMessage() {}
 
 func (x *CategoryNavSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[43]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3833,7 +5031,7 @@ func (x *CategoryNavSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CategoryNavSection.ProtoReflect.Descriptor instead.
 func (*CategoryNavSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{43}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *CategoryNavSection) GetCategories() []*PageTab {
@@ -3859,7 +5057,7 @@ type StatsBarSection struct {
 
 func (x *StatsBarSection) Reset() {
 	*x = StatsBarSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3871,7 +5069,7 @@ func (x *StatsBarSection) String() string {
 func (*StatsBarSection) ProtoMessage() {}
 
 func (x *StatsBarSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[44]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3884,7 +5082,7 @@ func (x *StatsBarSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatsBarSection.ProtoReflect.Descriptor instead.
 func (*StatsBarSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{44}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *StatsBarSection) GetStats() []*StatItem {
@@ -3905,7 +5103,7 @@ type StatItem struct {
 
 func (x *StatItem) Reset() {
 	*x = StatItem{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3917,7 +5115,7 @@ func (x *StatItem) String() string {
 func (*StatItem) ProtoMessage() {}
 
 func (x *StatItem) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[45]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3930,7 +5128,7 @@ func (x *StatItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatItem.ProtoReflect.Descriptor instead.
 func (*StatItem) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{45}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *StatItem) GetLabel() string {
@@ -3964,7 +5162,7 @@ type MarketListSection struct {
 
 func (x *MarketListSection) Reset() {
 	*x = MarketListSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3976,7 +5174,7 @@ func (x *MarketListSection) String() string {
 func (*MarketListSection) ProtoMessage() {}
 
 func (x *MarketListSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[46]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3989,7 +5187,7 @@ func (x *MarketListSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketListSection.ProtoReflect.Descriptor instead.
 func (*MarketListSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{46}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *MarketListSection) GetMarkets() []*MarketRow {
@@ -4018,7 +5216,7 @@ type SportsGameSection struct {
 
 func (x *SportsGameSection) Reset() {
 	*x = SportsGameSection{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4030,7 +5228,7 @@ func (x *SportsGameSection) String() string {
 func (*SportsGameSection) ProtoMessage() {}
 
 func (x *SportsGameSection) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[47]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4043,7 +5241,7 @@ func (x *SportsGameSection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SportsGameSection.ProtoReflect.Descriptor instead.
 func (*SportsGameSection) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{47}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *SportsGameSection) GetLeague() string {
@@ -4102,7 +5300,7 @@ type SportsGame struct {
 
 func (x *SportsGame) Reset() {
 	*x = SportsGame{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[48]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4114,7 +5312,7 @@ func (x *SportsGame) String() string {
 func (*SportsGame) ProtoMessage() {}
 
 func (x *SportsGame) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[48]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4127,7 +5325,7 @@ func (x *SportsGame) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SportsGame.ProtoReflect.Descriptor instead.
 func (*SportsGame) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{48}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *SportsGame) GetEventId() string {
@@ -4287,7 +5485,7 @@ type OddsColumn struct {
 
 func (x *OddsColumn) Reset() {
 	*x = OddsColumn{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[49]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4299,7 +5497,7 @@ func (x *OddsColumn) String() string {
 func (*OddsColumn) ProtoMessage() {}
 
 func (x *OddsColumn) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[49]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4312,7 +5510,7 @@ func (x *OddsColumn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OddsColumn.ProtoReflect.Descriptor instead.
 func (*OddsColumn) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{49}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *OddsColumn) GetMarketType() string {
@@ -4390,7 +5588,7 @@ type OddsLine struct {
 
 func (x *OddsLine) Reset() {
 	*x = OddsLine{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[50]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4402,7 +5600,7 @@ func (x *OddsLine) String() string {
 func (*OddsLine) ProtoMessage() {}
 
 func (x *OddsLine) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[50]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4415,7 +5613,7 @@ func (x *OddsLine) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OddsLine.ProtoReflect.Descriptor instead.
 func (*OddsLine) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{50}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *OddsLine) GetLine() string {
@@ -4467,7 +5665,7 @@ type MarketRow struct {
 
 func (x *MarketRow) Reset() {
 	*x = MarketRow{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[51]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4479,7 +5677,7 @@ func (x *MarketRow) String() string {
 func (*MarketRow) ProtoMessage() {}
 
 func (x *MarketRow) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[51]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4492,7 +5690,7 @@ func (x *MarketRow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketRow.ProtoReflect.Descriptor instead.
 func (*MarketRow) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{51}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *MarketRow) GetRank() int32 {
@@ -4596,7 +5794,7 @@ type PricePoint struct {
 
 func (x *PricePoint) Reset() {
 	*x = PricePoint{}
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[52]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4608,7 +5806,7 @@ func (x *PricePoint) String() string {
 func (*PricePoint) ProtoMessage() {}
 
 func (x *PricePoint) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[52]
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4621,7 +5819,7 @@ func (x *PricePoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PricePoint.ProtoReflect.Descriptor instead.
 func (*PricePoint) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{52}
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *PricePoint) GetTimestamp() int64 {
@@ -4636,6 +5834,3962 @@ func (x *PricePoint) GetPrice() string {
 		return x.Price
 	}
 	return ""
+}
+
+type ToggleBookmarkRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EventId       string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
+	EventSlug     string                 `protobuf:"bytes,2,opt,name=event_slug,json=eventSlug,proto3" json:"event_slug,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleBookmarkRequest) Reset() {
+	*x = ToggleBookmarkRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[72]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleBookmarkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleBookmarkRequest) ProtoMessage() {}
+
+func (x *ToggleBookmarkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[72]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleBookmarkRequest.ProtoReflect.Descriptor instead.
+func (*ToggleBookmarkRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{72}
+}
+
+func (x *ToggleBookmarkRequest) GetEventId() string {
+	if x != nil {
+		return x.EventId
+	}
+	return ""
+}
+
+func (x *ToggleBookmarkRequest) GetEventSlug() string {
+	if x != nil {
+		return x.EventSlug
+	}
+	return ""
+}
+
+type ToggleBookmarkResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Bookmarked    bool                   `protobuf:"varint,1,opt,name=bookmarked,proto3" json:"bookmarked,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleBookmarkResponse) Reset() {
+	*x = ToggleBookmarkResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[73]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleBookmarkResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleBookmarkResponse) ProtoMessage() {}
+
+func (x *ToggleBookmarkResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[73]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleBookmarkResponse.ProtoReflect.Descriptor instead.
+func (*ToggleBookmarkResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{73}
+}
+
+func (x *ToggleBookmarkResponse) GetBookmarked() bool {
+	if x != nil {
+		return x.Bookmarked
+	}
+	return false
+}
+
+type GetBookmarksRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBookmarksRequest) Reset() {
+	*x = GetBookmarksRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[74]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBookmarksRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBookmarksRequest) ProtoMessage() {}
+
+func (x *GetBookmarksRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[74]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBookmarksRequest.ProtoReflect.Descriptor instead.
+func (*GetBookmarksRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{74}
+}
+
+type GetBookmarksResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EventSlugs    []string               `protobuf:"bytes,1,rep,name=event_slugs,json=eventSlugs,proto3" json:"event_slugs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBookmarksResponse) Reset() {
+	*x = GetBookmarksResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[75]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBookmarksResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBookmarksResponse) ProtoMessage() {}
+
+func (x *GetBookmarksResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[75]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBookmarksResponse.ProtoReflect.Descriptor instead.
+func (*GetBookmarksResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{75}
+}
+
+func (x *GetBookmarksResponse) GetEventSlugs() []string {
+	if x != nil {
+		return x.EventSlugs
+	}
+	return nil
+}
+
+type RedeemPositionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ConditionId   string                 `protobuf:"bytes,1,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"`
+	OutcomeIndex  int32                  `protobuf:"varint,2,opt,name=outcome_index,json=outcomeIndex,proto3" json:"outcome_index,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RedeemPositionRequest) Reset() {
+	*x = RedeemPositionRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[76]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RedeemPositionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RedeemPositionRequest) ProtoMessage() {}
+
+func (x *RedeemPositionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[76]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RedeemPositionRequest.ProtoReflect.Descriptor instead.
+func (*RedeemPositionRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{76}
+}
+
+func (x *RedeemPositionRequest) GetConditionId() string {
+	if x != nil {
+		return x.ConditionId
+	}
+	return ""
+}
+
+func (x *RedeemPositionRequest) GetOutcomeIndex() int32 {
+	if x != nil {
+		return x.OutcomeIndex
+	}
+	return 0
+}
+
+type RedeemPositionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	TxHash        string                 `protobuf:"bytes,3,opt,name=tx_hash,json=txHash,proto3" json:"tx_hash,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RedeemPositionResponse) Reset() {
+	*x = RedeemPositionResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[77]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RedeemPositionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RedeemPositionResponse) ProtoMessage() {}
+
+func (x *RedeemPositionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[77]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RedeemPositionResponse.ProtoReflect.Descriptor instead.
+func (*RedeemPositionResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{77}
+}
+
+func (x *RedeemPositionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *RedeemPositionResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *RedeemPositionResponse) GetTxHash() string {
+	if x != nil {
+		return x.TxHash
+	}
+	return ""
+}
+
+type GetTradeAnalyticsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Empty = return all analytics. Optional filters:
+	Period        string `protobuf:"bytes,1,opt,name=period,proto3" json:"period,omitempty"` // "7d", "30d", "90d", "all" (default: "30d")
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTradeAnalyticsRequest) Reset() {
+	*x = GetTradeAnalyticsRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[78]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTradeAnalyticsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTradeAnalyticsRequest) ProtoMessage() {}
+
+func (x *GetTradeAnalyticsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[78]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTradeAnalyticsRequest.ProtoReflect.Descriptor instead.
+func (*GetTradeAnalyticsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{78}
+}
+
+func (x *GetTradeAnalyticsRequest) GetPeriod() string {
+	if x != nil {
+		return x.Period
+	}
+	return ""
+}
+
+type TradeAnalyticsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Volume over time (daily)
+	DailyVolume []*DailyVolume `protobuf:"bytes,1,rep,name=daily_volume,json=dailyVolume,proto3" json:"daily_volume,omitempty"`
+	// Trade size distribution
+	SizeDistribution []*TradeSizeBucket `protobuf:"bytes,2,rep,name=size_distribution,json=sizeDistribution,proto3" json:"size_distribution,omitempty"`
+	// Hourly trading pattern
+	HourlyPattern []*HourlyPattern `protobuf:"bytes,3,rep,name=hourly_pattern,json=hourlyPattern,proto3" json:"hourly_pattern,omitempty"`
+	// Top traders
+	TopTraders []*TopTrader `protobuf:"bytes,4,rep,name=top_traders,json=topTraders,proto3" json:"top_traders,omitempty"`
+	// Summary stats
+	Summary *AnalyticsSummary `protobuf:"bytes,5,opt,name=summary,proto3" json:"summary,omitempty"`
+	// Market calibration (win rate vs price)
+	Calibration []*CalibrationPoint `protobuf:"bytes,6,rep,name=calibration,proto3" json:"calibration,omitempty"`
+	// Maker vs taker excess returns by price bucket
+	MakerTaker []*MakerTakerBucket `protobuf:"bytes,7,rep,name=maker_taker,json=makerTaker,proto3" json:"maker_taker,omitempty"`
+	// Calibration quality metrics
+	CalibrationMetrics *CalibrationMetrics `protobuf:"bytes,8,opt,name=calibration_metrics,json=calibrationMetrics,proto3" json:"calibration_metrics,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *TradeAnalyticsResponse) Reset() {
+	*x = TradeAnalyticsResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[79]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TradeAnalyticsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TradeAnalyticsResponse) ProtoMessage() {}
+
+func (x *TradeAnalyticsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[79]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TradeAnalyticsResponse.ProtoReflect.Descriptor instead.
+func (*TradeAnalyticsResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{79}
+}
+
+func (x *TradeAnalyticsResponse) GetDailyVolume() []*DailyVolume {
+	if x != nil {
+		return x.DailyVolume
+	}
+	return nil
+}
+
+func (x *TradeAnalyticsResponse) GetSizeDistribution() []*TradeSizeBucket {
+	if x != nil {
+		return x.SizeDistribution
+	}
+	return nil
+}
+
+func (x *TradeAnalyticsResponse) GetHourlyPattern() []*HourlyPattern {
+	if x != nil {
+		return x.HourlyPattern
+	}
+	return nil
+}
+
+func (x *TradeAnalyticsResponse) GetTopTraders() []*TopTrader {
+	if x != nil {
+		return x.TopTraders
+	}
+	return nil
+}
+
+func (x *TradeAnalyticsResponse) GetSummary() *AnalyticsSummary {
+	if x != nil {
+		return x.Summary
+	}
+	return nil
+}
+
+func (x *TradeAnalyticsResponse) GetCalibration() []*CalibrationPoint {
+	if x != nil {
+		return x.Calibration
+	}
+	return nil
+}
+
+func (x *TradeAnalyticsResponse) GetMakerTaker() []*MakerTakerBucket {
+	if x != nil {
+		return x.MakerTaker
+	}
+	return nil
+}
+
+func (x *TradeAnalyticsResponse) GetCalibrationMetrics() *CalibrationMetrics {
+	if x != nil {
+		return x.CalibrationMetrics
+	}
+	return nil
+}
+
+type DailyVolume struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"` // "2026-03-30"
+	TradeCount    int64                  `protobuf:"varint,2,opt,name=trade_count,json=tradeCount,proto3" json:"trade_count,omitempty"`
+	TotalVolume   float64                `protobuf:"fixed64,3,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"` // USDC
+	UniqueTraders int64                  `protobuf:"varint,4,opt,name=unique_traders,json=uniqueTraders,proto3" json:"unique_traders,omitempty"`
+	BuyVolume     float64                `protobuf:"fixed64,5,opt,name=buy_volume,json=buyVolume,proto3" json:"buy_volume,omitempty"`
+	SellVolume    float64                `protobuf:"fixed64,6,opt,name=sell_volume,json=sellVolume,proto3" json:"sell_volume,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DailyVolume) Reset() {
+	*x = DailyVolume{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[80]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DailyVolume) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DailyVolume) ProtoMessage() {}
+
+func (x *DailyVolume) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[80]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DailyVolume.ProtoReflect.Descriptor instead.
+func (*DailyVolume) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{80}
+}
+
+func (x *DailyVolume) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *DailyVolume) GetTradeCount() int64 {
+	if x != nil {
+		return x.TradeCount
+	}
+	return 0
+}
+
+func (x *DailyVolume) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+func (x *DailyVolume) GetUniqueTraders() int64 {
+	if x != nil {
+		return x.UniqueTraders
+	}
+	return 0
+}
+
+func (x *DailyVolume) GetBuyVolume() float64 {
+	if x != nil {
+		return x.BuyVolume
+	}
+	return 0
+}
+
+func (x *DailyVolume) GetSellVolume() float64 {
+	if x != nil {
+		return x.SellVolume
+	}
+	return 0
+}
+
+type TradeSizeBucket struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Bucket        string                 `protobuf:"bytes,1,opt,name=bucket,proto3" json:"bucket,omitempty"` // "<$10", "$10-100", "$100-1K", "$1K-10K", "$10K+"
+	Side          string                 `protobuf:"bytes,2,opt,name=side,proto3" json:"side,omitempty"`     // "BUY" or "SELL"
+	TradeCount    int64                  `protobuf:"varint,3,opt,name=trade_count,json=tradeCount,proto3" json:"trade_count,omitempty"`
+	TotalVolume   float64                `protobuf:"fixed64,4,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TradeSizeBucket) Reset() {
+	*x = TradeSizeBucket{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[81]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TradeSizeBucket) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TradeSizeBucket) ProtoMessage() {}
+
+func (x *TradeSizeBucket) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[81]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TradeSizeBucket.ProtoReflect.Descriptor instead.
+func (*TradeSizeBucket) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{81}
+}
+
+func (x *TradeSizeBucket) GetBucket() string {
+	if x != nil {
+		return x.Bucket
+	}
+	return ""
+}
+
+func (x *TradeSizeBucket) GetSide() string {
+	if x != nil {
+		return x.Side
+	}
+	return ""
+}
+
+func (x *TradeSizeBucket) GetTradeCount() int64 {
+	if x != nil {
+		return x.TradeCount
+	}
+	return 0
+}
+
+func (x *TradeSizeBucket) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+type HourlyPattern struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Hour          int32                  `protobuf:"varint,1,opt,name=hour,proto3" json:"hour,omitempty"` // 0-23 UTC
+	TradeCount    int64                  `protobuf:"varint,2,opt,name=trade_count,json=tradeCount,proto3" json:"trade_count,omitempty"`
+	TotalVolume   float64                `protobuf:"fixed64,3,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	AvgSize       float64                `protobuf:"fixed64,4,opt,name=avg_size,json=avgSize,proto3" json:"avg_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HourlyPattern) Reset() {
+	*x = HourlyPattern{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[82]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HourlyPattern) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HourlyPattern) ProtoMessage() {}
+
+func (x *HourlyPattern) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[82]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HourlyPattern.ProtoReflect.Descriptor instead.
+func (*HourlyPattern) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{82}
+}
+
+func (x *HourlyPattern) GetHour() int32 {
+	if x != nil {
+		return x.Hour
+	}
+	return 0
+}
+
+func (x *HourlyPattern) GetTradeCount() int64 {
+	if x != nil {
+		return x.TradeCount
+	}
+	return 0
+}
+
+func (x *HourlyPattern) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+func (x *HourlyPattern) GetAvgSize() float64 {
+	if x != nil {
+		return x.AvgSize
+	}
+	return 0
+}
+
+type TopTrader struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"` // pseudonym if available
+	ProfileImage  string                 `protobuf:"bytes,3,opt,name=profile_image,json=profileImage,proto3" json:"profile_image,omitempty"`
+	TradeCount    int64                  `protobuf:"varint,4,opt,name=trade_count,json=tradeCount,proto3" json:"trade_count,omitempty"`
+	TotalVolume   float64                `protobuf:"fixed64,5,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	BuyVolume     float64                `protobuf:"fixed64,6,opt,name=buy_volume,json=buyVolume,proto3" json:"buy_volume,omitempty"`
+	SellVolume    float64                `protobuf:"fixed64,7,opt,name=sell_volume,json=sellVolume,proto3" json:"sell_volume,omitempty"`
+	UniqueMarkets int64                  `protobuf:"varint,8,opt,name=unique_markets,json=uniqueMarkets,proto3" json:"unique_markets,omitempty"`
+	AvgTradeSize  float64                `protobuf:"fixed64,9,opt,name=avg_trade_size,json=avgTradeSize,proto3" json:"avg_trade_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TopTrader) Reset() {
+	*x = TopTrader{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[83]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TopTrader) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TopTrader) ProtoMessage() {}
+
+func (x *TopTrader) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[83]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TopTrader.ProtoReflect.Descriptor instead.
+func (*TopTrader) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{83}
+}
+
+func (x *TopTrader) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *TopTrader) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *TopTrader) GetProfileImage() string {
+	if x != nil {
+		return x.ProfileImage
+	}
+	return ""
+}
+
+func (x *TopTrader) GetTradeCount() int64 {
+	if x != nil {
+		return x.TradeCount
+	}
+	return 0
+}
+
+func (x *TopTrader) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+func (x *TopTrader) GetBuyVolume() float64 {
+	if x != nil {
+		return x.BuyVolume
+	}
+	return 0
+}
+
+func (x *TopTrader) GetSellVolume() float64 {
+	if x != nil {
+		return x.SellVolume
+	}
+	return 0
+}
+
+func (x *TopTrader) GetUniqueMarkets() int64 {
+	if x != nil {
+		return x.UniqueMarkets
+	}
+	return 0
+}
+
+func (x *TopTrader) GetAvgTradeSize() float64 {
+	if x != nil {
+		return x.AvgTradeSize
+	}
+	return 0
+}
+
+type AnalyticsSummary struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	TotalTrades     int64                  `protobuf:"varint,1,opt,name=total_trades,json=totalTrades,proto3" json:"total_trades,omitempty"`
+	TotalVolume     float64                `protobuf:"fixed64,2,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	UniqueTraders   int64                  `protobuf:"varint,3,opt,name=unique_traders,json=uniqueTraders,proto3" json:"unique_traders,omitempty"`
+	ActiveMarkets   int64                  `protobuf:"varint,4,opt,name=active_markets,json=activeMarkets,proto3" json:"active_markets,omitempty"`
+	AvgTradeSize    float64                `protobuf:"fixed64,5,opt,name=avg_trade_size,json=avgTradeSize,proto3" json:"avg_trade_size,omitempty"`
+	MedianTradeSize float64                `protobuf:"fixed64,6,opt,name=median_trade_size,json=medianTradeSize,proto3" json:"median_trade_size,omitempty"`
+	Period          string                 `protobuf:"bytes,7,opt,name=period,proto3" json:"period,omitempty"` // the period these stats cover
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *AnalyticsSummary) Reset() {
+	*x = AnalyticsSummary{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[84]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnalyticsSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnalyticsSummary) ProtoMessage() {}
+
+func (x *AnalyticsSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[84]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnalyticsSummary.ProtoReflect.Descriptor instead.
+func (*AnalyticsSummary) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{84}
+}
+
+func (x *AnalyticsSummary) GetTotalTrades() int64 {
+	if x != nil {
+		return x.TotalTrades
+	}
+	return 0
+}
+
+func (x *AnalyticsSummary) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+func (x *AnalyticsSummary) GetUniqueTraders() int64 {
+	if x != nil {
+		return x.UniqueTraders
+	}
+	return 0
+}
+
+func (x *AnalyticsSummary) GetActiveMarkets() int64 {
+	if x != nil {
+		return x.ActiveMarkets
+	}
+	return 0
+}
+
+func (x *AnalyticsSummary) GetAvgTradeSize() float64 {
+	if x != nil {
+		return x.AvgTradeSize
+	}
+	return 0
+}
+
+func (x *AnalyticsSummary) GetMedianTradeSize() float64 {
+	if x != nil {
+		return x.MedianTradeSize
+	}
+	return 0
+}
+
+func (x *AnalyticsSummary) GetPeriod() string {
+	if x != nil {
+		return x.Period
+	}
+	return ""
+}
+
+type CalibrationPoint struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Price         int32                  `protobuf:"varint,1,opt,name=price,proto3" json:"price,omitempty"` // 1-99 cents
+	TotalTrades   int64                  `protobuf:"varint,2,opt,name=total_trades,json=totalTrades,proto3" json:"total_trades,omitempty"`
+	Wins          int64                  `protobuf:"varint,3,opt,name=wins,proto3" json:"wins,omitempty"`
+	WinRate       float64                `protobuf:"fixed64,4,opt,name=win_rate,json=winRate,proto3" json:"win_rate,omitempty"` // percentage (0-100)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CalibrationPoint) Reset() {
+	*x = CalibrationPoint{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[85]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CalibrationPoint) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CalibrationPoint) ProtoMessage() {}
+
+func (x *CalibrationPoint) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[85]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CalibrationPoint.ProtoReflect.Descriptor instead.
+func (*CalibrationPoint) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{85}
+}
+
+func (x *CalibrationPoint) GetPrice() int32 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *CalibrationPoint) GetTotalTrades() int64 {
+	if x != nil {
+		return x.TotalTrades
+	}
+	return 0
+}
+
+func (x *CalibrationPoint) GetWins() int64 {
+	if x != nil {
+		return x.Wins
+	}
+	return 0
+}
+
+func (x *CalibrationPoint) GetWinRate() float64 {
+	if x != nil {
+		return x.WinRate
+	}
+	return 0
+}
+
+type MakerTakerBucket struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PriceBucket   int32                  `protobuf:"varint,1,opt,name=price_bucket,json=priceBucket,proto3" json:"price_bucket,omitempty"` // 5, 10, ..., 95
+	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`                                   // "maker" or "taker"
+	TotalTrades   int64                  `protobuf:"varint,3,opt,name=total_trades,json=totalTrades,proto3" json:"total_trades,omitempty"`
+	Wins          int64                  `protobuf:"varint,4,opt,name=wins,proto3" json:"wins,omitempty"`
+	Losses        int64                  `protobuf:"varint,5,opt,name=losses,proto3" json:"losses,omitempty"`
+	AvgReturn     float64                `protobuf:"fixed64,6,opt,name=avg_return,json=avgReturn,proto3" json:"avg_return,omitempty"`
+	TotalVolume   float64                `protobuf:"fixed64,7,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MakerTakerBucket) Reset() {
+	*x = MakerTakerBucket{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[86]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MakerTakerBucket) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MakerTakerBucket) ProtoMessage() {}
+
+func (x *MakerTakerBucket) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[86]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MakerTakerBucket.ProtoReflect.Descriptor instead.
+func (*MakerTakerBucket) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{86}
+}
+
+func (x *MakerTakerBucket) GetPriceBucket() int32 {
+	if x != nil {
+		return x.PriceBucket
+	}
+	return 0
+}
+
+func (x *MakerTakerBucket) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *MakerTakerBucket) GetTotalTrades() int64 {
+	if x != nil {
+		return x.TotalTrades
+	}
+	return 0
+}
+
+func (x *MakerTakerBucket) GetWins() int64 {
+	if x != nil {
+		return x.Wins
+	}
+	return 0
+}
+
+func (x *MakerTakerBucket) GetLosses() int64 {
+	if x != nil {
+		return x.Losses
+	}
+	return 0
+}
+
+func (x *MakerTakerBucket) GetAvgReturn() float64 {
+	if x != nil {
+		return x.AvgReturn
+	}
+	return 0
+}
+
+func (x *MakerTakerBucket) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+type CalibrationMetrics struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	BrierScore          float64                `protobuf:"fixed64,1,opt,name=brier_score,json=brierScore,proto3" json:"brier_score,omitempty"`
+	LogLoss             float64                `protobuf:"fixed64,2,opt,name=log_loss,json=logLoss,proto3" json:"log_loss,omitempty"`
+	Ece                 float64                `protobuf:"fixed64,3,opt,name=ece,proto3" json:"ece,omitempty"`
+	TotalResolvedTrades int64                  `protobuf:"varint,4,opt,name=total_resolved_trades,json=totalResolvedTrades,proto3" json:"total_resolved_trades,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *CalibrationMetrics) Reset() {
+	*x = CalibrationMetrics{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[87]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CalibrationMetrics) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CalibrationMetrics) ProtoMessage() {}
+
+func (x *CalibrationMetrics) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[87]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CalibrationMetrics.ProtoReflect.Descriptor instead.
+func (*CalibrationMetrics) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{87}
+}
+
+func (x *CalibrationMetrics) GetBrierScore() float64 {
+	if x != nil {
+		return x.BrierScore
+	}
+	return 0
+}
+
+func (x *CalibrationMetrics) GetLogLoss() float64 {
+	if x != nil {
+		return x.LogLoss
+	}
+	return 0
+}
+
+func (x *CalibrationMetrics) GetEce() float64 {
+	if x != nil {
+		return x.Ece
+	}
+	return 0
+}
+
+func (x *CalibrationMetrics) GetTotalResolvedTrades() int64 {
+	if x != nil {
+		return x.TotalResolvedTrades
+	}
+	return 0
+}
+
+type GetPnlLeaderboardRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Period        string                 `protobuf:"bytes,1,opt,name=period,proto3" json:"period,omitempty"`
+	Category      string                 `protobuf:"bytes,2,opt,name=category,proto3" json:"category,omitempty"`
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPnlLeaderboardRequest) Reset() {
+	*x = GetPnlLeaderboardRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[88]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPnlLeaderboardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPnlLeaderboardRequest) ProtoMessage() {}
+
+func (x *GetPnlLeaderboardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[88]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPnlLeaderboardRequest.ProtoReflect.Descriptor instead.
+func (*GetPnlLeaderboardRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{88}
+}
+
+func (x *GetPnlLeaderboardRequest) GetPeriod() string {
+	if x != nil {
+		return x.Period
+	}
+	return ""
+}
+
+func (x *GetPnlLeaderboardRequest) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *GetPnlLeaderboardRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type PnlLeaderboardResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Entries       []*PnlLeaderboardEntry `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PnlLeaderboardResponse) Reset() {
+	*x = PnlLeaderboardResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[89]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PnlLeaderboardResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PnlLeaderboardResponse) ProtoMessage() {}
+
+func (x *PnlLeaderboardResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[89]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PnlLeaderboardResponse.ProtoReflect.Descriptor instead.
+func (*PnlLeaderboardResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{89}
+}
+
+func (x *PnlLeaderboardResponse) GetEntries() []*PnlLeaderboardEntry {
+	if x != nil {
+		return x.Entries
+	}
+	return nil
+}
+
+type PnlLeaderboardEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	UnrealizedPnl float64                `protobuf:"fixed64,3,opt,name=unrealized_pnl,json=unrealizedPnl,proto3" json:"unrealized_pnl,omitempty"`
+	RealizedPnl   float64                `protobuf:"fixed64,4,opt,name=realized_pnl,json=realizedPnl,proto3" json:"realized_pnl,omitempty"`
+	TotalPnl      float64                `protobuf:"fixed64,5,opt,name=total_pnl,json=totalPnl,proto3" json:"total_pnl,omitempty"`
+	TotalInvested float64                `protobuf:"fixed64,6,opt,name=total_invested,json=totalInvested,proto3" json:"total_invested,omitempty"`
+	Roi           float64                `protobuf:"fixed64,7,opt,name=roi,proto3" json:"roi,omitempty"`
+	OpenPositions int32                  `protobuf:"varint,8,opt,name=open_positions,json=openPositions,proto3" json:"open_positions,omitempty"`
+	TradeCount    int64                  `protobuf:"varint,9,opt,name=trade_count,json=tradeCount,proto3" json:"trade_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PnlLeaderboardEntry) Reset() {
+	*x = PnlLeaderboardEntry{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[90]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PnlLeaderboardEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PnlLeaderboardEntry) ProtoMessage() {}
+
+func (x *PnlLeaderboardEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[90]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PnlLeaderboardEntry.ProtoReflect.Descriptor instead.
+func (*PnlLeaderboardEntry) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{90}
+}
+
+func (x *PnlLeaderboardEntry) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *PnlLeaderboardEntry) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *PnlLeaderboardEntry) GetUnrealizedPnl() float64 {
+	if x != nil {
+		return x.UnrealizedPnl
+	}
+	return 0
+}
+
+func (x *PnlLeaderboardEntry) GetRealizedPnl() float64 {
+	if x != nil {
+		return x.RealizedPnl
+	}
+	return 0
+}
+
+func (x *PnlLeaderboardEntry) GetTotalPnl() float64 {
+	if x != nil {
+		return x.TotalPnl
+	}
+	return 0
+}
+
+func (x *PnlLeaderboardEntry) GetTotalInvested() float64 {
+	if x != nil {
+		return x.TotalInvested
+	}
+	return 0
+}
+
+func (x *PnlLeaderboardEntry) GetRoi() float64 {
+	if x != nil {
+		return x.Roi
+	}
+	return 0
+}
+
+func (x *PnlLeaderboardEntry) GetOpenPositions() int32 {
+	if x != nil {
+		return x.OpenPositions
+	}
+	return 0
+}
+
+func (x *PnlLeaderboardEntry) GetTradeCount() int64 {
+	if x != nil {
+		return x.TradeCount
+	}
+	return 0
+}
+
+type GetWalletProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWalletProfileRequest) Reset() {
+	*x = GetWalletProfileRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[91]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWalletProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWalletProfileRequest) ProtoMessage() {}
+
+func (x *GetWalletProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[91]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWalletProfileRequest.ProtoReflect.Descriptor instead.
+func (*GetWalletProfileRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{91}
+}
+
+func (x *GetWalletProfileRequest) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+type WalletProfile struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Address      string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Name         string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ProfileImage string                 `protobuf:"bytes,3,opt,name=profile_image,json=profileImage,proto3" json:"profile_image,omitempty"`
+	// P&L overview
+	UnrealizedPnl float64 `protobuf:"fixed64,4,opt,name=unrealized_pnl,json=unrealizedPnl,proto3" json:"unrealized_pnl,omitempty"`
+	RealizedPnl   float64 `protobuf:"fixed64,5,opt,name=realized_pnl,json=realizedPnl,proto3" json:"realized_pnl,omitempty"`
+	TotalPnl      float64 `protobuf:"fixed64,6,opt,name=total_pnl,json=totalPnl,proto3" json:"total_pnl,omitempty"`
+	TotalInvested float64 `protobuf:"fixed64,7,opt,name=total_invested,json=totalInvested,proto3" json:"total_invested,omitempty"`
+	Roi           float64 `protobuf:"fixed64,8,opt,name=roi,proto3" json:"roi,omitempty"`
+	OpenPositions int32   `protobuf:"varint,9,opt,name=open_positions,json=openPositions,proto3" json:"open_positions,omitempty"`
+	// P&L windows
+	PnlChange_24H float64 `protobuf:"fixed64,10,opt,name=pnl_change_24h,json=pnlChange24h,proto3" json:"pnl_change_24h,omitempty"`
+	PnlChange_7D  float64 `protobuf:"fixed64,11,opt,name=pnl_change_7d,json=pnlChange7d,proto3" json:"pnl_change_7d,omitempty"`
+	PnlChange_30D float64 `protobuf:"fixed64,12,opt,name=pnl_change_30d,json=pnlChange30d,proto3" json:"pnl_change_30d,omitempty"`
+	// Trade activity
+	FirstTradeAtUnix int64   `protobuf:"varint,13,opt,name=first_trade_at_unix,json=firstTradeAtUnix,proto3" json:"first_trade_at_unix,omitempty"`
+	LastTradeAtUnix  int64   `protobuf:"varint,14,opt,name=last_trade_at_unix,json=lastTradeAtUnix,proto3" json:"last_trade_at_unix,omitempty"`
+	TotalTrades      int64   `protobuf:"varint,15,opt,name=total_trades,json=totalTrades,proto3" json:"total_trades,omitempty"`
+	TradesLast_7D    int64   `protobuf:"varint,16,opt,name=trades_last_7d,json=tradesLast7d,proto3" json:"trades_last_7d,omitempty"`
+	TradesLast_30D   int64   `protobuf:"varint,17,opt,name=trades_last_30d,json=tradesLast30d,proto3" json:"trades_last_30d,omitempty"`
+	TradesPerWeek    float64 `protobuf:"fixed64,18,opt,name=trades_per_week,json=tradesPerWeek,proto3" json:"trades_per_week,omitempty"`
+	TradesPerMonth   float64 `protobuf:"fixed64,19,opt,name=trades_per_month,json=tradesPerMonth,proto3" json:"trades_per_month,omitempty"`
+	SellFrequency    float64 `protobuf:"fixed64,20,opt,name=sell_frequency,json=sellFrequency,proto3" json:"sell_frequency,omitempty"`
+	UniqueMarkets    int64   `protobuf:"varint,21,opt,name=unique_markets,json=uniqueMarkets,proto3" json:"unique_markets,omitempty"`
+	// Resolved market performance
+	ResolvedPositions    int32   `protobuf:"varint,22,opt,name=resolved_positions,json=resolvedPositions,proto3" json:"resolved_positions,omitempty"`
+	Wins                 int32   `protobuf:"varint,23,opt,name=wins,proto3" json:"wins,omitempty"`
+	Losses               int32   `protobuf:"varint,24,opt,name=losses,proto3" json:"losses,omitempty"`
+	WinRate              float64 `protobuf:"fixed64,25,opt,name=win_rate,json=winRate,proto3" json:"win_rate,omitempty"`
+	ProfitFactor         float64 `protobuf:"fixed64,26,opt,name=profit_factor,json=profitFactor,proto3" json:"profit_factor,omitempty"`
+	AvgHoldDurationHours float64 `protobuf:"fixed64,27,opt,name=avg_hold_duration_hours,json=avgHoldDurationHours,proto3" json:"avg_hold_duration_hours,omitempty"`
+	BiggestWin           float64 `protobuf:"fixed64,28,opt,name=biggest_win,json=biggestWin,proto3" json:"biggest_win,omitempty"`
+	BiggestLoss          float64 `protobuf:"fixed64,29,opt,name=biggest_loss,json=biggestLoss,proto3" json:"biggest_loss,omitempty"`
+	CurrentStreakType    string  `protobuf:"bytes,30,opt,name=current_streak_type,json=currentStreakType,proto3" json:"current_streak_type,omitempty"`
+	CurrentStreakCount   int32   `protobuf:"varint,31,opt,name=current_streak_count,json=currentStreakCount,proto3" json:"current_streak_count,omitempty"`
+	LongestWinStreak     int32   `protobuf:"varint,32,opt,name=longest_win_streak,json=longestWinStreak,proto3" json:"longest_win_streak,omitempty"`
+	LongestLossStreak    int32   `protobuf:"varint,33,opt,name=longest_loss_streak,json=longestLossStreak,proto3" json:"longest_loss_streak,omitempty"`
+	// Per-category breakdown
+	CategoryBreakdown []*WalletCategoryBreakdown `protobuf:"bytes,34,rep,name=category_breakdown,json=categoryBreakdown,proto3" json:"category_breakdown,omitempty"`
+	// Staleness indicator: seconds since the P&L snapshot was last computed.
+	// -1 means snapshot_time is unknown. Frontend uses this to show a stale-data warning.
+	SnapshotAgeSeconds int64 `protobuf:"varint,35,opt,name=snapshot_age_seconds,json=snapshotAgeSeconds,proto3" json:"snapshot_age_seconds,omitempty"`
+	// Extended P&L analytics (from wallet_pnl_snapshot extended columns)
+	MaxDrawdown     float64 `protobuf:"fixed64,36,opt,name=max_drawdown,json=maxDrawdown,proto3" json:"max_drawdown,omitempty"`
+	RoiStored       float64 `protobuf:"fixed64,37,opt,name=roi_stored,json=roiStored,proto3" json:"roi_stored,omitempty"`
+	PnlVolatility   float64 `protobuf:"fixed64,38,opt,name=pnl_volatility,json=pnlVolatility,proto3" json:"pnl_volatility,omitempty"`
+	RoiRiskAdjusted float64 `protobuf:"fixed64,39,opt,name=roi_risk_adjusted,json=roiRiskAdjusted,proto3" json:"roi_risk_adjusted,omitempty"`
+	PnlChange_90D   float64 `protobuf:"fixed64,40,opt,name=pnl_change_90d,json=pnlChange90d,proto3" json:"pnl_change_90d,omitempty"`
+	UsdcBalance     float64 `protobuf:"fixed64,41,opt,name=usdc_balance,json=usdcBalance,proto3" json:"usdc_balance,omitempty"`
+	// Taxonomy (from wallet_taxonomy)
+	TraderArchetype  string  `protobuf:"bytes,42,opt,name=trader_archetype,json=traderArchetype,proto3" json:"trader_archetype,omitempty"`
+	RiskProfile      string  `protobuf:"bytes,43,opt,name=risk_profile,json=riskProfile,proto3" json:"risk_profile,omitempty"`
+	CopyabilityScore float64 `protobuf:"fixed64,44,opt,name=copyability_score,json=copyabilityScore,proto3" json:"copyability_score,omitempty"`
+	StrategyBadge    string  `protobuf:"bytes,45,opt,name=strategy_badge,json=strategyBadge,proto3" json:"strategy_badge,omitempty"`
+	TraderTier       string  `protobuf:"bytes,46,opt,name=trader_tier,json=traderTier,proto3" json:"trader_tier,omitempty"`
+	Summary          string  `protobuf:"bytes,47,opt,name=summary,proto3" json:"summary,omitempty"`
+	// Additional taxonomy fields
+	IsBot                bool     `protobuf:"varint,48,opt,name=is_bot,json=isBot,proto3" json:"is_bot,omitempty"`
+	IsSmartMoney         bool     `protobuf:"varint,49,opt,name=is_smart_money,json=isSmartMoney,proto3" json:"is_smart_money,omitempty"`
+	SpecialistGeneralist string   `protobuf:"bytes,50,opt,name=specialist_generalist,json=specialistGeneralist,proto3" json:"specialist_generalist,omitempty"`
+	AvgTradeSize         float64  `protobuf:"fixed64,51,opt,name=avg_trade_size,json=avgTradeSize,proto3" json:"avg_trade_size,omitempty"`
+	CategoryTags         []string `protobuf:"bytes,52,rep,name=category_tags,json=categoryTags,proto3" json:"category_tags,omitempty"`
+	// CLV (Closing Line Value) stats
+	AvgClv          float64 `protobuf:"fixed64,53,opt,name=avg_clv,json=avgClv,proto3" json:"avg_clv,omitempty"`
+	ClvPositiveRate float64 `protobuf:"fixed64,54,opt,name=clv_positive_rate,json=clvPositiveRate,proto3" json:"clv_positive_rate,omitempty"`
+	// Similar traders (from wallet_similar_traders)
+	SimilarTraders []*SimilarTrader `protobuf:"bytes,55,rep,name=similar_traders,json=similarTraders,proto3" json:"similar_traders,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *WalletProfile) Reset() {
+	*x = WalletProfile{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[92]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WalletProfile) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WalletProfile) ProtoMessage() {}
+
+func (x *WalletProfile) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[92]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WalletProfile.ProtoReflect.Descriptor instead.
+func (*WalletProfile) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{92}
+}
+
+func (x *WalletProfile) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetProfileImage() string {
+	if x != nil {
+		return x.ProfileImage
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetUnrealizedPnl() float64 {
+	if x != nil {
+		return x.UnrealizedPnl
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetRealizedPnl() float64 {
+	if x != nil {
+		return x.RealizedPnl
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTotalPnl() float64 {
+	if x != nil {
+		return x.TotalPnl
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTotalInvested() float64 {
+	if x != nil {
+		return x.TotalInvested
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetRoi() float64 {
+	if x != nil {
+		return x.Roi
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetOpenPositions() int32 {
+	if x != nil {
+		return x.OpenPositions
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetPnlChange_24H() float64 {
+	if x != nil {
+		return x.PnlChange_24H
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetPnlChange_7D() float64 {
+	if x != nil {
+		return x.PnlChange_7D
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetPnlChange_30D() float64 {
+	if x != nil {
+		return x.PnlChange_30D
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetFirstTradeAtUnix() int64 {
+	if x != nil {
+		return x.FirstTradeAtUnix
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetLastTradeAtUnix() int64 {
+	if x != nil {
+		return x.LastTradeAtUnix
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTotalTrades() int64 {
+	if x != nil {
+		return x.TotalTrades
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTradesLast_7D() int64 {
+	if x != nil {
+		return x.TradesLast_7D
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTradesLast_30D() int64 {
+	if x != nil {
+		return x.TradesLast_30D
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTradesPerWeek() float64 {
+	if x != nil {
+		return x.TradesPerWeek
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTradesPerMonth() float64 {
+	if x != nil {
+		return x.TradesPerMonth
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetSellFrequency() float64 {
+	if x != nil {
+		return x.SellFrequency
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetUniqueMarkets() int64 {
+	if x != nil {
+		return x.UniqueMarkets
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetResolvedPositions() int32 {
+	if x != nil {
+		return x.ResolvedPositions
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetWins() int32 {
+	if x != nil {
+		return x.Wins
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetLosses() int32 {
+	if x != nil {
+		return x.Losses
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetWinRate() float64 {
+	if x != nil {
+		return x.WinRate
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetProfitFactor() float64 {
+	if x != nil {
+		return x.ProfitFactor
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetAvgHoldDurationHours() float64 {
+	if x != nil {
+		return x.AvgHoldDurationHours
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetBiggestWin() float64 {
+	if x != nil {
+		return x.BiggestWin
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetBiggestLoss() float64 {
+	if x != nil {
+		return x.BiggestLoss
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetCurrentStreakType() string {
+	if x != nil {
+		return x.CurrentStreakType
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetCurrentStreakCount() int32 {
+	if x != nil {
+		return x.CurrentStreakCount
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetLongestWinStreak() int32 {
+	if x != nil {
+		return x.LongestWinStreak
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetLongestLossStreak() int32 {
+	if x != nil {
+		return x.LongestLossStreak
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetCategoryBreakdown() []*WalletCategoryBreakdown {
+	if x != nil {
+		return x.CategoryBreakdown
+	}
+	return nil
+}
+
+func (x *WalletProfile) GetSnapshotAgeSeconds() int64 {
+	if x != nil {
+		return x.SnapshotAgeSeconds
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetMaxDrawdown() float64 {
+	if x != nil {
+		return x.MaxDrawdown
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetRoiStored() float64 {
+	if x != nil {
+		return x.RoiStored
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetPnlVolatility() float64 {
+	if x != nil {
+		return x.PnlVolatility
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetRoiRiskAdjusted() float64 {
+	if x != nil {
+		return x.RoiRiskAdjusted
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetPnlChange_90D() float64 {
+	if x != nil {
+		return x.PnlChange_90D
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetUsdcBalance() float64 {
+	if x != nil {
+		return x.UsdcBalance
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetTraderArchetype() string {
+	if x != nil {
+		return x.TraderArchetype
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetRiskProfile() string {
+	if x != nil {
+		return x.RiskProfile
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetCopyabilityScore() float64 {
+	if x != nil {
+		return x.CopyabilityScore
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetStrategyBadge() string {
+	if x != nil {
+		return x.StrategyBadge
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetTraderTier() string {
+	if x != nil {
+		return x.TraderTier
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetIsBot() bool {
+	if x != nil {
+		return x.IsBot
+	}
+	return false
+}
+
+func (x *WalletProfile) GetIsSmartMoney() bool {
+	if x != nil {
+		return x.IsSmartMoney
+	}
+	return false
+}
+
+func (x *WalletProfile) GetSpecialistGeneralist() string {
+	if x != nil {
+		return x.SpecialistGeneralist
+	}
+	return ""
+}
+
+func (x *WalletProfile) GetAvgTradeSize() float64 {
+	if x != nil {
+		return x.AvgTradeSize
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetCategoryTags() []string {
+	if x != nil {
+		return x.CategoryTags
+	}
+	return nil
+}
+
+func (x *WalletProfile) GetAvgClv() float64 {
+	if x != nil {
+		return x.AvgClv
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetClvPositiveRate() float64 {
+	if x != nil {
+		return x.ClvPositiveRate
+	}
+	return 0
+}
+
+func (x *WalletProfile) GetSimilarTraders() []*SimilarTrader {
+	if x != nil {
+		return x.SimilarTraders
+	}
+	return nil
+}
+
+type SimilarTrader struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Address         string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	SimilarityScore float64                `protobuf:"fixed64,3,opt,name=similarity_score,json=similarityScore,proto3" json:"similarity_score,omitempty"`
+	SharedMarkets   int32                  `protobuf:"varint,4,opt,name=shared_markets,json=sharedMarkets,proto3" json:"shared_markets,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SimilarTrader) Reset() {
+	*x = SimilarTrader{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[93]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SimilarTrader) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SimilarTrader) ProtoMessage() {}
+
+func (x *SimilarTrader) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[93]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SimilarTrader.ProtoReflect.Descriptor instead.
+func (*SimilarTrader) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{93}
+}
+
+func (x *SimilarTrader) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *SimilarTrader) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SimilarTrader) GetSimilarityScore() float64 {
+	if x != nil {
+		return x.SimilarityScore
+	}
+	return 0
+}
+
+func (x *SimilarTrader) GetSharedMarkets() int32 {
+	if x != nil {
+		return x.SharedMarkets
+	}
+	return 0
+}
+
+type WalletCategoryBreakdown struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Category      string                 `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`
+	TradeCount    int64                  `protobuf:"varint,2,opt,name=trade_count,json=tradeCount,proto3" json:"trade_count,omitempty"`
+	TotalVolume   float64                `protobuf:"fixed64,3,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	UnrealizedPnl float64                `protobuf:"fixed64,4,opt,name=unrealized_pnl,json=unrealizedPnl,proto3" json:"unrealized_pnl,omitempty"`
+	RealizedPnl   float64                `protobuf:"fixed64,5,opt,name=realized_pnl,json=realizedPnl,proto3" json:"realized_pnl,omitempty"`
+	IsPrimary     bool                   `protobuf:"varint,6,opt,name=is_primary,json=isPrimary,proto3" json:"is_primary,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WalletCategoryBreakdown) Reset() {
+	*x = WalletCategoryBreakdown{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[94]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WalletCategoryBreakdown) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WalletCategoryBreakdown) ProtoMessage() {}
+
+func (x *WalletCategoryBreakdown) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[94]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WalletCategoryBreakdown.ProtoReflect.Descriptor instead.
+func (*WalletCategoryBreakdown) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{94}
+}
+
+func (x *WalletCategoryBreakdown) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *WalletCategoryBreakdown) GetTradeCount() int64 {
+	if x != nil {
+		return x.TradeCount
+	}
+	return 0
+}
+
+func (x *WalletCategoryBreakdown) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+func (x *WalletCategoryBreakdown) GetUnrealizedPnl() float64 {
+	if x != nil {
+		return x.UnrealizedPnl
+	}
+	return 0
+}
+
+func (x *WalletCategoryBreakdown) GetRealizedPnl() float64 {
+	if x != nil {
+		return x.RealizedPnl
+	}
+	return 0
+}
+
+func (x *WalletCategoryBreakdown) GetIsPrimary() bool {
+	if x != nil {
+		return x.IsPrimary
+	}
+	return false
+}
+
+type GetTraderDiscoveryRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Category       string                 `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`                                      // filter by category tag (empty = all)
+	Archetype      string                 `protobuf:"bytes,2,opt,name=archetype,proto3" json:"archetype,omitempty"`                                    // filter: value_hunter, contrarian, scalper, etc.
+	RiskProfile    string                 `protobuf:"bytes,3,opt,name=risk_profile,json=riskProfile,proto3" json:"risk_profile,omitempty"`             // filter: conservative, moderate, aggressive
+	TraderTier     string                 `protobuf:"bytes,4,opt,name=trader_tier,json=traderTier,proto3" json:"trader_tier,omitempty"`                // filter: whale, large, medium, small
+	MinPnl         float64                `protobuf:"fixed64,5,opt,name=min_pnl,json=minPnl,proto3" json:"min_pnl,omitempty"`                          // minimum lifetime P&L
+	MinWinRate     float64                `protobuf:"fixed64,6,opt,name=min_win_rate,json=minWinRate,proto3" json:"min_win_rate,omitempty"`            // minimum win rate (0-1)
+	SmartMoneyOnly bool                   `protobuf:"varint,7,opt,name=smart_money_only,json=smartMoneyOnly,proto3" json:"smart_money_only,omitempty"` // only smart money wallets
+	MinCopyability float64                `protobuf:"fixed64,8,opt,name=min_copyability,json=minCopyability,proto3" json:"min_copyability,omitempty"`  // minimum copyability score (0-1)
+	SortBy         string                 `protobuf:"bytes,9,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"`                            // pnl, win_rate, copyability, volume (default: pnl)
+	Ascending      bool                   `protobuf:"varint,10,opt,name=ascending,proto3" json:"ascending,omitempty"`
+	Pagination     *PaginationRequest     `protobuf:"bytes,11,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *GetTraderDiscoveryRequest) Reset() {
+	*x = GetTraderDiscoveryRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[95]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTraderDiscoveryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTraderDiscoveryRequest) ProtoMessage() {}
+
+func (x *GetTraderDiscoveryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[95]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTraderDiscoveryRequest.ProtoReflect.Descriptor instead.
+func (*GetTraderDiscoveryRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{95}
+}
+
+func (x *GetTraderDiscoveryRequest) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *GetTraderDiscoveryRequest) GetArchetype() string {
+	if x != nil {
+		return x.Archetype
+	}
+	return ""
+}
+
+func (x *GetTraderDiscoveryRequest) GetRiskProfile() string {
+	if x != nil {
+		return x.RiskProfile
+	}
+	return ""
+}
+
+func (x *GetTraderDiscoveryRequest) GetTraderTier() string {
+	if x != nil {
+		return x.TraderTier
+	}
+	return ""
+}
+
+func (x *GetTraderDiscoveryRequest) GetMinPnl() float64 {
+	if x != nil {
+		return x.MinPnl
+	}
+	return 0
+}
+
+func (x *GetTraderDiscoveryRequest) GetMinWinRate() float64 {
+	if x != nil {
+		return x.MinWinRate
+	}
+	return 0
+}
+
+func (x *GetTraderDiscoveryRequest) GetSmartMoneyOnly() bool {
+	if x != nil {
+		return x.SmartMoneyOnly
+	}
+	return false
+}
+
+func (x *GetTraderDiscoveryRequest) GetMinCopyability() float64 {
+	if x != nil {
+		return x.MinCopyability
+	}
+	return 0
+}
+
+func (x *GetTraderDiscoveryRequest) GetSortBy() string {
+	if x != nil {
+		return x.SortBy
+	}
+	return ""
+}
+
+func (x *GetTraderDiscoveryRequest) GetAscending() bool {
+	if x != nil {
+		return x.Ascending
+	}
+	return false
+}
+
+func (x *GetTraderDiscoveryRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type TraderCard struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Address      string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Name         string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	ProfileImage string                 `protobuf:"bytes,3,opt,name=profile_image,json=profileImage,proto3" json:"profile_image,omitempty"`
+	// P&L
+	TotalPnl      float64 `protobuf:"fixed64,4,opt,name=total_pnl,json=totalPnl,proto3" json:"total_pnl,omitempty"`
+	UnrealizedPnl float64 `protobuf:"fixed64,5,opt,name=unrealized_pnl,json=unrealizedPnl,proto3" json:"unrealized_pnl,omitempty"`
+	RealizedPnl   float64 `protobuf:"fixed64,6,opt,name=realized_pnl,json=realizedPnl,proto3" json:"realized_pnl,omitempty"`
+	PnlChange_24H float64 `protobuf:"fixed64,7,opt,name=pnl_change_24h,json=pnlChange24h,proto3" json:"pnl_change_24h,omitempty"`
+	PnlChange_7D  float64 `protobuf:"fixed64,8,opt,name=pnl_change_7d,json=pnlChange7d,proto3" json:"pnl_change_7d,omitempty"`
+	PnlChange_30D float64 `protobuf:"fixed64,9,opt,name=pnl_change_30d,json=pnlChange30d,proto3" json:"pnl_change_30d,omitempty"`
+	Roi           float64 `protobuf:"fixed64,10,opt,name=roi,proto3" json:"roi,omitempty"`
+	MaxDrawdown   float64 `protobuf:"fixed64,11,opt,name=max_drawdown,json=maxDrawdown,proto3" json:"max_drawdown,omitempty"`
+	// Performance
+	WinRate           float64 `protobuf:"fixed64,12,opt,name=win_rate,json=winRate,proto3" json:"win_rate,omitempty"`
+	ProfitFactor      float64 `protobuf:"fixed64,13,opt,name=profit_factor,json=profitFactor,proto3" json:"profit_factor,omitempty"`
+	ResolvedPositions int32   `protobuf:"varint,14,opt,name=resolved_positions,json=resolvedPositions,proto3" json:"resolved_positions,omitempty"`
+	OpenPositions     int32   `protobuf:"varint,15,opt,name=open_positions,json=openPositions,proto3" json:"open_positions,omitempty"`
+	// Taxonomy
+	TraderArchetype      string   `protobuf:"bytes,16,opt,name=trader_archetype,json=traderArchetype,proto3" json:"trader_archetype,omitempty"`
+	RiskProfile          string   `protobuf:"bytes,17,opt,name=risk_profile,json=riskProfile,proto3" json:"risk_profile,omitempty"`
+	TraderTier           string   `protobuf:"bytes,18,opt,name=trader_tier,json=traderTier,proto3" json:"trader_tier,omitempty"`
+	StrategyBadge        string   `protobuf:"bytes,19,opt,name=strategy_badge,json=strategyBadge,proto3" json:"strategy_badge,omitempty"`
+	CopyabilityScore     float64  `protobuf:"fixed64,20,opt,name=copyability_score,json=copyabilityScore,proto3" json:"copyability_score,omitempty"`
+	IsSmartMoney         bool     `protobuf:"varint,21,opt,name=is_smart_money,json=isSmartMoney,proto3" json:"is_smart_money,omitempty"`
+	IsBot                bool     `protobuf:"varint,22,opt,name=is_bot,json=isBot,proto3" json:"is_bot,omitempty"`
+	SpecialistGeneralist string   `protobuf:"bytes,23,opt,name=specialist_generalist,json=specialistGeneralist,proto3" json:"specialist_generalist,omitempty"`
+	CategoryTags         []string `protobuf:"bytes,24,rep,name=category_tags,json=categoryTags,proto3" json:"category_tags,omitempty"`
+	Summary              string   `protobuf:"bytes,25,opt,name=summary,proto3" json:"summary,omitempty"`
+	// Activity
+	TradesPerWeek        float64 `protobuf:"fixed64,26,opt,name=trades_per_week,json=tradesPerWeek,proto3" json:"trades_per_week,omitempty"`
+	AvgTradeSize         float64 `protobuf:"fixed64,27,opt,name=avg_trade_size,json=avgTradeSize,proto3" json:"avg_trade_size,omitempty"`
+	AvgHoldDurationHours float64 `protobuf:"fixed64,28,opt,name=avg_hold_duration_hours,json=avgHoldDurationHours,proto3" json:"avg_hold_duration_hours,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *TraderCard) Reset() {
+	*x = TraderCard{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[96]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TraderCard) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TraderCard) ProtoMessage() {}
+
+func (x *TraderCard) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[96]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TraderCard.ProtoReflect.Descriptor instead.
+func (*TraderCard) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{96}
+}
+
+func (x *TraderCard) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *TraderCard) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *TraderCard) GetProfileImage() string {
+	if x != nil {
+		return x.ProfileImage
+	}
+	return ""
+}
+
+func (x *TraderCard) GetTotalPnl() float64 {
+	if x != nil {
+		return x.TotalPnl
+	}
+	return 0
+}
+
+func (x *TraderCard) GetUnrealizedPnl() float64 {
+	if x != nil {
+		return x.UnrealizedPnl
+	}
+	return 0
+}
+
+func (x *TraderCard) GetRealizedPnl() float64 {
+	if x != nil {
+		return x.RealizedPnl
+	}
+	return 0
+}
+
+func (x *TraderCard) GetPnlChange_24H() float64 {
+	if x != nil {
+		return x.PnlChange_24H
+	}
+	return 0
+}
+
+func (x *TraderCard) GetPnlChange_7D() float64 {
+	if x != nil {
+		return x.PnlChange_7D
+	}
+	return 0
+}
+
+func (x *TraderCard) GetPnlChange_30D() float64 {
+	if x != nil {
+		return x.PnlChange_30D
+	}
+	return 0
+}
+
+func (x *TraderCard) GetRoi() float64 {
+	if x != nil {
+		return x.Roi
+	}
+	return 0
+}
+
+func (x *TraderCard) GetMaxDrawdown() float64 {
+	if x != nil {
+		return x.MaxDrawdown
+	}
+	return 0
+}
+
+func (x *TraderCard) GetWinRate() float64 {
+	if x != nil {
+		return x.WinRate
+	}
+	return 0
+}
+
+func (x *TraderCard) GetProfitFactor() float64 {
+	if x != nil {
+		return x.ProfitFactor
+	}
+	return 0
+}
+
+func (x *TraderCard) GetResolvedPositions() int32 {
+	if x != nil {
+		return x.ResolvedPositions
+	}
+	return 0
+}
+
+func (x *TraderCard) GetOpenPositions() int32 {
+	if x != nil {
+		return x.OpenPositions
+	}
+	return 0
+}
+
+func (x *TraderCard) GetTraderArchetype() string {
+	if x != nil {
+		return x.TraderArchetype
+	}
+	return ""
+}
+
+func (x *TraderCard) GetRiskProfile() string {
+	if x != nil {
+		return x.RiskProfile
+	}
+	return ""
+}
+
+func (x *TraderCard) GetTraderTier() string {
+	if x != nil {
+		return x.TraderTier
+	}
+	return ""
+}
+
+func (x *TraderCard) GetStrategyBadge() string {
+	if x != nil {
+		return x.StrategyBadge
+	}
+	return ""
+}
+
+func (x *TraderCard) GetCopyabilityScore() float64 {
+	if x != nil {
+		return x.CopyabilityScore
+	}
+	return 0
+}
+
+func (x *TraderCard) GetIsSmartMoney() bool {
+	if x != nil {
+		return x.IsSmartMoney
+	}
+	return false
+}
+
+func (x *TraderCard) GetIsBot() bool {
+	if x != nil {
+		return x.IsBot
+	}
+	return false
+}
+
+func (x *TraderCard) GetSpecialistGeneralist() string {
+	if x != nil {
+		return x.SpecialistGeneralist
+	}
+	return ""
+}
+
+func (x *TraderCard) GetCategoryTags() []string {
+	if x != nil {
+		return x.CategoryTags
+	}
+	return nil
+}
+
+func (x *TraderCard) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *TraderCard) GetTradesPerWeek() float64 {
+	if x != nil {
+		return x.TradesPerWeek
+	}
+	return 0
+}
+
+func (x *TraderCard) GetAvgTradeSize() float64 {
+	if x != nil {
+		return x.AvgTradeSize
+	}
+	return 0
+}
+
+func (x *TraderCard) GetAvgHoldDurationHours() float64 {
+	if x != nil {
+		return x.AvgHoldDurationHours
+	}
+	return 0
+}
+
+type GetTraderDiscoveryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Traders       []*TraderCard          `protobuf:"bytes,1,rep,name=traders,proto3" json:"traders,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTraderDiscoveryResponse) Reset() {
+	*x = GetTraderDiscoveryResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[97]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTraderDiscoveryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTraderDiscoveryResponse) ProtoMessage() {}
+
+func (x *GetTraderDiscoveryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[97]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTraderDiscoveryResponse.ProtoReflect.Descriptor instead.
+func (*GetTraderDiscoveryResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{97}
+}
+
+func (x *GetTraderDiscoveryResponse) GetTraders() []*TraderCard {
+	if x != nil {
+		return x.Traders
+	}
+	return nil
+}
+
+func (x *GetTraderDiscoveryResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+type GetSmartMoneySignalsRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Category          string                 `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`                                                // filter by category (empty = all)
+	MinSignalStrength float64                `protobuf:"fixed64,2,opt,name=min_signal_strength,json=minSignalStrength,proto3" json:"min_signal_strength,omitempty"` // minimum signal strength (0-1)
+	MinTraderCount    int32                  `protobuf:"varint,3,opt,name=min_trader_count,json=minTraderCount,proto3" json:"min_trader_count,omitempty"`           // minimum smart traders (default 2)
+	SortBy            string                 `protobuf:"bytes,4,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"`                                      // signal_strength, net_flow, trader_count
+	Pagination        *PaginationRequest     `protobuf:"bytes,5,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *GetSmartMoneySignalsRequest) Reset() {
+	*x = GetSmartMoneySignalsRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[98]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSmartMoneySignalsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSmartMoneySignalsRequest) ProtoMessage() {}
+
+func (x *GetSmartMoneySignalsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[98]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSmartMoneySignalsRequest.ProtoReflect.Descriptor instead.
+func (*GetSmartMoneySignalsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{98}
+}
+
+func (x *GetSmartMoneySignalsRequest) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *GetSmartMoneySignalsRequest) GetMinSignalStrength() float64 {
+	if x != nil {
+		return x.MinSignalStrength
+	}
+	return 0
+}
+
+func (x *GetSmartMoneySignalsRequest) GetMinTraderCount() int32 {
+	if x != nil {
+		return x.MinTraderCount
+	}
+	return 0
+}
+
+func (x *GetSmartMoneySignalsRequest) GetSortBy() string {
+	if x != nil {
+		return x.SortBy
+	}
+	return ""
+}
+
+func (x *GetSmartMoneySignalsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type SmartMoneyMarket struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	ConditionId        string                 `protobuf:"bytes,1,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"`
+	Title              string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Slug               string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
+	EventSlug          string                 `protobuf:"bytes,4,opt,name=event_slug,json=eventSlug,proto3" json:"event_slug,omitempty"`
+	Category           string                 `protobuf:"bytes,5,opt,name=category,proto3" json:"category,omitempty"`
+	CurrentPrice       float64                `protobuf:"fixed64,6,opt,name=current_price,json=currentPrice,proto3" json:"current_price,omitempty"`
+	SmartBuyVolume     float64                `protobuf:"fixed64,7,opt,name=smart_buy_volume,json=smartBuyVolume,proto3" json:"smart_buy_volume,omitempty"`
+	SmartSellVolume    float64                `protobuf:"fixed64,8,opt,name=smart_sell_volume,json=smartSellVolume,proto3" json:"smart_sell_volume,omitempty"`
+	SmartNetFlow       float64                `protobuf:"fixed64,9,opt,name=smart_net_flow,json=smartNetFlow,proto3" json:"smart_net_flow,omitempty"`
+	SmartTraderCount   int32                  `protobuf:"varint,10,opt,name=smart_trader_count,json=smartTraderCount,proto3" json:"smart_trader_count,omitempty"`
+	SmartAvgEntryPrice float64                `protobuf:"fixed64,11,opt,name=smart_avg_entry_price,json=smartAvgEntryPrice,proto3" json:"smart_avg_entry_price,omitempty"`
+	SignalStrength     float64                `protobuf:"fixed64,12,opt,name=signal_strength,json=signalStrength,proto3" json:"signal_strength,omitempty"`
+	SignalDirection    string                 `protobuf:"bytes,13,opt,name=signal_direction,json=signalDirection,proto3" json:"signal_direction,omitempty"` // "bullish" or "bearish"
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *SmartMoneyMarket) Reset() {
+	*x = SmartMoneyMarket{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[99]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SmartMoneyMarket) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SmartMoneyMarket) ProtoMessage() {}
+
+func (x *SmartMoneyMarket) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[99]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SmartMoneyMarket.ProtoReflect.Descriptor instead.
+func (*SmartMoneyMarket) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{99}
+}
+
+func (x *SmartMoneyMarket) GetConditionId() string {
+	if x != nil {
+		return x.ConditionId
+	}
+	return ""
+}
+
+func (x *SmartMoneyMarket) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *SmartMoneyMarket) GetSlug() string {
+	if x != nil {
+		return x.Slug
+	}
+	return ""
+}
+
+func (x *SmartMoneyMarket) GetEventSlug() string {
+	if x != nil {
+		return x.EventSlug
+	}
+	return ""
+}
+
+func (x *SmartMoneyMarket) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *SmartMoneyMarket) GetCurrentPrice() float64 {
+	if x != nil {
+		return x.CurrentPrice
+	}
+	return 0
+}
+
+func (x *SmartMoneyMarket) GetSmartBuyVolume() float64 {
+	if x != nil {
+		return x.SmartBuyVolume
+	}
+	return 0
+}
+
+func (x *SmartMoneyMarket) GetSmartSellVolume() float64 {
+	if x != nil {
+		return x.SmartSellVolume
+	}
+	return 0
+}
+
+func (x *SmartMoneyMarket) GetSmartNetFlow() float64 {
+	if x != nil {
+		return x.SmartNetFlow
+	}
+	return 0
+}
+
+func (x *SmartMoneyMarket) GetSmartTraderCount() int32 {
+	if x != nil {
+		return x.SmartTraderCount
+	}
+	return 0
+}
+
+func (x *SmartMoneyMarket) GetSmartAvgEntryPrice() float64 {
+	if x != nil {
+		return x.SmartAvgEntryPrice
+	}
+	return 0
+}
+
+func (x *SmartMoneyMarket) GetSignalStrength() float64 {
+	if x != nil {
+		return x.SignalStrength
+	}
+	return 0
+}
+
+func (x *SmartMoneyMarket) GetSignalDirection() string {
+	if x != nil {
+		return x.SignalDirection
+	}
+	return ""
+}
+
+type GetSmartMoneySignalsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Markets       []*SmartMoneyMarket    `protobuf:"bytes,1,rep,name=markets,proto3" json:"markets,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSmartMoneySignalsResponse) Reset() {
+	*x = GetSmartMoneySignalsResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[100]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSmartMoneySignalsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSmartMoneySignalsResponse) ProtoMessage() {}
+
+func (x *GetSmartMoneySignalsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[100]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSmartMoneySignalsResponse.ProtoReflect.Descriptor instead.
+func (*GetSmartMoneySignalsResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{100}
+}
+
+func (x *GetSmartMoneySignalsResponse) GetMarkets() []*SmartMoneyMarket {
+	if x != nil {
+		return x.Markets
+	}
+	return nil
+}
+
+func (x *GetSmartMoneySignalsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+type GetWalletTaxonomyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWalletTaxonomyRequest) Reset() {
+	*x = GetWalletTaxonomyRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[101]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWalletTaxonomyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWalletTaxonomyRequest) ProtoMessage() {}
+
+func (x *GetWalletTaxonomyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[101]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWalletTaxonomyRequest.ProtoReflect.Descriptor instead.
+func (*GetWalletTaxonomyRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{101}
+}
+
+func (x *GetWalletTaxonomyRequest) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+type WalletTaxonomy struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	Address              string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	TraderArchetype      string                 `protobuf:"bytes,2,opt,name=trader_archetype,json=traderArchetype,proto3" json:"trader_archetype,omitempty"`
+	RiskProfile          string                 `protobuf:"bytes,3,opt,name=risk_profile,json=riskProfile,proto3" json:"risk_profile,omitempty"`
+	StrategyBadge        string                 `protobuf:"bytes,4,opt,name=strategy_badge,json=strategyBadge,proto3" json:"strategy_badge,omitempty"`
+	CopyabilityScore     float64                `protobuf:"fixed64,5,opt,name=copyability_score,json=copyabilityScore,proto3" json:"copyability_score,omitempty"`
+	IsBot                bool                   `protobuf:"varint,6,opt,name=is_bot,json=isBot,proto3" json:"is_bot,omitempty"`
+	IsSmartMoney         bool                   `protobuf:"varint,7,opt,name=is_smart_money,json=isSmartMoney,proto3" json:"is_smart_money,omitempty"`
+	TraderTier           string                 `protobuf:"bytes,8,opt,name=trader_tier,json=traderTier,proto3" json:"trader_tier,omitempty"`
+	Summary              string                 `protobuf:"bytes,9,opt,name=summary,proto3" json:"summary,omitempty"`
+	CategoryTags         []string               `protobuf:"bytes,10,rep,name=category_tags,json=categoryTags,proto3" json:"category_tags,omitempty"`
+	SpecialistGeneralist string                 `protobuf:"bytes,11,opt,name=specialist_generalist,json=specialistGeneralist,proto3" json:"specialist_generalist,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *WalletTaxonomy) Reset() {
+	*x = WalletTaxonomy{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[102]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WalletTaxonomy) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WalletTaxonomy) ProtoMessage() {}
+
+func (x *WalletTaxonomy) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[102]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WalletTaxonomy.ProtoReflect.Descriptor instead.
+func (*WalletTaxonomy) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{102}
+}
+
+func (x *WalletTaxonomy) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *WalletTaxonomy) GetTraderArchetype() string {
+	if x != nil {
+		return x.TraderArchetype
+	}
+	return ""
+}
+
+func (x *WalletTaxonomy) GetRiskProfile() string {
+	if x != nil {
+		return x.RiskProfile
+	}
+	return ""
+}
+
+func (x *WalletTaxonomy) GetStrategyBadge() string {
+	if x != nil {
+		return x.StrategyBadge
+	}
+	return ""
+}
+
+func (x *WalletTaxonomy) GetCopyabilityScore() float64 {
+	if x != nil {
+		return x.CopyabilityScore
+	}
+	return 0
+}
+
+func (x *WalletTaxonomy) GetIsBot() bool {
+	if x != nil {
+		return x.IsBot
+	}
+	return false
+}
+
+func (x *WalletTaxonomy) GetIsSmartMoney() bool {
+	if x != nil {
+		return x.IsSmartMoney
+	}
+	return false
+}
+
+func (x *WalletTaxonomy) GetTraderTier() string {
+	if x != nil {
+		return x.TraderTier
+	}
+	return ""
+}
+
+func (x *WalletTaxonomy) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *WalletTaxonomy) GetCategoryTags() []string {
+	if x != nil {
+		return x.CategoryTags
+	}
+	return nil
+}
+
+func (x *WalletTaxonomy) GetSpecialistGeneralist() string {
+	if x != nil {
+		return x.SpecialistGeneralist
+	}
+	return ""
+}
+
+type GetPipelineStatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPipelineStatsRequest) Reset() {
+	*x = GetPipelineStatsRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[103]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPipelineStatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPipelineStatsRequest) ProtoMessage() {}
+
+func (x *GetPipelineStatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[103]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPipelineStatsRequest.ProtoReflect.Descriptor instead.
+func (*GetPipelineStatsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{103}
+}
+
+type TableStat struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	RowCount      int64                  `protobuf:"varint,2,opt,name=row_count,json=rowCount,proto3" json:"row_count,omitempty"`
+	LastUpdated   string                 `protobuf:"bytes,3,opt,name=last_updated,json=lastUpdated,proto3" json:"last_updated,omitempty"` // ISO timestamp from max(modification_time)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TableStat) Reset() {
+	*x = TableStat{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[104]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TableStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TableStat) ProtoMessage() {}
+
+func (x *TableStat) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[104]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TableStat.ProtoReflect.Descriptor instead.
+func (*TableStat) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{104}
+}
+
+func (x *TableStat) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *TableStat) GetRowCount() int64 {
+	if x != nil {
+		return x.RowCount
+	}
+	return 0
+}
+
+func (x *TableStat) GetLastUpdated() string {
+	if x != nil {
+		return x.LastUpdated
+	}
+	return ""
+}
+
+type CronJobStat struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Interval      string                 `protobuf:"bytes,2,opt,name=interval,proto3" json:"interval,omitempty"`
+	LastRun       string                 `protobuf:"bytes,3,opt,name=last_run,json=lastRun,proto3" json:"last_run,omitempty"` // ISO timestamp
+	Status        string                 `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`                  // "ok" or "warn"
+	RowsProcessed int64                  `protobuf:"varint,5,opt,name=rows_processed,json=rowsProcessed,proto3" json:"rows_processed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CronJobStat) Reset() {
+	*x = CronJobStat{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[105]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CronJobStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CronJobStat) ProtoMessage() {}
+
+func (x *CronJobStat) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[105]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CronJobStat.ProtoReflect.Descriptor instead.
+func (*CronJobStat) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{105}
+}
+
+func (x *CronJobStat) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CronJobStat) GetInterval() string {
+	if x != nil {
+		return x.Interval
+	}
+	return ""
+}
+
+func (x *CronJobStat) GetLastRun() string {
+	if x != nil {
+		return x.LastRun
+	}
+	return ""
+}
+
+func (x *CronJobStat) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *CronJobStat) GetRowsProcessed() int64 {
+	if x != nil {
+		return x.RowsProcessed
+	}
+	return 0
+}
+
+type PipelineStats struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Entity counts
+	EventsCount             int64 `protobuf:"varint,1,opt,name=events_count,json=eventsCount,proto3" json:"events_count,omitempty"`
+	MarketsCount            int64 `protobuf:"varint,2,opt,name=markets_count,json=marketsCount,proto3" json:"markets_count,omitempty"`
+	TradesCount             int64 `protobuf:"varint,3,opt,name=trades_count,json=tradesCount,proto3" json:"trades_count,omitempty"`
+	WalletsTracked          int64 `protobuf:"varint,4,opt,name=wallets_tracked,json=walletsTracked,proto3" json:"wallets_tracked,omitempty"`
+	PositionsCount          int64 `protobuf:"varint,5,opt,name=positions_count,json=positionsCount,proto3" json:"positions_count,omitempty"`
+	InterestingWalletsCount int64 `protobuf:"varint,6,opt,name=interesting_wallets_count,json=interestingWalletsCount,proto3" json:"interesting_wallets_count,omitempty"`
+	SmartMoneyMarkets       int64 `protobuf:"varint,7,opt,name=smart_money_markets,json=smartMoneyMarkets,proto3" json:"smart_money_markets,omitempty"`
+	TaxonomyWallets         int64 `protobuf:"varint,8,opt,name=taxonomy_wallets,json=taxonomyWallets,proto3" json:"taxonomy_wallets,omitempty"`
+	// Table details
+	Tables []*TableStat `protobuf:"bytes,9,rep,name=tables,proto3" json:"tables,omitempty"`
+	// Cron jobs
+	CronJobs      []*CronJobStat `protobuf:"bytes,10,rep,name=cron_jobs,json=cronJobs,proto3" json:"cron_jobs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PipelineStats) Reset() {
+	*x = PipelineStats{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[106]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PipelineStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PipelineStats) ProtoMessage() {}
+
+func (x *PipelineStats) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[106]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PipelineStats.ProtoReflect.Descriptor instead.
+func (*PipelineStats) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{106}
+}
+
+func (x *PipelineStats) GetEventsCount() int64 {
+	if x != nil {
+		return x.EventsCount
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetMarketsCount() int64 {
+	if x != nil {
+		return x.MarketsCount
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetTradesCount() int64 {
+	if x != nil {
+		return x.TradesCount
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetWalletsTracked() int64 {
+	if x != nil {
+		return x.WalletsTracked
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetPositionsCount() int64 {
+	if x != nil {
+		return x.PositionsCount
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetInterestingWalletsCount() int64 {
+	if x != nil {
+		return x.InterestingWalletsCount
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetSmartMoneyMarkets() int64 {
+	if x != nil {
+		return x.SmartMoneyMarkets
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetTaxonomyWallets() int64 {
+	if x != nil {
+		return x.TaxonomyWallets
+	}
+	return 0
+}
+
+func (x *PipelineStats) GetTables() []*TableStat {
+	if x != nil {
+		return x.Tables
+	}
+	return nil
+}
+
+func (x *PipelineStats) GetCronJobs() []*CronJobStat {
+	if x != nil {
+		return x.CronJobs
+	}
+	return nil
+}
+
+type GetEventAnalyticsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EventSlug     string                 `protobuf:"bytes,1,opt,name=event_slug,json=eventSlug,proto3" json:"event_slug,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetEventAnalyticsRequest) Reset() {
+	*x = GetEventAnalyticsRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[107]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetEventAnalyticsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEventAnalyticsRequest) ProtoMessage() {}
+
+func (x *GetEventAnalyticsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[107]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEventAnalyticsRequest.ProtoReflect.Descriptor instead.
+func (*GetEventAnalyticsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{107}
+}
+
+func (x *GetEventAnalyticsRequest) GetEventSlug() string {
+	if x != nil {
+		return x.EventSlug
+	}
+	return ""
+}
+
+type EventAnalytics struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	EventSlug            string                 `protobuf:"bytes,1,opt,name=event_slug,json=eventSlug,proto3" json:"event_slug,omitempty"`
+	TotalVolume          float64                `protobuf:"fixed64,2,opt,name=total_volume,json=totalVolume,proto3" json:"total_volume,omitempty"`
+	TotalVolume_24H      float64                `protobuf:"fixed64,3,opt,name=total_volume_24h,json=totalVolume24h,proto3" json:"total_volume_24h,omitempty"`
+	TotalOpenInterest    float64                `protobuf:"fixed64,4,opt,name=total_open_interest,json=totalOpenInterest,proto3" json:"total_open_interest,omitempty"`
+	TotalLiquidity       float64                `protobuf:"fixed64,5,opt,name=total_liquidity,json=totalLiquidity,proto3" json:"total_liquidity,omitempty"`
+	TotalUniqueBettors   int64                  `protobuf:"varint,6,opt,name=total_unique_bettors,json=totalUniqueBettors,proto3" json:"total_unique_bettors,omitempty"`
+	MarketCount          int32                  `protobuf:"varint,7,opt,name=market_count,json=marketCount,proto3" json:"market_count,omitempty"`
+	SmartNetFlow         float64                `protobuf:"fixed64,8,opt,name=smart_net_flow,json=smartNetFlow,proto3" json:"smart_net_flow,omitempty"`
+	SmartTraderCount     int32                  `protobuf:"varint,9,opt,name=smart_trader_count,json=smartTraderCount,proto3" json:"smart_trader_count,omitempty"`
+	SmartSignalDirection string                 `protobuf:"bytes,10,opt,name=smart_signal_direction,json=smartSignalDirection,proto3" json:"smart_signal_direction,omitempty"`
+	TopWallets           []*EventTopWallet      `protobuf:"bytes,11,rep,name=top_wallets,json=topWallets,proto3" json:"top_wallets,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *EventAnalytics) Reset() {
+	*x = EventAnalytics{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[108]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EventAnalytics) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EventAnalytics) ProtoMessage() {}
+
+func (x *EventAnalytics) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[108]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EventAnalytics.ProtoReflect.Descriptor instead.
+func (*EventAnalytics) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{108}
+}
+
+func (x *EventAnalytics) GetEventSlug() string {
+	if x != nil {
+		return x.EventSlug
+	}
+	return ""
+}
+
+func (x *EventAnalytics) GetTotalVolume() float64 {
+	if x != nil {
+		return x.TotalVolume
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetTotalVolume_24H() float64 {
+	if x != nil {
+		return x.TotalVolume_24H
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetTotalOpenInterest() float64 {
+	if x != nil {
+		return x.TotalOpenInterest
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetTotalLiquidity() float64 {
+	if x != nil {
+		return x.TotalLiquidity
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetTotalUniqueBettors() int64 {
+	if x != nil {
+		return x.TotalUniqueBettors
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetMarketCount() int32 {
+	if x != nil {
+		return x.MarketCount
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetSmartNetFlow() float64 {
+	if x != nil {
+		return x.SmartNetFlow
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetSmartTraderCount() int32 {
+	if x != nil {
+		return x.SmartTraderCount
+	}
+	return 0
+}
+
+func (x *EventAnalytics) GetSmartSignalDirection() string {
+	if x != nil {
+		return x.SmartSignalDirection
+	}
+	return ""
+}
+
+func (x *EventAnalytics) GetTopWallets() []*EventTopWallet {
+	if x != nil {
+		return x.TopWallets
+	}
+	return nil
+}
+
+type EventTopWallet struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	TotalValue    float64                `protobuf:"fixed64,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"`
+	UnrealizedPnl float64                `protobuf:"fixed64,4,opt,name=unrealized_pnl,json=unrealizedPnl,proto3" json:"unrealized_pnl,omitempty"`
+	MarketsCount  int32                  `protobuf:"varint,5,opt,name=markets_count,json=marketsCount,proto3" json:"markets_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EventTopWallet) Reset() {
+	*x = EventTopWallet{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[109]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EventTopWallet) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EventTopWallet) ProtoMessage() {}
+
+func (x *EventTopWallet) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[109]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EventTopWallet.ProtoReflect.Descriptor instead.
+func (*EventTopWallet) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{109}
+}
+
+func (x *EventTopWallet) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *EventTopWallet) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *EventTopWallet) GetTotalValue() float64 {
+	if x != nil {
+		return x.TotalValue
+	}
+	return 0
+}
+
+func (x *EventTopWallet) GetUnrealizedPnl() float64 {
+	if x != nil {
+		return x.UnrealizedPnl
+	}
+	return 0
+}
+
+func (x *EventTopWallet) GetMarketsCount() int32 {
+	if x != nil {
+		return x.MarketsCount
+	}
+	return 0
+}
+
+type GetWalletPositionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	IncludeClosed bool                   `protobuf:"varint,2,opt,name=include_closed,json=includeClosed,proto3" json:"include_closed,omitempty"`
+	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"`
+	Pagination    *PaginationRequest     `protobuf:"bytes,4,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWalletPositionsRequest) Reset() {
+	*x = GetWalletPositionsRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[110]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWalletPositionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWalletPositionsRequest) ProtoMessage() {}
+
+func (x *GetWalletPositionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[110]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWalletPositionsRequest.ProtoReflect.Descriptor instead.
+func (*GetWalletPositionsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{110}
+}
+
+func (x *GetWalletPositionsRequest) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *GetWalletPositionsRequest) GetIncludeClosed() bool {
+	if x != nil {
+		return x.IncludeClosed
+	}
+	return false
+}
+
+func (x *GetWalletPositionsRequest) GetSortBy() string {
+	if x != nil {
+		return x.SortBy
+	}
+	return ""
+}
+
+func (x *GetWalletPositionsRequest) GetPagination() *PaginationRequest {
+	if x != nil {
+		return x.Pagination
+	}
+	return nil
+}
+
+type WalletPosition struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	ConditionId      string                 `protobuf:"bytes,1,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"`
+	TokenId          string                 `protobuf:"bytes,2,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
+	MarketTitle      string                 `protobuf:"bytes,3,opt,name=market_title,json=marketTitle,proto3" json:"market_title,omitempty"`
+	MarketSlug       string                 `protobuf:"bytes,4,opt,name=market_slug,json=marketSlug,proto3" json:"market_slug,omitempty"`
+	EventSlug        string                 `protobuf:"bytes,5,opt,name=event_slug,json=eventSlug,proto3" json:"event_slug,omitempty"`
+	Outcome          string                 `protobuf:"bytes,6,opt,name=outcome,proto3" json:"outcome,omitempty"`
+	Size             float64                `protobuf:"fixed64,7,opt,name=size,proto3" json:"size,omitempty"`
+	AvgEntryPrice    float64                `protobuf:"fixed64,8,opt,name=avg_entry_price,json=avgEntryPrice,proto3" json:"avg_entry_price,omitempty"`
+	CurrentPrice     float64                `protobuf:"fixed64,9,opt,name=current_price,json=currentPrice,proto3" json:"current_price,omitempty"`
+	CostBasis        float64                `protobuf:"fixed64,10,opt,name=cost_basis,json=costBasis,proto3" json:"cost_basis,omitempty"`
+	CurrentValue     float64                `protobuf:"fixed64,11,opt,name=current_value,json=currentValue,proto3" json:"current_value,omitempty"`
+	UnrealizedPnl    float64                `protobuf:"fixed64,12,opt,name=unrealized_pnl,json=unrealizedPnl,proto3" json:"unrealized_pnl,omitempty"`
+	UnrealizedPnlPct float64                `protobuf:"fixed64,13,opt,name=unrealized_pnl_pct,json=unrealizedPnlPct,proto3" json:"unrealized_pnl_pct,omitempty"`
+	Category         string                 `protobuf:"bytes,14,opt,name=category,proto3" json:"category,omitempty"`
+	FirstTradeUnix   int64                  `protobuf:"varint,15,opt,name=first_trade_unix,json=firstTradeUnix,proto3" json:"first_trade_unix,omitempty"`
+	LastTradeUnix    int64                  `protobuf:"varint,16,opt,name=last_trade_unix,json=lastTradeUnix,proto3" json:"last_trade_unix,omitempty"`
+	TradeCount       int32                  `protobuf:"varint,17,opt,name=trade_count,json=tradeCount,proto3" json:"trade_count,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *WalletPosition) Reset() {
+	*x = WalletPosition{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[111]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WalletPosition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WalletPosition) ProtoMessage() {}
+
+func (x *WalletPosition) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[111]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WalletPosition.ProtoReflect.Descriptor instead.
+func (*WalletPosition) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{111}
+}
+
+func (x *WalletPosition) GetConditionId() string {
+	if x != nil {
+		return x.ConditionId
+	}
+	return ""
+}
+
+func (x *WalletPosition) GetTokenId() string {
+	if x != nil {
+		return x.TokenId
+	}
+	return ""
+}
+
+func (x *WalletPosition) GetMarketTitle() string {
+	if x != nil {
+		return x.MarketTitle
+	}
+	return ""
+}
+
+func (x *WalletPosition) GetMarketSlug() string {
+	if x != nil {
+		return x.MarketSlug
+	}
+	return ""
+}
+
+func (x *WalletPosition) GetEventSlug() string {
+	if x != nil {
+		return x.EventSlug
+	}
+	return ""
+}
+
+func (x *WalletPosition) GetOutcome() string {
+	if x != nil {
+		return x.Outcome
+	}
+	return ""
+}
+
+func (x *WalletPosition) GetSize() float64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetAvgEntryPrice() float64 {
+	if x != nil {
+		return x.AvgEntryPrice
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetCurrentPrice() float64 {
+	if x != nil {
+		return x.CurrentPrice
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetCostBasis() float64 {
+	if x != nil {
+		return x.CostBasis
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetCurrentValue() float64 {
+	if x != nil {
+		return x.CurrentValue
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetUnrealizedPnl() float64 {
+	if x != nil {
+		return x.UnrealizedPnl
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetUnrealizedPnlPct() float64 {
+	if x != nil {
+		return x.UnrealizedPnlPct
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *WalletPosition) GetFirstTradeUnix() int64 {
+	if x != nil {
+		return x.FirstTradeUnix
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetLastTradeUnix() int64 {
+	if x != nil {
+		return x.LastTradeUnix
+	}
+	return 0
+}
+
+func (x *WalletPosition) GetTradeCount() int32 {
+	if x != nil {
+		return x.TradeCount
+	}
+	return 0
+}
+
+type GetWalletPositionsResponse struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Positions          []*WalletPosition      `protobuf:"bytes,1,rep,name=positions,proto3" json:"positions,omitempty"`
+	TotalCount         int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	TotalValue         float64                `protobuf:"fixed64,3,opt,name=total_value,json=totalValue,proto3" json:"total_value,omitempty"`
+	TotalUnrealizedPnl float64                `protobuf:"fixed64,4,opt,name=total_unrealized_pnl,json=totalUnrealizedPnl,proto3" json:"total_unrealized_pnl,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *GetWalletPositionsResponse) Reset() {
+	*x = GetWalletPositionsResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[112]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWalletPositionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWalletPositionsResponse) ProtoMessage() {}
+
+func (x *GetWalletPositionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[112]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWalletPositionsResponse.ProtoReflect.Descriptor instead.
+func (*GetWalletPositionsResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{112}
+}
+
+func (x *GetWalletPositionsResponse) GetPositions() []*WalletPosition {
+	if x != nil {
+		return x.Positions
+	}
+	return nil
+}
+
+func (x *GetWalletPositionsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *GetWalletPositionsResponse) GetTotalValue() float64 {
+	if x != nil {
+		return x.TotalValue
+	}
+	return 0
+}
+
+func (x *GetWalletPositionsResponse) GetTotalUnrealizedPnl() float64 {
+	if x != nil {
+		return x.TotalUnrealizedPnl
+	}
+	return 0
+}
+
+type GetSignificantTradesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SignalType    string                 `protobuf:"bytes,1,opt,name=signal_type,json=signalType,proto3" json:"signal_type,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSignificantTradesRequest) Reset() {
+	*x = GetSignificantTradesRequest{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[113]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSignificantTradesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSignificantTradesRequest) ProtoMessage() {}
+
+func (x *GetSignificantTradesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[113]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSignificantTradesRequest.ProtoReflect.Descriptor instead.
+func (*GetSignificantTradesRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{113}
+}
+
+func (x *GetSignificantTradesRequest) GetSignalType() string {
+	if x != nil {
+		return x.SignalType
+	}
+	return ""
+}
+
+func (x *GetSignificantTradesRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type SignificantTrade struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	TraderAddress   string                 `protobuf:"bytes,1,opt,name=trader_address,json=traderAddress,proto3" json:"trader_address,omitempty"`
+	ConditionId     string                 `protobuf:"bytes,2,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"`
+	MarketTitle     string                 `protobuf:"bytes,3,opt,name=market_title,json=marketTitle,proto3" json:"market_title,omitempty"`
+	MarketSlug      string                 `protobuf:"bytes,4,opt,name=market_slug,json=marketSlug,proto3" json:"market_slug,omitempty"`
+	EventSlug       string                 `protobuf:"bytes,5,opt,name=event_slug,json=eventSlug,proto3" json:"event_slug,omitempty"`
+	Side            string                 `protobuf:"bytes,6,opt,name=side,proto3" json:"side,omitempty"`
+	Size            float64                `protobuf:"fixed64,7,opt,name=size,proto3" json:"size,omitempty"`
+	Price           float64                `protobuf:"fixed64,8,opt,name=price,proto3" json:"price,omitempty"`
+	UsdcValue       float64                `protobuf:"fixed64,9,opt,name=usdc_value,json=usdcValue,proto3" json:"usdc_value,omitempty"`
+	SignalType      string                 `protobuf:"bytes,10,opt,name=signal_type,json=signalType,proto3" json:"signal_type,omitempty"`
+	TraderTier      string                 `protobuf:"bytes,11,opt,name=trader_tier,json=traderTier,proto3" json:"trader_tier,omitempty"`
+	IsSmartMoney    bool                   `protobuf:"varint,12,opt,name=is_smart_money,json=isSmartMoney,proto3" json:"is_smart_money,omitempty"`
+	TimestampUnix   int64                  `protobuf:"varint,13,opt,name=timestamp_unix,json=timestampUnix,proto3" json:"timestamp_unix,omitempty"`
+	TransactionHash string                 `protobuf:"bytes,14,opt,name=transaction_hash,json=transactionHash,proto3" json:"transaction_hash,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SignificantTrade) Reset() {
+	*x = SignificantTrade{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[114]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SignificantTrade) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SignificantTrade) ProtoMessage() {}
+
+func (x *SignificantTrade) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[114]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SignificantTrade.ProtoReflect.Descriptor instead.
+func (*SignificantTrade) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{114}
+}
+
+func (x *SignificantTrade) GetTraderAddress() string {
+	if x != nil {
+		return x.TraderAddress
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetConditionId() string {
+	if x != nil {
+		return x.ConditionId
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetMarketTitle() string {
+	if x != nil {
+		return x.MarketTitle
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetMarketSlug() string {
+	if x != nil {
+		return x.MarketSlug
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetEventSlug() string {
+	if x != nil {
+		return x.EventSlug
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetSide() string {
+	if x != nil {
+		return x.Side
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetSize() float64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *SignificantTrade) GetPrice() float64 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *SignificantTrade) GetUsdcValue() float64 {
+	if x != nil {
+		return x.UsdcValue
+	}
+	return 0
+}
+
+func (x *SignificantTrade) GetSignalType() string {
+	if x != nil {
+		return x.SignalType
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetTraderTier() string {
+	if x != nil {
+		return x.TraderTier
+	}
+	return ""
+}
+
+func (x *SignificantTrade) GetIsSmartMoney() bool {
+	if x != nil {
+		return x.IsSmartMoney
+	}
+	return false
+}
+
+func (x *SignificantTrade) GetTimestampUnix() int64 {
+	if x != nil {
+		return x.TimestampUnix
+	}
+	return 0
+}
+
+func (x *SignificantTrade) GetTransactionHash() string {
+	if x != nil {
+		return x.TransactionHash
+	}
+	return ""
+}
+
+type GetSignificantTradesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Trades        []*SignificantTrade    `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSignificantTradesResponse) Reset() {
+	*x = GetSignificantTradesResponse{}
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[115]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSignificantTradesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSignificantTradesResponse) ProtoMessage() {}
+
+func (x *GetSignificantTradesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_explore_proto_msgTypes[115]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSignificantTradesResponse.ProtoReflect.Descriptor instead.
+func (*GetSignificantTradesResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_explore_proto_rawDescGZIP(), []int{115}
+}
+
+func (x *GetSignificantTradesResponse) GetTrades() []*SignificantTrade {
+	if x != nil {
+		return x.Trades
+	}
+	return nil
+}
+
+func (x *GetSignificantTradesResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
 }
 
 var File_bullpen_v1_polymarket_explore_proto protoreflect.FileDescriptor
@@ -4791,12 +9945,13 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\rtotal_traders\x18\x01 \x01(\x03R\ftotalTraders\x12#\n" +
 	"\rtotal_markets\x18\x02 \x01(\x03R\ftotalMarkets\x12'\n" +
 	"\x0ftotal_positions\x18\x03 \x01(\x03R\x0etotalPositions\x12!\n" +
-	"\ftotal_volume\x18\x04 \x01(\tR\vtotalVolume\"R\n" +
+	"\ftotal_volume\x18\x04 \x01(\tR\vtotalVolume\"j\n" +
 	"\x0fGetEventRequest\x12\x14\n" +
 	"\x04slug\x18\x01 \x01(\tH\x00R\x04slug\x12\x1b\n" +
-	"\bevent_id\x18\x02 \x01(\tH\x00R\aeventIdB\f\n" +
+	"\bevent_id\x18\x02 \x01(\tH\x00R\aeventId\x12\x16\n" +
+	"\x06locale\x18\x03 \x01(\tR\x06localeB\f\n" +
 	"\n" +
-	"identifier\"\x9c\a\n" +
+	"identifier\"\xba\b\n" +
 	"\x05Event\x12\x19\n" +
 	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
@@ -4835,7 +9990,11 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"start_time\x18\x1b \x01(\tR\tstartTime\x12\x16\n" +
 	"\x06league\x18\x1c \x01(\tR\x06league\x12-\n" +
 	"\thome_team\x18\x1d \x01(\v2\x10.bullpen.v1.TeamR\bhomeTeam\x12-\n" +
-	"\taway_team\x18\x1e \x01(\v2\x10.bullpen.v1.TeamR\bawayTeam\"[\n" +
+	"\taway_team\x18\x1e \x01(\v2\x10.bullpen.v1.TeamR\bawayTeam\x12/\n" +
+	"\x13context_description\x18\x1f \x01(\tR\x12contextDescription\x12,\n" +
+	"\x12context_updated_at\x18  \x01(\tR\x10contextUpdatedAt\x12!\n" +
+	"\fdisplay_type\x18! \x01(\tR\vdisplayType\x12\x1a\n" +
+	"\bcategory\x18\" \x01(\tR\bcategory\"[\n" +
 	"\x10GetMarketRequest\x12#\n" +
 	"\fcondition_id\x18\x01 \x01(\tH\x00R\vconditionId\x12\x14\n" +
 	"\x04slug\x18\x02 \x01(\tH\x00R\x04slugB\f\n" +
@@ -4917,7 +10076,18 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\n" +
 	"pagination\x18\x02 \x01(\v2\x1d.bullpen.v1.PaginationRequestR\n" +
 	"pagination\x12!\n" +
-	"\fholders_only\x18\x03 \x01(\bR\vholdersOnly\"\x9d\x02\n" +
+	"\fholders_only\x18\x03 \x01(\bR\vholdersOnly\"`\n" +
+	"\x14CommentPositionBadge\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1d\n" +
+	"\n" +
+	"size_label\x18\x02 \x01(\tR\tsizeLabel\x12\x15\n" +
+	"\x06is_yes\x18\x03 \x01(\bR\x05isYes\"v\n" +
+	"\fCommentMedia\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x19\n" +
+	"\balt_text\x18\x02 \x01(\tR\aaltText\x12\x1d\n" +
+	"\n" +
+	"media_type\x18\x03 \x01(\tR\tmediaType\x12\x1a\n" +
+	"\bprovider\x18\x04 \x01(\tR\bprovider\"\xd9\x03\n" +
 	"\aComment\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04body\x18\x02 \x01(\tR\x04body\x12!\n" +
@@ -4928,18 +10098,98 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x0ereaction_count\x18\x06 \x01(\x05R\rreactionCount\x12-\n" +
 	"\areplies\x18\a \x03(\v2\x13.bullpen.v1.CommentR\areplies\x129\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x8c\x01\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12C\n" +
+	"\ftop_position\x18\t \x01(\v2 .bullpen.v1.CommentPositionBadgeR\vtopPosition\x12E\n" +
+	"\rall_positions\x18\n" +
+	" \x03(\v2 .bullpen.v1.CommentPositionBadgeR\fallPositions\x12.\n" +
+	"\x05media\x18\v \x03(\v2\x18.bullpen.v1.CommentMediaR\x05media\"\x8c\x01\n" +
 	"\x19GetMarketCommentsResponse\x12/\n" +
 	"\bcomments\x18\x01 \x03(\v2\x13.bullpen.v1.CommentR\bcomments\x12>\n" +
 	"\n" +
 	"pagination\x18\x02 \x01(\v2\x1e.bullpen.v1.PaginationResponseR\n" +
-	"pagination\"8\n" +
+	"pagination\"=\n" +
+	"\x14GetGammaNonceRequest\x12%\n" +
+	"\x0ewallet_address\x18\x01 \x01(\tR\rwalletAddress\"m\n" +
+	"\x15GetGammaNonceResponse\x12\x14\n" +
+	"\x05nonce\x18\x01 \x01(\tR\x05nonce\x12!\n" +
+	"\fsiwe_message\x18\x02 \x01(\tR\vsiweMessage\x12\x1b\n" +
+	"\tissued_at\x18\x03 \x01(\tR\bissuedAt\"\x8b\x01\n" +
+	"\x11GammaLoginRequest\x12%\n" +
+	"\x0ewallet_address\x18\x01 \x01(\tR\rwalletAddress\x12\x14\n" +
+	"\x05nonce\x18\x02 \x01(\tR\x05nonce\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\tR\tsignature\x12\x1b\n" +
+	"\tissued_at\x18\x04 \x01(\tR\bissuedAt\"H\n" +
+	"\x12GammaLoginResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\aaddress\x18\x02 \x01(\tR\aaddress\"j\n" +
+	"\x12PostCommentRequest\x12%\n" +
+	"\x0ewallet_address\x18\x01 \x01(\tR\rwalletAddress\x12\x19\n" +
+	"\bevent_id\x18\x02 \x01(\x03R\aeventId\x12\x12\n" +
+	"\x04body\x18\x03 \x01(\tR\x04body\"\x8a\x01\n" +
+	"\x13PostCommentResponse\x12\x1d\n" +
+	"\n" +
+	"comment_id\x18\x01 \x01(\tR\tcommentId\x12\x12\n" +
+	"\x04body\x18\x02 \x01(\tR\x04body\x12!\n" +
+	"\fuser_address\x18\x03 \x01(\tR\vuserAddress\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\tR\tcreatedAt\"\x9e\x01\n" +
+	"\x12GetCommentsRequest\x12\x19\n" +
+	"\bevent_id\x18\x01 \x01(\x03R\aeventId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\x12!\n" +
+	"\fholders_only\x18\x04 \x01(\bR\vholdersOnly\x12\x1c\n" +
+	"\tascending\x18\x05 \x01(\bR\tascending\"g\n" +
+	"\x13GetCommentsResponse\x12/\n" +
+	"\bcomments\x18\x01 \x03(\v2\x13.bullpen.v1.CommentR\bcomments\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\"\x82\x01\n" +
+	"\x15ReactToCommentRequest\x12%\n" +
+	"\x0ewallet_address\x18\x01 \x01(\tR\rwalletAddress\x12\x1d\n" +
+	"\n" +
+	"comment_id\x18\x02 \x01(\x03R\tcommentId\x12#\n" +
+	"\rreaction_type\x18\x03 \x01(\tR\freactionType\"\xbf\x01\n" +
+	"\x16ReactToCommentResponse\x12\x1f\n" +
+	"\vreaction_id\x18\x01 \x01(\tR\n" +
+	"reactionId\x12\x1d\n" +
+	"\n" +
+	"comment_id\x18\x02 \x01(\x03R\tcommentId\x12#\n" +
+	"\rreaction_type\x18\x03 \x01(\tR\freactionType\x12!\n" +
+	"\fuser_address\x18\x04 \x01(\tR\vuserAddress\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\tR\tcreatedAt\"\\\n" +
+	"\x14DeleteCommentRequest\x12%\n" +
+	"\x0ewallet_address\x18\x01 \x01(\tR\rwalletAddress\x12\x1d\n" +
+	"\n" +
+	"comment_id\x18\x02 \x01(\tR\tcommentId\"\x17\n" +
+	"\x15DeleteCommentResponse\"\xbe\x01\n" +
+	"\x15ReplyToCommentRequest\x12%\n" +
+	"\x0ewallet_address\x18\x01 \x01(\tR\rwalletAddress\x12\x19\n" +
+	"\bevent_id\x18\x02 \x01(\x03R\aeventId\x12\x12\n" +
+	"\x04body\x18\x03 \x01(\tR\x04body\x12*\n" +
+	"\x11parent_comment_id\x18\x04 \x01(\tR\x0fparentCommentId\x12#\n" +
+	"\rreply_address\x18\x05 \x01(\tR\freplyAddress\"\x17\n" +
+	"\x15InitDeviceAuthRequest\"\xbc\x01\n" +
+	"\x16InitDeviceAuthResponse\x12\x1f\n" +
+	"\vdevice_code\x18\x01 \x01(\tR\n" +
+	"deviceCode\x12\x1b\n" +
+	"\tuser_code\x18\x02 \x01(\tR\buserCode\x12)\n" +
+	"\x10verification_uri\x18\x03 \x01(\tR\x0fverificationUri\x12\x1d\n" +
+	"\n" +
+	"expires_in\x18\x04 \x01(\x05R\texpiresIn\x12\x1a\n" +
+	"\binterval\x18\x05 \x01(\x05R\binterval\";\n" +
+	"\x18PollDeviceSessionRequest\x12\x1f\n" +
+	"\vdevice_code\x18\x01 \x01(\tR\n" +
+	"deviceCode\"\x8b\x01\n" +
+	"\x19PollDeviceSessionResponse\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\x12%\n" +
+	"\x0ewallet_address\x18\x02 \x01(\tR\rwalletAddress\x12/\n" +
+	"\x13gamma_authenticated\x18\x03 \x01(\bR\x12gammaAuthenticated\"8\n" +
 	"\x19StreamMarketPricesRequest\x12\x1b\n" +
 	"\ttoken_ids\x18\x01 \x03(\tR\btokenIds\"~\n" +
 	"\x11MarketPriceUpdate\x12\x19\n" +
 	"\btoken_id\x18\x01 \x01(\tR\atokenId\x12\x14\n" +
 	"\x05price\x18\x02 \x01(\tR\x05price\x128\n" +
-	"\ttimestamp\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"\xaf\x02\n" +
+	"\ttimestamp\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"\xc7\x02\n" +
 	"\x12GetPageViewRequest\x12\x17\n" +
 	"\apage_id\x18\x01 \x01(\tR\x06pageId\x12!\n" +
 	"\fsub_category\x18\x02 \x01(\tR\vsubCategory\x12\x1f\n" +
@@ -4948,7 +10198,8 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\n" +
 	"pagination\x18\x04 \x01(\v2\x1d.bullpen.v1.PaginationRequestR\n" +
 	"pagination\x12B\n" +
-	"\x06params\x18\x05 \x03(\v2*.bullpen.v1.GetPageViewRequest.ParamsEntryR\x06params\x1a9\n" +
+	"\x06params\x18\x05 \x03(\v2*.bullpen.v1.GetPageViewRequest.ParamsEntryR\x06params\x12\x16\n" +
+	"\x06locale\x18\x06 \x01(\tR\x06locale\x1a9\n" +
 	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xce\x02\n" +
@@ -5082,7 +10333,406 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\n" +
 	"PricePoint\x12\x1c\n" +
 	"\ttimestamp\x18\x01 \x01(\x03R\ttimestamp\x12\x14\n" +
-	"\x05price\x18\x02 \x01(\tR\x05price*\xdd\x01\n" +
+	"\x05price\x18\x02 \x01(\tR\x05price\"Q\n" +
+	"\x15ToggleBookmarkRequest\x12\x19\n" +
+	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12\x1d\n" +
+	"\n" +
+	"event_slug\x18\x02 \x01(\tR\teventSlug\"8\n" +
+	"\x16ToggleBookmarkResponse\x12\x1e\n" +
+	"\n" +
+	"bookmarked\x18\x01 \x01(\bR\n" +
+	"bookmarked\"\x15\n" +
+	"\x13GetBookmarksRequest\"7\n" +
+	"\x14GetBookmarksResponse\x12\x1f\n" +
+	"\vevent_slugs\x18\x01 \x03(\tR\n" +
+	"eventSlugs\"_\n" +
+	"\x15RedeemPositionRequest\x12!\n" +
+	"\fcondition_id\x18\x01 \x01(\tR\vconditionId\x12#\n" +
+	"\routcome_index\x18\x02 \x01(\x05R\foutcomeIndex\"e\n" +
+	"\x16RedeemPositionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x17\n" +
+	"\atx_hash\x18\x03 \x01(\tR\x06txHash\"2\n" +
+	"\x18GetTradeAnalyticsRequest\x12\x16\n" +
+	"\x06period\x18\x01 \x01(\tR\x06period\"\xa0\x04\n" +
+	"\x16TradeAnalyticsResponse\x12:\n" +
+	"\fdaily_volume\x18\x01 \x03(\v2\x17.bullpen.v1.DailyVolumeR\vdailyVolume\x12H\n" +
+	"\x11size_distribution\x18\x02 \x03(\v2\x1b.bullpen.v1.TradeSizeBucketR\x10sizeDistribution\x12@\n" +
+	"\x0ehourly_pattern\x18\x03 \x03(\v2\x19.bullpen.v1.HourlyPatternR\rhourlyPattern\x126\n" +
+	"\vtop_traders\x18\x04 \x03(\v2\x15.bullpen.v1.TopTraderR\n" +
+	"topTraders\x126\n" +
+	"\asummary\x18\x05 \x01(\v2\x1c.bullpen.v1.AnalyticsSummaryR\asummary\x12>\n" +
+	"\vcalibration\x18\x06 \x03(\v2\x1c.bullpen.v1.CalibrationPointR\vcalibration\x12=\n" +
+	"\vmaker_taker\x18\a \x03(\v2\x1c.bullpen.v1.MakerTakerBucketR\n" +
+	"makerTaker\x12O\n" +
+	"\x13calibration_metrics\x18\b \x01(\v2\x1e.bullpen.v1.CalibrationMetricsR\x12calibrationMetrics\"\xcc\x01\n" +
+	"\vDailyVolume\x12\x12\n" +
+	"\x04date\x18\x01 \x01(\tR\x04date\x12\x1f\n" +
+	"\vtrade_count\x18\x02 \x01(\x03R\n" +
+	"tradeCount\x12!\n" +
+	"\ftotal_volume\x18\x03 \x01(\x01R\vtotalVolume\x12%\n" +
+	"\x0eunique_traders\x18\x04 \x01(\x03R\runiqueTraders\x12\x1d\n" +
+	"\n" +
+	"buy_volume\x18\x05 \x01(\x01R\tbuyVolume\x12\x1f\n" +
+	"\vsell_volume\x18\x06 \x01(\x01R\n" +
+	"sellVolume\"\x81\x01\n" +
+	"\x0fTradeSizeBucket\x12\x16\n" +
+	"\x06bucket\x18\x01 \x01(\tR\x06bucket\x12\x12\n" +
+	"\x04side\x18\x02 \x01(\tR\x04side\x12\x1f\n" +
+	"\vtrade_count\x18\x03 \x01(\x03R\n" +
+	"tradeCount\x12!\n" +
+	"\ftotal_volume\x18\x04 \x01(\x01R\vtotalVolume\"\x82\x01\n" +
+	"\rHourlyPattern\x12\x12\n" +
+	"\x04hour\x18\x01 \x01(\x05R\x04hour\x12\x1f\n" +
+	"\vtrade_count\x18\x02 \x01(\x03R\n" +
+	"tradeCount\x12!\n" +
+	"\ftotal_volume\x18\x03 \x01(\x01R\vtotalVolume\x12\x19\n" +
+	"\bavg_size\x18\x04 \x01(\x01R\aavgSize\"\xaf\x02\n" +
+	"\tTopTrader\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12#\n" +
+	"\rprofile_image\x18\x03 \x01(\tR\fprofileImage\x12\x1f\n" +
+	"\vtrade_count\x18\x04 \x01(\x03R\n" +
+	"tradeCount\x12!\n" +
+	"\ftotal_volume\x18\x05 \x01(\x01R\vtotalVolume\x12\x1d\n" +
+	"\n" +
+	"buy_volume\x18\x06 \x01(\x01R\tbuyVolume\x12\x1f\n" +
+	"\vsell_volume\x18\a \x01(\x01R\n" +
+	"sellVolume\x12%\n" +
+	"\x0eunique_markets\x18\b \x01(\x03R\runiqueMarkets\x12$\n" +
+	"\x0eavg_trade_size\x18\t \x01(\x01R\favgTradeSize\"\x90\x02\n" +
+	"\x10AnalyticsSummary\x12!\n" +
+	"\ftotal_trades\x18\x01 \x01(\x03R\vtotalTrades\x12!\n" +
+	"\ftotal_volume\x18\x02 \x01(\x01R\vtotalVolume\x12%\n" +
+	"\x0eunique_traders\x18\x03 \x01(\x03R\runiqueTraders\x12%\n" +
+	"\x0eactive_markets\x18\x04 \x01(\x03R\ractiveMarkets\x12$\n" +
+	"\x0eavg_trade_size\x18\x05 \x01(\x01R\favgTradeSize\x12*\n" +
+	"\x11median_trade_size\x18\x06 \x01(\x01R\x0fmedianTradeSize\x12\x16\n" +
+	"\x06period\x18\a \x01(\tR\x06period\"z\n" +
+	"\x10CalibrationPoint\x12\x14\n" +
+	"\x05price\x18\x01 \x01(\x05R\x05price\x12!\n" +
+	"\ftotal_trades\x18\x02 \x01(\x03R\vtotalTrades\x12\x12\n" +
+	"\x04wins\x18\x03 \x01(\x03R\x04wins\x12\x19\n" +
+	"\bwin_rate\x18\x04 \x01(\x01R\awinRate\"\xda\x01\n" +
+	"\x10MakerTakerBucket\x12!\n" +
+	"\fprice_bucket\x18\x01 \x01(\x05R\vpriceBucket\x12\x12\n" +
+	"\x04role\x18\x02 \x01(\tR\x04role\x12!\n" +
+	"\ftotal_trades\x18\x03 \x01(\x03R\vtotalTrades\x12\x12\n" +
+	"\x04wins\x18\x04 \x01(\x03R\x04wins\x12\x16\n" +
+	"\x06losses\x18\x05 \x01(\x03R\x06losses\x12\x1d\n" +
+	"\n" +
+	"avg_return\x18\x06 \x01(\x01R\tavgReturn\x12!\n" +
+	"\ftotal_volume\x18\a \x01(\x01R\vtotalVolume\"\x96\x01\n" +
+	"\x12CalibrationMetrics\x12\x1f\n" +
+	"\vbrier_score\x18\x01 \x01(\x01R\n" +
+	"brierScore\x12\x19\n" +
+	"\blog_loss\x18\x02 \x01(\x01R\alogLoss\x12\x10\n" +
+	"\x03ece\x18\x03 \x01(\x01R\x03ece\x122\n" +
+	"\x15total_resolved_trades\x18\x04 \x01(\x03R\x13totalResolvedTrades\"d\n" +
+	"\x18GetPnlLeaderboardRequest\x12\x16\n" +
+	"\x06period\x18\x01 \x01(\tR\x06period\x12\x1a\n" +
+	"\bcategory\x18\x02 \x01(\tR\bcategory\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\"S\n" +
+	"\x16PnlLeaderboardResponse\x129\n" +
+	"\aentries\x18\x01 \x03(\v2\x1f.bullpen.v1.PnlLeaderboardEntryR\aentries\"\xab\x02\n" +
+	"\x13PnlLeaderboardEntry\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
+	"\x0eunrealized_pnl\x18\x03 \x01(\x01R\runrealizedPnl\x12!\n" +
+	"\frealized_pnl\x18\x04 \x01(\x01R\vrealizedPnl\x12\x1b\n" +
+	"\ttotal_pnl\x18\x05 \x01(\x01R\btotalPnl\x12%\n" +
+	"\x0etotal_invested\x18\x06 \x01(\x01R\rtotalInvested\x12\x10\n" +
+	"\x03roi\x18\a \x01(\x01R\x03roi\x12%\n" +
+	"\x0eopen_positions\x18\b \x01(\x05R\ropenPositions\x12\x1f\n" +
+	"\vtrade_count\x18\t \x01(\x03R\n" +
+	"tradeCount\"3\n" +
+	"\x17GetWalletProfileRequest\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\"\xe3\x10\n" +
+	"\rWalletProfile\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12#\n" +
+	"\rprofile_image\x18\x03 \x01(\tR\fprofileImage\x12%\n" +
+	"\x0eunrealized_pnl\x18\x04 \x01(\x01R\runrealizedPnl\x12!\n" +
+	"\frealized_pnl\x18\x05 \x01(\x01R\vrealizedPnl\x12\x1b\n" +
+	"\ttotal_pnl\x18\x06 \x01(\x01R\btotalPnl\x12%\n" +
+	"\x0etotal_invested\x18\a \x01(\x01R\rtotalInvested\x12\x10\n" +
+	"\x03roi\x18\b \x01(\x01R\x03roi\x12%\n" +
+	"\x0eopen_positions\x18\t \x01(\x05R\ropenPositions\x12$\n" +
+	"\x0epnl_change_24h\x18\n" +
+	" \x01(\x01R\fpnlChange24h\x12\"\n" +
+	"\rpnl_change_7d\x18\v \x01(\x01R\vpnlChange7d\x12$\n" +
+	"\x0epnl_change_30d\x18\f \x01(\x01R\fpnlChange30d\x12-\n" +
+	"\x13first_trade_at_unix\x18\r \x01(\x03R\x10firstTradeAtUnix\x12+\n" +
+	"\x12last_trade_at_unix\x18\x0e \x01(\x03R\x0flastTradeAtUnix\x12!\n" +
+	"\ftotal_trades\x18\x0f \x01(\x03R\vtotalTrades\x12$\n" +
+	"\x0etrades_last_7d\x18\x10 \x01(\x03R\ftradesLast7d\x12&\n" +
+	"\x0ftrades_last_30d\x18\x11 \x01(\x03R\rtradesLast30d\x12&\n" +
+	"\x0ftrades_per_week\x18\x12 \x01(\x01R\rtradesPerWeek\x12(\n" +
+	"\x10trades_per_month\x18\x13 \x01(\x01R\x0etradesPerMonth\x12%\n" +
+	"\x0esell_frequency\x18\x14 \x01(\x01R\rsellFrequency\x12%\n" +
+	"\x0eunique_markets\x18\x15 \x01(\x03R\runiqueMarkets\x12-\n" +
+	"\x12resolved_positions\x18\x16 \x01(\x05R\x11resolvedPositions\x12\x12\n" +
+	"\x04wins\x18\x17 \x01(\x05R\x04wins\x12\x16\n" +
+	"\x06losses\x18\x18 \x01(\x05R\x06losses\x12\x19\n" +
+	"\bwin_rate\x18\x19 \x01(\x01R\awinRate\x12#\n" +
+	"\rprofit_factor\x18\x1a \x01(\x01R\fprofitFactor\x125\n" +
+	"\x17avg_hold_duration_hours\x18\x1b \x01(\x01R\x14avgHoldDurationHours\x12\x1f\n" +
+	"\vbiggest_win\x18\x1c \x01(\x01R\n" +
+	"biggestWin\x12!\n" +
+	"\fbiggest_loss\x18\x1d \x01(\x01R\vbiggestLoss\x12.\n" +
+	"\x13current_streak_type\x18\x1e \x01(\tR\x11currentStreakType\x120\n" +
+	"\x14current_streak_count\x18\x1f \x01(\x05R\x12currentStreakCount\x12,\n" +
+	"\x12longest_win_streak\x18  \x01(\x05R\x10longestWinStreak\x12.\n" +
+	"\x13longest_loss_streak\x18! \x01(\x05R\x11longestLossStreak\x12R\n" +
+	"\x12category_breakdown\x18\" \x03(\v2#.bullpen.v1.WalletCategoryBreakdownR\x11categoryBreakdown\x120\n" +
+	"\x14snapshot_age_seconds\x18# \x01(\x03R\x12snapshotAgeSeconds\x12!\n" +
+	"\fmax_drawdown\x18$ \x01(\x01R\vmaxDrawdown\x12\x1d\n" +
+	"\n" +
+	"roi_stored\x18% \x01(\x01R\troiStored\x12%\n" +
+	"\x0epnl_volatility\x18& \x01(\x01R\rpnlVolatility\x12*\n" +
+	"\x11roi_risk_adjusted\x18' \x01(\x01R\x0froiRiskAdjusted\x12$\n" +
+	"\x0epnl_change_90d\x18( \x01(\x01R\fpnlChange90d\x12!\n" +
+	"\fusdc_balance\x18) \x01(\x01R\vusdcBalance\x12)\n" +
+	"\x10trader_archetype\x18* \x01(\tR\x0ftraderArchetype\x12!\n" +
+	"\frisk_profile\x18+ \x01(\tR\vriskProfile\x12+\n" +
+	"\x11copyability_score\x18, \x01(\x01R\x10copyabilityScore\x12%\n" +
+	"\x0estrategy_badge\x18- \x01(\tR\rstrategyBadge\x12\x1f\n" +
+	"\vtrader_tier\x18. \x01(\tR\n" +
+	"traderTier\x12\x18\n" +
+	"\asummary\x18/ \x01(\tR\asummary\x12\x15\n" +
+	"\x06is_bot\x180 \x01(\bR\x05isBot\x12$\n" +
+	"\x0eis_smart_money\x181 \x01(\bR\fisSmartMoney\x123\n" +
+	"\x15specialist_generalist\x182 \x01(\tR\x14specialistGeneralist\x12$\n" +
+	"\x0eavg_trade_size\x183 \x01(\x01R\favgTradeSize\x12#\n" +
+	"\rcategory_tags\x184 \x03(\tR\fcategoryTags\x12\x17\n" +
+	"\aavg_clv\x185 \x01(\x01R\x06avgClv\x12*\n" +
+	"\x11clv_positive_rate\x186 \x01(\x01R\x0fclvPositiveRate\x12B\n" +
+	"\x0fsimilar_traders\x187 \x03(\v2\x19.bullpen.v1.SimilarTraderR\x0esimilarTraders\"\x8f\x01\n" +
+	"\rSimilarTrader\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12)\n" +
+	"\x10similarity_score\x18\x03 \x01(\x01R\x0fsimilarityScore\x12%\n" +
+	"\x0eshared_markets\x18\x04 \x01(\x05R\rsharedMarkets\"\xe2\x01\n" +
+	"\x17WalletCategoryBreakdown\x12\x1a\n" +
+	"\bcategory\x18\x01 \x01(\tR\bcategory\x12\x1f\n" +
+	"\vtrade_count\x18\x02 \x01(\x03R\n" +
+	"tradeCount\x12!\n" +
+	"\ftotal_volume\x18\x03 \x01(\x01R\vtotalVolume\x12%\n" +
+	"\x0eunrealized_pnl\x18\x04 \x01(\x01R\runrealizedPnl\x12!\n" +
+	"\frealized_pnl\x18\x05 \x01(\x01R\vrealizedPnl\x12\x1d\n" +
+	"\n" +
+	"is_primary\x18\x06 \x01(\bR\tisPrimary\"\x9d\x03\n" +
+	"\x19GetTraderDiscoveryRequest\x12\x1a\n" +
+	"\bcategory\x18\x01 \x01(\tR\bcategory\x12\x1c\n" +
+	"\tarchetype\x18\x02 \x01(\tR\tarchetype\x12!\n" +
+	"\frisk_profile\x18\x03 \x01(\tR\vriskProfile\x12\x1f\n" +
+	"\vtrader_tier\x18\x04 \x01(\tR\n" +
+	"traderTier\x12\x17\n" +
+	"\amin_pnl\x18\x05 \x01(\x01R\x06minPnl\x12 \n" +
+	"\fmin_win_rate\x18\x06 \x01(\x01R\n" +
+	"minWinRate\x12(\n" +
+	"\x10smart_money_only\x18\a \x01(\bR\x0esmartMoneyOnly\x12'\n" +
+	"\x0fmin_copyability\x18\b \x01(\x01R\x0eminCopyability\x12\x17\n" +
+	"\asort_by\x18\t \x01(\tR\x06sortBy\x12\x1c\n" +
+	"\tascending\x18\n" +
+	" \x01(\bR\tascending\x12=\n" +
+	"\n" +
+	"pagination\x18\v \x01(\v2\x1d.bullpen.v1.PaginationRequestR\n" +
+	"pagination\"\xfa\a\n" +
+	"\n" +
+	"TraderCard\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12#\n" +
+	"\rprofile_image\x18\x03 \x01(\tR\fprofileImage\x12\x1b\n" +
+	"\ttotal_pnl\x18\x04 \x01(\x01R\btotalPnl\x12%\n" +
+	"\x0eunrealized_pnl\x18\x05 \x01(\x01R\runrealizedPnl\x12!\n" +
+	"\frealized_pnl\x18\x06 \x01(\x01R\vrealizedPnl\x12$\n" +
+	"\x0epnl_change_24h\x18\a \x01(\x01R\fpnlChange24h\x12\"\n" +
+	"\rpnl_change_7d\x18\b \x01(\x01R\vpnlChange7d\x12$\n" +
+	"\x0epnl_change_30d\x18\t \x01(\x01R\fpnlChange30d\x12\x10\n" +
+	"\x03roi\x18\n" +
+	" \x01(\x01R\x03roi\x12!\n" +
+	"\fmax_drawdown\x18\v \x01(\x01R\vmaxDrawdown\x12\x19\n" +
+	"\bwin_rate\x18\f \x01(\x01R\awinRate\x12#\n" +
+	"\rprofit_factor\x18\r \x01(\x01R\fprofitFactor\x12-\n" +
+	"\x12resolved_positions\x18\x0e \x01(\x05R\x11resolvedPositions\x12%\n" +
+	"\x0eopen_positions\x18\x0f \x01(\x05R\ropenPositions\x12)\n" +
+	"\x10trader_archetype\x18\x10 \x01(\tR\x0ftraderArchetype\x12!\n" +
+	"\frisk_profile\x18\x11 \x01(\tR\vriskProfile\x12\x1f\n" +
+	"\vtrader_tier\x18\x12 \x01(\tR\n" +
+	"traderTier\x12%\n" +
+	"\x0estrategy_badge\x18\x13 \x01(\tR\rstrategyBadge\x12+\n" +
+	"\x11copyability_score\x18\x14 \x01(\x01R\x10copyabilityScore\x12$\n" +
+	"\x0eis_smart_money\x18\x15 \x01(\bR\fisSmartMoney\x12\x15\n" +
+	"\x06is_bot\x18\x16 \x01(\bR\x05isBot\x123\n" +
+	"\x15specialist_generalist\x18\x17 \x01(\tR\x14specialistGeneralist\x12#\n" +
+	"\rcategory_tags\x18\x18 \x03(\tR\fcategoryTags\x12\x18\n" +
+	"\asummary\x18\x19 \x01(\tR\asummary\x12&\n" +
+	"\x0ftrades_per_week\x18\x1a \x01(\x01R\rtradesPerWeek\x12$\n" +
+	"\x0eavg_trade_size\x18\x1b \x01(\x01R\favgTradeSize\x125\n" +
+	"\x17avg_hold_duration_hours\x18\x1c \x01(\x01R\x14avgHoldDurationHours\"o\n" +
+	"\x1aGetTraderDiscoveryResponse\x120\n" +
+	"\atraders\x18\x01 \x03(\v2\x16.bullpen.v1.TraderCardR\atraders\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\"\xeb\x01\n" +
+	"\x1bGetSmartMoneySignalsRequest\x12\x1a\n" +
+	"\bcategory\x18\x01 \x01(\tR\bcategory\x12.\n" +
+	"\x13min_signal_strength\x18\x02 \x01(\x01R\x11minSignalStrength\x12(\n" +
+	"\x10min_trader_count\x18\x03 \x01(\x05R\x0eminTraderCount\x12\x17\n" +
+	"\asort_by\x18\x04 \x01(\tR\x06sortBy\x12=\n" +
+	"\n" +
+	"pagination\x18\x05 \x01(\v2\x1d.bullpen.v1.PaginationRequestR\n" +
+	"pagination\"\xf0\x03\n" +
+	"\x10SmartMoneyMarket\x12!\n" +
+	"\fcondition_id\x18\x01 \x01(\tR\vconditionId\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
+	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x1d\n" +
+	"\n" +
+	"event_slug\x18\x04 \x01(\tR\teventSlug\x12\x1a\n" +
+	"\bcategory\x18\x05 \x01(\tR\bcategory\x12#\n" +
+	"\rcurrent_price\x18\x06 \x01(\x01R\fcurrentPrice\x12(\n" +
+	"\x10smart_buy_volume\x18\a \x01(\x01R\x0esmartBuyVolume\x12*\n" +
+	"\x11smart_sell_volume\x18\b \x01(\x01R\x0fsmartSellVolume\x12$\n" +
+	"\x0esmart_net_flow\x18\t \x01(\x01R\fsmartNetFlow\x12,\n" +
+	"\x12smart_trader_count\x18\n" +
+	" \x01(\x05R\x10smartTraderCount\x121\n" +
+	"\x15smart_avg_entry_price\x18\v \x01(\x01R\x12smartAvgEntryPrice\x12'\n" +
+	"\x0fsignal_strength\x18\f \x01(\x01R\x0esignalStrength\x12)\n" +
+	"\x10signal_direction\x18\r \x01(\tR\x0fsignalDirection\"w\n" +
+	"\x1cGetSmartMoneySignalsResponse\x126\n" +
+	"\amarkets\x18\x01 \x03(\v2\x1c.bullpen.v1.SmartMoneyMarketR\amarkets\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\"4\n" +
+	"\x18GetWalletTaxonomyRequest\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\"\x9e\x03\n" +
+	"\x0eWalletTaxonomy\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12)\n" +
+	"\x10trader_archetype\x18\x02 \x01(\tR\x0ftraderArchetype\x12!\n" +
+	"\frisk_profile\x18\x03 \x01(\tR\vriskProfile\x12%\n" +
+	"\x0estrategy_badge\x18\x04 \x01(\tR\rstrategyBadge\x12+\n" +
+	"\x11copyability_score\x18\x05 \x01(\x01R\x10copyabilityScore\x12\x15\n" +
+	"\x06is_bot\x18\x06 \x01(\bR\x05isBot\x12$\n" +
+	"\x0eis_smart_money\x18\a \x01(\bR\fisSmartMoney\x12\x1f\n" +
+	"\vtrader_tier\x18\b \x01(\tR\n" +
+	"traderTier\x12\x18\n" +
+	"\asummary\x18\t \x01(\tR\asummary\x12#\n" +
+	"\rcategory_tags\x18\n" +
+	" \x03(\tR\fcategoryTags\x123\n" +
+	"\x15specialist_generalist\x18\v \x01(\tR\x14specialistGeneralist\"\x19\n" +
+	"\x17GetPipelineStatsRequest\"_\n" +
+	"\tTableStat\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
+	"\trow_count\x18\x02 \x01(\x03R\browCount\x12!\n" +
+	"\flast_updated\x18\x03 \x01(\tR\vlastUpdated\"\x97\x01\n" +
+	"\vCronJobStat\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1a\n" +
+	"\binterval\x18\x02 \x01(\tR\binterval\x12\x19\n" +
+	"\blast_run\x18\x03 \x01(\tR\alastRun\x12\x16\n" +
+	"\x06status\x18\x04 \x01(\tR\x06status\x12%\n" +
+	"\x0erows_processed\x18\x05 \x01(\x03R\rrowsProcessed\"\xc8\x03\n" +
+	"\rPipelineStats\x12!\n" +
+	"\fevents_count\x18\x01 \x01(\x03R\veventsCount\x12#\n" +
+	"\rmarkets_count\x18\x02 \x01(\x03R\fmarketsCount\x12!\n" +
+	"\ftrades_count\x18\x03 \x01(\x03R\vtradesCount\x12'\n" +
+	"\x0fwallets_tracked\x18\x04 \x01(\x03R\x0ewalletsTracked\x12'\n" +
+	"\x0fpositions_count\x18\x05 \x01(\x03R\x0epositionsCount\x12:\n" +
+	"\x19interesting_wallets_count\x18\x06 \x01(\x03R\x17interestingWalletsCount\x12.\n" +
+	"\x13smart_money_markets\x18\a \x01(\x03R\x11smartMoneyMarkets\x12)\n" +
+	"\x10taxonomy_wallets\x18\b \x01(\x03R\x0ftaxonomyWallets\x12-\n" +
+	"\x06tables\x18\t \x03(\v2\x15.bullpen.v1.TableStatR\x06tables\x124\n" +
+	"\tcron_jobs\x18\n" +
+	" \x03(\v2\x17.bullpen.v1.CronJobStatR\bcronJobs\"9\n" +
+	"\x18GetEventAnalyticsRequest\x12\x1d\n" +
+	"\n" +
+	"event_slug\x18\x01 \x01(\tR\teventSlug\"\xf1\x03\n" +
+	"\x0eEventAnalytics\x12\x1d\n" +
+	"\n" +
+	"event_slug\x18\x01 \x01(\tR\teventSlug\x12!\n" +
+	"\ftotal_volume\x18\x02 \x01(\x01R\vtotalVolume\x12(\n" +
+	"\x10total_volume_24h\x18\x03 \x01(\x01R\x0etotalVolume24h\x12.\n" +
+	"\x13total_open_interest\x18\x04 \x01(\x01R\x11totalOpenInterest\x12'\n" +
+	"\x0ftotal_liquidity\x18\x05 \x01(\x01R\x0etotalLiquidity\x120\n" +
+	"\x14total_unique_bettors\x18\x06 \x01(\x03R\x12totalUniqueBettors\x12!\n" +
+	"\fmarket_count\x18\a \x01(\x05R\vmarketCount\x12$\n" +
+	"\x0esmart_net_flow\x18\b \x01(\x01R\fsmartNetFlow\x12,\n" +
+	"\x12smart_trader_count\x18\t \x01(\x05R\x10smartTraderCount\x124\n" +
+	"\x16smart_signal_direction\x18\n" +
+	" \x01(\tR\x14smartSignalDirection\x12;\n" +
+	"\vtop_wallets\x18\v \x03(\v2\x1a.bullpen.v1.EventTopWalletR\n" +
+	"topWallets\"\xab\x01\n" +
+	"\x0eEventTopWallet\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1f\n" +
+	"\vtotal_value\x18\x03 \x01(\x01R\n" +
+	"totalValue\x12%\n" +
+	"\x0eunrealized_pnl\x18\x04 \x01(\x01R\runrealizedPnl\x12#\n" +
+	"\rmarkets_count\x18\x05 \x01(\x05R\fmarketsCount\"\xb4\x01\n" +
+	"\x19GetWalletPositionsRequest\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12%\n" +
+	"\x0einclude_closed\x18\x02 \x01(\bR\rincludeClosed\x12\x17\n" +
+	"\asort_by\x18\x03 \x01(\tR\x06sortBy\x12=\n" +
+	"\n" +
+	"pagination\x18\x04 \x01(\v2\x1d.bullpen.v1.PaginationRequestR\n" +
+	"pagination\"\xd4\x04\n" +
+	"\x0eWalletPosition\x12!\n" +
+	"\fcondition_id\x18\x01 \x01(\tR\vconditionId\x12\x19\n" +
+	"\btoken_id\x18\x02 \x01(\tR\atokenId\x12!\n" +
+	"\fmarket_title\x18\x03 \x01(\tR\vmarketTitle\x12\x1f\n" +
+	"\vmarket_slug\x18\x04 \x01(\tR\n" +
+	"marketSlug\x12\x1d\n" +
+	"\n" +
+	"event_slug\x18\x05 \x01(\tR\teventSlug\x12\x18\n" +
+	"\aoutcome\x18\x06 \x01(\tR\aoutcome\x12\x12\n" +
+	"\x04size\x18\a \x01(\x01R\x04size\x12&\n" +
+	"\x0favg_entry_price\x18\b \x01(\x01R\ravgEntryPrice\x12#\n" +
+	"\rcurrent_price\x18\t \x01(\x01R\fcurrentPrice\x12\x1d\n" +
+	"\n" +
+	"cost_basis\x18\n" +
+	" \x01(\x01R\tcostBasis\x12#\n" +
+	"\rcurrent_value\x18\v \x01(\x01R\fcurrentValue\x12%\n" +
+	"\x0eunrealized_pnl\x18\f \x01(\x01R\runrealizedPnl\x12,\n" +
+	"\x12unrealized_pnl_pct\x18\r \x01(\x01R\x10unrealizedPnlPct\x12\x1a\n" +
+	"\bcategory\x18\x0e \x01(\tR\bcategory\x12(\n" +
+	"\x10first_trade_unix\x18\x0f \x01(\x03R\x0efirstTradeUnix\x12&\n" +
+	"\x0flast_trade_unix\x18\x10 \x01(\x03R\rlastTradeUnix\x12\x1f\n" +
+	"\vtrade_count\x18\x11 \x01(\x05R\n" +
+	"tradeCount\"\xca\x01\n" +
+	"\x1aGetWalletPositionsResponse\x128\n" +
+	"\tpositions\x18\x01 \x03(\v2\x1a.bullpen.v1.WalletPositionR\tpositions\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\x12\x1f\n" +
+	"\vtotal_value\x18\x03 \x01(\x01R\n" +
+	"totalValue\x120\n" +
+	"\x14total_unrealized_pnl\x18\x04 \x01(\x01R\x12totalUnrealizedPnl\"T\n" +
+	"\x1bGetSignificantTradesRequest\x12\x1f\n" +
+	"\vsignal_type\x18\x01 \x01(\tR\n" +
+	"signalType\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\xd6\x03\n" +
+	"\x10SignificantTrade\x12%\n" +
+	"\x0etrader_address\x18\x01 \x01(\tR\rtraderAddress\x12!\n" +
+	"\fcondition_id\x18\x02 \x01(\tR\vconditionId\x12!\n" +
+	"\fmarket_title\x18\x03 \x01(\tR\vmarketTitle\x12\x1f\n" +
+	"\vmarket_slug\x18\x04 \x01(\tR\n" +
+	"marketSlug\x12\x1d\n" +
+	"\n" +
+	"event_slug\x18\x05 \x01(\tR\teventSlug\x12\x12\n" +
+	"\x04side\x18\x06 \x01(\tR\x04side\x12\x12\n" +
+	"\x04size\x18\a \x01(\x01R\x04size\x12\x14\n" +
+	"\x05price\x18\b \x01(\x01R\x05price\x12\x1d\n" +
+	"\n" +
+	"usdc_value\x18\t \x01(\x01R\tusdcValue\x12\x1f\n" +
+	"\vsignal_type\x18\n" +
+	" \x01(\tR\n" +
+	"signalType\x12\x1f\n" +
+	"\vtrader_tier\x18\v \x01(\tR\n" +
+	"traderTier\x12$\n" +
+	"\x0eis_smart_money\x18\f \x01(\bR\fisSmartMoney\x12%\n" +
+	"\x0etimestamp_unix\x18\r \x01(\x03R\rtimestampUnix\x12)\n" +
+	"\x10transaction_hash\x18\x0e \x01(\tR\x0ftransactionHash\"u\n" +
+	"\x1cGetSignificantTradesResponse\x124\n" +
+	"\x06trades\x18\x01 \x03(\v2\x1c.bullpen.v1.SignificantTradeR\x06trades\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount*\xdd\x01\n" +
 	"\x0fScoringFunction\x12\x17\n" +
 	"\x13SCORING_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10SCORING_TRENDING\x10\x01\x12\x17\n" +
@@ -5126,7 +10776,7 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x1dFEATURED_LENS_HIGH_CONVICTION\x10\x04\x12\x1b\n" +
 	"\x17FEATURED_LENS_MISPRICED\x10\x05\x12\x1d\n" +
 	"\x19FEATURED_LENS_NEW_AND_HOT\x10\x06\x12!\n" +
-	"\x1dFEATURED_LENS_BIGGEST_MARKETS\x10\a2\xf7\a\n" +
+	"\x1dFEATURED_LENS_BIGGEST_MARKETS\x10\a2\xb3\x17\n" +
 	"\x18PolymarketExploreService\x12Q\n" +
 	"\fQueryMarkets\x12\x1f.bullpen.v1.QueryMarketsRequest\x1a .bullpen.v1.QueryMarketsResponse\x12N\n" +
 	"\vQueryEvents\x12\x1e.bullpen.v1.QueryEventsRequest\x1a\x1f.bullpen.v1.QueryEventsResponse\x12X\n" +
@@ -5137,7 +10787,30 @@ const file_bullpen_v1_polymarket_explore_proto_rawDesc = "" +
 	"\x12GetMarketAnalytics\x12%.bullpen.v1.GetMarketAnalyticsRequest\x1a\x1b.bullpen.v1.MarketAnalytics\x12U\n" +
 	"\x11GetMarketStrength\x12$.bullpen.v1.GetMarketStrengthRequest\x1a\x1a.bullpen.v1.MarketStrength\x12T\n" +
 	"\rGetCategories\x12 .bullpen.v1.GetCategoriesRequest\x1a!.bullpen.v1.GetCategoriesResponse\x12`\n" +
-	"\x11GetMarketComments\x12$.bullpen.v1.GetMarketCommentsRequest\x1a%.bullpen.v1.GetMarketCommentsResponse\x12\\\n" +
+	"\x11GetMarketComments\x12$.bullpen.v1.GetMarketCommentsRequest\x1a%.bullpen.v1.GetMarketCommentsResponse\x12T\n" +
+	"\rGetGammaNonce\x12 .bullpen.v1.GetGammaNonceRequest\x1a!.bullpen.v1.GetGammaNonceResponse\x12K\n" +
+	"\n" +
+	"GammaLogin\x12\x1d.bullpen.v1.GammaLoginRequest\x1a\x1e.bullpen.v1.GammaLoginResponse\x12N\n" +
+	"\vPostComment\x12\x1e.bullpen.v1.PostCommentRequest\x1a\x1f.bullpen.v1.PostCommentResponse\x12N\n" +
+	"\vGetComments\x12\x1e.bullpen.v1.GetCommentsRequest\x1a\x1f.bullpen.v1.GetCommentsResponse\x12W\n" +
+	"\x0eReactToComment\x12!.bullpen.v1.ReactToCommentRequest\x1a\".bullpen.v1.ReactToCommentResponse\x12T\n" +
+	"\rDeleteComment\x12 .bullpen.v1.DeleteCommentRequest\x1a!.bullpen.v1.DeleteCommentResponse\x12T\n" +
+	"\x0eReplyToComment\x12!.bullpen.v1.ReplyToCommentRequest\x1a\x1f.bullpen.v1.PostCommentResponse\x12W\n" +
+	"\x0eInitDeviceAuth\x12!.bullpen.v1.InitDeviceAuthRequest\x1a\".bullpen.v1.InitDeviceAuthResponse\x12`\n" +
+	"\x11PollDeviceSession\x12$.bullpen.v1.PollDeviceSessionRequest\x1a%.bullpen.v1.PollDeviceSessionResponse\x12W\n" +
+	"\x0eRedeemPosition\x12!.bullpen.v1.RedeemPositionRequest\x1a\".bullpen.v1.RedeemPositionResponse\x12W\n" +
+	"\x0eToggleBookmark\x12!.bullpen.v1.ToggleBookmarkRequest\x1a\".bullpen.v1.ToggleBookmarkResponse\x12Q\n" +
+	"\fGetBookmarks\x12\x1f.bullpen.v1.GetBookmarksRequest\x1a .bullpen.v1.GetBookmarksResponse\x12]\n" +
+	"\x11GetTradeAnalytics\x12$.bullpen.v1.GetTradeAnalyticsRequest\x1a\".bullpen.v1.TradeAnalyticsResponse\x12]\n" +
+	"\x11GetPnlLeaderboard\x12$.bullpen.v1.GetPnlLeaderboardRequest\x1a\".bullpen.v1.PnlLeaderboardResponse\x12R\n" +
+	"\x10GetWalletProfile\x12#.bullpen.v1.GetWalletProfileRequest\x1a\x19.bullpen.v1.WalletProfile\x12c\n" +
+	"\x12GetTraderDiscovery\x12%.bullpen.v1.GetTraderDiscoveryRequest\x1a&.bullpen.v1.GetTraderDiscoveryResponse\x12i\n" +
+	"\x14GetSmartMoneySignals\x12'.bullpen.v1.GetSmartMoneySignalsRequest\x1a(.bullpen.v1.GetSmartMoneySignalsResponse\x12U\n" +
+	"\x11GetWalletTaxonomy\x12$.bullpen.v1.GetWalletTaxonomyRequest\x1a\x1a.bullpen.v1.WalletTaxonomy\x12i\n" +
+	"\x14GetSignificantTrades\x12'.bullpen.v1.GetSignificantTradesRequest\x1a(.bullpen.v1.GetSignificantTradesResponse\x12U\n" +
+	"\x11GetEventAnalytics\x12$.bullpen.v1.GetEventAnalyticsRequest\x1a\x1a.bullpen.v1.EventAnalytics\x12c\n" +
+	"\x12GetWalletPositions\x12%.bullpen.v1.GetWalletPositionsRequest\x1a&.bullpen.v1.GetWalletPositionsResponse\x12R\n" +
+	"\x10GetPipelineStats\x12#.bullpen.v1.GetPipelineStatsRequest\x1a\x19.bullpen.v1.PipelineStats\x12\\\n" +
 	"\x12StreamMarketPrices\x12%.bullpen.v1.StreamMarketPricesRequest\x1a\x1d.bullpen.v1.MarketPriceUpdate0\x01\x12C\n" +
 	"\vGetPageView\x12\x1e.bullpen.v1.GetPageViewRequest\x1a\x14.bullpen.v1.PageViewB\xb0\x01\n" +
 	"\x0ecom.bullpen.v1B\x16PolymarketExploreProtoP\x01Z=github.com/BullpenFi/bullpen-data/gen/go/bullpen/v1;bullpenv1\xa2\x02\x03BXX\xaa\x02\n" +
@@ -5157,183 +10830,315 @@ func file_bullpen_v1_polymarket_explore_proto_rawDescGZIP() []byte {
 }
 
 var file_bullpen_v1_polymarket_explore_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_bullpen_v1_polymarket_explore_proto_msgTypes = make([]protoimpl.MessageInfo, 55)
+var file_bullpen_v1_polymarket_explore_proto_msgTypes = make([]protoimpl.MessageInfo, 118)
 var file_bullpen_v1_polymarket_explore_proto_goTypes = []any{
-	(ScoringFunction)(0),              // 0: bullpen.v1.ScoringFunction
-	(ScoringDimension)(0),             // 1: bullpen.v1.ScoringDimension
-	(SortField)(0),                    // 2: bullpen.v1.SortField
-	(FeaturedLens)(0),                 // 3: bullpen.v1.FeaturedLens
-	(*QueryMarketsRequest)(nil),       // 4: bullpen.v1.QueryMarketsRequest
-	(*QueryMarketsResponse)(nil),      // 5: bullpen.v1.QueryMarketsResponse
-	(*QueryEventsRequest)(nil),        // 6: bullpen.v1.QueryEventsRequest
-	(*QueryEventsResponse)(nil),       // 7: bullpen.v1.QueryEventsResponse
-	(*MarketFilter)(nil),              // 8: bullpen.v1.MarketFilter
-	(*StatusFilter)(nil),              // 9: bullpen.v1.StatusFilter
-	(*TimeRangeFilter)(nil),           // 10: bullpen.v1.TimeRangeFilter
-	(*ScoringConfig)(nil),             // 11: bullpen.v1.ScoringConfig
-	(*ScoringWeight)(nil),             // 12: bullpen.v1.ScoringWeight
-	(*SortConfig)(nil),                // 13: bullpen.v1.SortConfig
-	(*EnrichmentConfig)(nil),          // 14: bullpen.v1.EnrichmentConfig
-	(*MarketResult)(nil),              // 15: bullpen.v1.MarketResult
-	(*EventResult)(nil),               // 16: bullpen.v1.EventResult
-	(*ResultAggregates)(nil),          // 17: bullpen.v1.ResultAggregates
-	(*FieldRange)(nil),                // 18: bullpen.v1.FieldRange
-	(*GetMarketStrengthRequest)(nil),  // 19: bullpen.v1.GetMarketStrengthRequest
-	(*MarketStrength)(nil),            // 20: bullpen.v1.MarketStrength
-	(*StrengthDimension)(nil),         // 21: bullpen.v1.StrengthDimension
-	(*TaggedHolder)(nil),              // 22: bullpen.v1.TaggedHolder
-	(*GetFeaturedLensRequest)(nil),    // 23: bullpen.v1.GetFeaturedLensRequest
-	(*GetHomepageSummaryRequest)(nil), // 24: bullpen.v1.GetHomepageSummaryRequest
-	(*HomepageSummary)(nil),           // 25: bullpen.v1.HomepageSummary
-	(*GetEventRequest)(nil),           // 26: bullpen.v1.GetEventRequest
-	(*Event)(nil),                     // 27: bullpen.v1.Event
-	(*GetMarketRequest)(nil),          // 28: bullpen.v1.GetMarketRequest
-	(*Market)(nil),                    // 29: bullpen.v1.Market
-	(*Team)(nil),                      // 30: bullpen.v1.Team
-	(*GetMarketAnalyticsRequest)(nil), // 31: bullpen.v1.GetMarketAnalyticsRequest
-	(*MarketAnalytics)(nil),           // 32: bullpen.v1.MarketAnalytics
-	(*GetCategoriesRequest)(nil),      // 33: bullpen.v1.GetCategoriesRequest
-	(*Category)(nil),                  // 34: bullpen.v1.Category
-	(*SubCategory)(nil),               // 35: bullpen.v1.SubCategory
-	(*GetCategoriesResponse)(nil),     // 36: bullpen.v1.GetCategoriesResponse
-	(*GetMarketCommentsRequest)(nil),  // 37: bullpen.v1.GetMarketCommentsRequest
-	(*Comment)(nil),                   // 38: bullpen.v1.Comment
-	(*GetMarketCommentsResponse)(nil), // 39: bullpen.v1.GetMarketCommentsResponse
-	(*StreamMarketPricesRequest)(nil), // 40: bullpen.v1.StreamMarketPricesRequest
-	(*MarketPriceUpdate)(nil),         // 41: bullpen.v1.MarketPriceUpdate
-	(*GetPageViewRequest)(nil),        // 42: bullpen.v1.GetPageViewRequest
-	(*PageView)(nil),                  // 43: bullpen.v1.PageView
-	(*PageTab)(nil),                   // 44: bullpen.v1.PageTab
-	(*PageSection)(nil),               // 45: bullpen.v1.PageSection
-	(*EventGridSection)(nil),          // 46: bullpen.v1.EventGridSection
-	(*CategoryNavSection)(nil),        // 47: bullpen.v1.CategoryNavSection
-	(*StatsBarSection)(nil),           // 48: bullpen.v1.StatsBarSection
-	(*StatItem)(nil),                  // 49: bullpen.v1.StatItem
-	(*MarketListSection)(nil),         // 50: bullpen.v1.MarketListSection
-	(*SportsGameSection)(nil),         // 51: bullpen.v1.SportsGameSection
-	(*SportsGame)(nil),                // 52: bullpen.v1.SportsGame
-	(*OddsColumn)(nil),                // 53: bullpen.v1.OddsColumn
-	(*OddsLine)(nil),                  // 54: bullpen.v1.OddsLine
-	(*MarketRow)(nil),                 // 55: bullpen.v1.MarketRow
-	(*PricePoint)(nil),                // 56: bullpen.v1.PricePoint
-	nil,                               // 57: bullpen.v1.ResultAggregates.FieldRangesEntry
-	nil,                               // 58: bullpen.v1.GetPageViewRequest.ParamsEntry
-	(*PaginationRequest)(nil),         // 59: bullpen.v1.PaginationRequest
-	(*PaginationResponse)(nil),        // 60: bullpen.v1.PaginationResponse
-	(*timestamppb.Timestamp)(nil),     // 61: google.protobuf.Timestamp
-	(TimeWindow)(0),                   // 62: bullpen.v1.TimeWindow
-	(SortOrder)(0),                    // 63: bullpen.v1.SortOrder
-	(*TraderTag)(nil),                 // 64: bullpen.v1.TraderTag
+	(ScoringFunction)(0),                 // 0: bullpen.v1.ScoringFunction
+	(ScoringDimension)(0),                // 1: bullpen.v1.ScoringDimension
+	(SortField)(0),                       // 2: bullpen.v1.SortField
+	(FeaturedLens)(0),                    // 3: bullpen.v1.FeaturedLens
+	(*QueryMarketsRequest)(nil),          // 4: bullpen.v1.QueryMarketsRequest
+	(*QueryMarketsResponse)(nil),         // 5: bullpen.v1.QueryMarketsResponse
+	(*QueryEventsRequest)(nil),           // 6: bullpen.v1.QueryEventsRequest
+	(*QueryEventsResponse)(nil),          // 7: bullpen.v1.QueryEventsResponse
+	(*MarketFilter)(nil),                 // 8: bullpen.v1.MarketFilter
+	(*StatusFilter)(nil),                 // 9: bullpen.v1.StatusFilter
+	(*TimeRangeFilter)(nil),              // 10: bullpen.v1.TimeRangeFilter
+	(*ScoringConfig)(nil),                // 11: bullpen.v1.ScoringConfig
+	(*ScoringWeight)(nil),                // 12: bullpen.v1.ScoringWeight
+	(*SortConfig)(nil),                   // 13: bullpen.v1.SortConfig
+	(*EnrichmentConfig)(nil),             // 14: bullpen.v1.EnrichmentConfig
+	(*MarketResult)(nil),                 // 15: bullpen.v1.MarketResult
+	(*EventResult)(nil),                  // 16: bullpen.v1.EventResult
+	(*ResultAggregates)(nil),             // 17: bullpen.v1.ResultAggregates
+	(*FieldRange)(nil),                   // 18: bullpen.v1.FieldRange
+	(*GetMarketStrengthRequest)(nil),     // 19: bullpen.v1.GetMarketStrengthRequest
+	(*MarketStrength)(nil),               // 20: bullpen.v1.MarketStrength
+	(*StrengthDimension)(nil),            // 21: bullpen.v1.StrengthDimension
+	(*TaggedHolder)(nil),                 // 22: bullpen.v1.TaggedHolder
+	(*GetFeaturedLensRequest)(nil),       // 23: bullpen.v1.GetFeaturedLensRequest
+	(*GetHomepageSummaryRequest)(nil),    // 24: bullpen.v1.GetHomepageSummaryRequest
+	(*HomepageSummary)(nil),              // 25: bullpen.v1.HomepageSummary
+	(*GetEventRequest)(nil),              // 26: bullpen.v1.GetEventRequest
+	(*Event)(nil),                        // 27: bullpen.v1.Event
+	(*GetMarketRequest)(nil),             // 28: bullpen.v1.GetMarketRequest
+	(*Market)(nil),                       // 29: bullpen.v1.Market
+	(*Team)(nil),                         // 30: bullpen.v1.Team
+	(*GetMarketAnalyticsRequest)(nil),    // 31: bullpen.v1.GetMarketAnalyticsRequest
+	(*MarketAnalytics)(nil),              // 32: bullpen.v1.MarketAnalytics
+	(*GetCategoriesRequest)(nil),         // 33: bullpen.v1.GetCategoriesRequest
+	(*Category)(nil),                     // 34: bullpen.v1.Category
+	(*SubCategory)(nil),                  // 35: bullpen.v1.SubCategory
+	(*GetCategoriesResponse)(nil),        // 36: bullpen.v1.GetCategoriesResponse
+	(*GetMarketCommentsRequest)(nil),     // 37: bullpen.v1.GetMarketCommentsRequest
+	(*CommentPositionBadge)(nil),         // 38: bullpen.v1.CommentPositionBadge
+	(*CommentMedia)(nil),                 // 39: bullpen.v1.CommentMedia
+	(*Comment)(nil),                      // 40: bullpen.v1.Comment
+	(*GetMarketCommentsResponse)(nil),    // 41: bullpen.v1.GetMarketCommentsResponse
+	(*GetGammaNonceRequest)(nil),         // 42: bullpen.v1.GetGammaNonceRequest
+	(*GetGammaNonceResponse)(nil),        // 43: bullpen.v1.GetGammaNonceResponse
+	(*GammaLoginRequest)(nil),            // 44: bullpen.v1.GammaLoginRequest
+	(*GammaLoginResponse)(nil),           // 45: bullpen.v1.GammaLoginResponse
+	(*PostCommentRequest)(nil),           // 46: bullpen.v1.PostCommentRequest
+	(*PostCommentResponse)(nil),          // 47: bullpen.v1.PostCommentResponse
+	(*GetCommentsRequest)(nil),           // 48: bullpen.v1.GetCommentsRequest
+	(*GetCommentsResponse)(nil),          // 49: bullpen.v1.GetCommentsResponse
+	(*ReactToCommentRequest)(nil),        // 50: bullpen.v1.ReactToCommentRequest
+	(*ReactToCommentResponse)(nil),       // 51: bullpen.v1.ReactToCommentResponse
+	(*DeleteCommentRequest)(nil),         // 52: bullpen.v1.DeleteCommentRequest
+	(*DeleteCommentResponse)(nil),        // 53: bullpen.v1.DeleteCommentResponse
+	(*ReplyToCommentRequest)(nil),        // 54: bullpen.v1.ReplyToCommentRequest
+	(*InitDeviceAuthRequest)(nil),        // 55: bullpen.v1.InitDeviceAuthRequest
+	(*InitDeviceAuthResponse)(nil),       // 56: bullpen.v1.InitDeviceAuthResponse
+	(*PollDeviceSessionRequest)(nil),     // 57: bullpen.v1.PollDeviceSessionRequest
+	(*PollDeviceSessionResponse)(nil),    // 58: bullpen.v1.PollDeviceSessionResponse
+	(*StreamMarketPricesRequest)(nil),    // 59: bullpen.v1.StreamMarketPricesRequest
+	(*MarketPriceUpdate)(nil),            // 60: bullpen.v1.MarketPriceUpdate
+	(*GetPageViewRequest)(nil),           // 61: bullpen.v1.GetPageViewRequest
+	(*PageView)(nil),                     // 62: bullpen.v1.PageView
+	(*PageTab)(nil),                      // 63: bullpen.v1.PageTab
+	(*PageSection)(nil),                  // 64: bullpen.v1.PageSection
+	(*EventGridSection)(nil),             // 65: bullpen.v1.EventGridSection
+	(*CategoryNavSection)(nil),           // 66: bullpen.v1.CategoryNavSection
+	(*StatsBarSection)(nil),              // 67: bullpen.v1.StatsBarSection
+	(*StatItem)(nil),                     // 68: bullpen.v1.StatItem
+	(*MarketListSection)(nil),            // 69: bullpen.v1.MarketListSection
+	(*SportsGameSection)(nil),            // 70: bullpen.v1.SportsGameSection
+	(*SportsGame)(nil),                   // 71: bullpen.v1.SportsGame
+	(*OddsColumn)(nil),                   // 72: bullpen.v1.OddsColumn
+	(*OddsLine)(nil),                     // 73: bullpen.v1.OddsLine
+	(*MarketRow)(nil),                    // 74: bullpen.v1.MarketRow
+	(*PricePoint)(nil),                   // 75: bullpen.v1.PricePoint
+	(*ToggleBookmarkRequest)(nil),        // 76: bullpen.v1.ToggleBookmarkRequest
+	(*ToggleBookmarkResponse)(nil),       // 77: bullpen.v1.ToggleBookmarkResponse
+	(*GetBookmarksRequest)(nil),          // 78: bullpen.v1.GetBookmarksRequest
+	(*GetBookmarksResponse)(nil),         // 79: bullpen.v1.GetBookmarksResponse
+	(*RedeemPositionRequest)(nil),        // 80: bullpen.v1.RedeemPositionRequest
+	(*RedeemPositionResponse)(nil),       // 81: bullpen.v1.RedeemPositionResponse
+	(*GetTradeAnalyticsRequest)(nil),     // 82: bullpen.v1.GetTradeAnalyticsRequest
+	(*TradeAnalyticsResponse)(nil),       // 83: bullpen.v1.TradeAnalyticsResponse
+	(*DailyVolume)(nil),                  // 84: bullpen.v1.DailyVolume
+	(*TradeSizeBucket)(nil),              // 85: bullpen.v1.TradeSizeBucket
+	(*HourlyPattern)(nil),                // 86: bullpen.v1.HourlyPattern
+	(*TopTrader)(nil),                    // 87: bullpen.v1.TopTrader
+	(*AnalyticsSummary)(nil),             // 88: bullpen.v1.AnalyticsSummary
+	(*CalibrationPoint)(nil),             // 89: bullpen.v1.CalibrationPoint
+	(*MakerTakerBucket)(nil),             // 90: bullpen.v1.MakerTakerBucket
+	(*CalibrationMetrics)(nil),           // 91: bullpen.v1.CalibrationMetrics
+	(*GetPnlLeaderboardRequest)(nil),     // 92: bullpen.v1.GetPnlLeaderboardRequest
+	(*PnlLeaderboardResponse)(nil),       // 93: bullpen.v1.PnlLeaderboardResponse
+	(*PnlLeaderboardEntry)(nil),          // 94: bullpen.v1.PnlLeaderboardEntry
+	(*GetWalletProfileRequest)(nil),      // 95: bullpen.v1.GetWalletProfileRequest
+	(*WalletProfile)(nil),                // 96: bullpen.v1.WalletProfile
+	(*SimilarTrader)(nil),                // 97: bullpen.v1.SimilarTrader
+	(*WalletCategoryBreakdown)(nil),      // 98: bullpen.v1.WalletCategoryBreakdown
+	(*GetTraderDiscoveryRequest)(nil),    // 99: bullpen.v1.GetTraderDiscoveryRequest
+	(*TraderCard)(nil),                   // 100: bullpen.v1.TraderCard
+	(*GetTraderDiscoveryResponse)(nil),   // 101: bullpen.v1.GetTraderDiscoveryResponse
+	(*GetSmartMoneySignalsRequest)(nil),  // 102: bullpen.v1.GetSmartMoneySignalsRequest
+	(*SmartMoneyMarket)(nil),             // 103: bullpen.v1.SmartMoneyMarket
+	(*GetSmartMoneySignalsResponse)(nil), // 104: bullpen.v1.GetSmartMoneySignalsResponse
+	(*GetWalletTaxonomyRequest)(nil),     // 105: bullpen.v1.GetWalletTaxonomyRequest
+	(*WalletTaxonomy)(nil),               // 106: bullpen.v1.WalletTaxonomy
+	(*GetPipelineStatsRequest)(nil),      // 107: bullpen.v1.GetPipelineStatsRequest
+	(*TableStat)(nil),                    // 108: bullpen.v1.TableStat
+	(*CronJobStat)(nil),                  // 109: bullpen.v1.CronJobStat
+	(*PipelineStats)(nil),                // 110: bullpen.v1.PipelineStats
+	(*GetEventAnalyticsRequest)(nil),     // 111: bullpen.v1.GetEventAnalyticsRequest
+	(*EventAnalytics)(nil),               // 112: bullpen.v1.EventAnalytics
+	(*EventTopWallet)(nil),               // 113: bullpen.v1.EventTopWallet
+	(*GetWalletPositionsRequest)(nil),    // 114: bullpen.v1.GetWalletPositionsRequest
+	(*WalletPosition)(nil),               // 115: bullpen.v1.WalletPosition
+	(*GetWalletPositionsResponse)(nil),   // 116: bullpen.v1.GetWalletPositionsResponse
+	(*GetSignificantTradesRequest)(nil),  // 117: bullpen.v1.GetSignificantTradesRequest
+	(*SignificantTrade)(nil),             // 118: bullpen.v1.SignificantTrade
+	(*GetSignificantTradesResponse)(nil), // 119: bullpen.v1.GetSignificantTradesResponse
+	nil,                                  // 120: bullpen.v1.ResultAggregates.FieldRangesEntry
+	nil,                                  // 121: bullpen.v1.GetPageViewRequest.ParamsEntry
+	(*PaginationRequest)(nil),            // 122: bullpen.v1.PaginationRequest
+	(*PaginationResponse)(nil),           // 123: bullpen.v1.PaginationResponse
+	(*timestamppb.Timestamp)(nil),        // 124: google.protobuf.Timestamp
+	(TimeWindow)(0),                      // 125: bullpen.v1.TimeWindow
+	(SortOrder)(0),                       // 126: bullpen.v1.SortOrder
+	(*TraderTag)(nil),                    // 127: bullpen.v1.TraderTag
 }
 var file_bullpen_v1_polymarket_explore_proto_depIdxs = []int32{
-	8,  // 0: bullpen.v1.QueryMarketsRequest.filter:type_name -> bullpen.v1.MarketFilter
-	11, // 1: bullpen.v1.QueryMarketsRequest.scoring:type_name -> bullpen.v1.ScoringConfig
-	13, // 2: bullpen.v1.QueryMarketsRequest.sort:type_name -> bullpen.v1.SortConfig
-	14, // 3: bullpen.v1.QueryMarketsRequest.enrichment:type_name -> bullpen.v1.EnrichmentConfig
-	59, // 4: bullpen.v1.QueryMarketsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	15, // 5: bullpen.v1.QueryMarketsResponse.markets:type_name -> bullpen.v1.MarketResult
-	60, // 6: bullpen.v1.QueryMarketsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
-	17, // 7: bullpen.v1.QueryMarketsResponse.aggregates:type_name -> bullpen.v1.ResultAggregates
-	8,  // 8: bullpen.v1.QueryEventsRequest.filter:type_name -> bullpen.v1.MarketFilter
-	11, // 9: bullpen.v1.QueryEventsRequest.scoring:type_name -> bullpen.v1.ScoringConfig
-	13, // 10: bullpen.v1.QueryEventsRequest.sort:type_name -> bullpen.v1.SortConfig
-	14, // 11: bullpen.v1.QueryEventsRequest.enrichment:type_name -> bullpen.v1.EnrichmentConfig
-	59, // 12: bullpen.v1.QueryEventsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	16, // 13: bullpen.v1.QueryEventsResponse.events:type_name -> bullpen.v1.EventResult
-	60, // 14: bullpen.v1.QueryEventsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
-	17, // 15: bullpen.v1.QueryEventsResponse.aggregates:type_name -> bullpen.v1.ResultAggregates
-	9,  // 16: bullpen.v1.MarketFilter.status:type_name -> bullpen.v1.StatusFilter
-	10, // 17: bullpen.v1.MarketFilter.time_range:type_name -> bullpen.v1.TimeRangeFilter
-	61, // 18: bullpen.v1.TimeRangeFilter.ends_before:type_name -> google.protobuf.Timestamp
-	61, // 19: bullpen.v1.TimeRangeFilter.ends_after:type_name -> google.protobuf.Timestamp
-	61, // 20: bullpen.v1.TimeRangeFilter.created_after:type_name -> google.protobuf.Timestamp
-	61, // 21: bullpen.v1.TimeRangeFilter.created_before:type_name -> google.protobuf.Timestamp
-	0,  // 22: bullpen.v1.ScoringConfig.function:type_name -> bullpen.v1.ScoringFunction
-	62, // 23: bullpen.v1.ScoringConfig.window:type_name -> bullpen.v1.TimeWindow
-	12, // 24: bullpen.v1.ScoringConfig.weights:type_name -> bullpen.v1.ScoringWeight
-	1,  // 25: bullpen.v1.ScoringWeight.dimension:type_name -> bullpen.v1.ScoringDimension
-	2,  // 26: bullpen.v1.SortConfig.field:type_name -> bullpen.v1.SortField
-	63, // 27: bullpen.v1.SortConfig.order:type_name -> bullpen.v1.SortOrder
-	29, // 28: bullpen.v1.MarketResult.market:type_name -> bullpen.v1.Market
-	32, // 29: bullpen.v1.MarketResult.analytics:type_name -> bullpen.v1.MarketAnalytics
-	20, // 30: bullpen.v1.MarketResult.strength:type_name -> bullpen.v1.MarketStrength
-	27, // 31: bullpen.v1.EventResult.event:type_name -> bullpen.v1.Event
-	32, // 32: bullpen.v1.EventResult.analytics:type_name -> bullpen.v1.MarketAnalytics
-	20, // 33: bullpen.v1.EventResult.strength:type_name -> bullpen.v1.MarketStrength
-	57, // 34: bullpen.v1.ResultAggregates.field_ranges:type_name -> bullpen.v1.ResultAggregates.FieldRangesEntry
-	21, // 35: bullpen.v1.MarketStrength.dimensions:type_name -> bullpen.v1.StrengthDimension
-	22, // 36: bullpen.v1.MarketStrength.yes_holders:type_name -> bullpen.v1.TaggedHolder
-	22, // 37: bullpen.v1.MarketStrength.no_holders:type_name -> bullpen.v1.TaggedHolder
-	64, // 38: bullpen.v1.TaggedHolder.tags:type_name -> bullpen.v1.TraderTag
-	3,  // 39: bullpen.v1.GetFeaturedLensRequest.lens:type_name -> bullpen.v1.FeaturedLens
-	62, // 40: bullpen.v1.GetFeaturedLensRequest.window:type_name -> bullpen.v1.TimeWindow
-	29, // 41: bullpen.v1.Event.markets:type_name -> bullpen.v1.Market
-	61, // 42: bullpen.v1.Event.end_date:type_name -> google.protobuf.Timestamp
-	61, // 43: bullpen.v1.Event.created_at:type_name -> google.protobuf.Timestamp
-	30, // 44: bullpen.v1.Event.home_team:type_name -> bullpen.v1.Team
-	30, // 45: bullpen.v1.Event.away_team:type_name -> bullpen.v1.Team
-	61, // 46: bullpen.v1.Market.end_date:type_name -> google.protobuf.Timestamp
-	61, // 47: bullpen.v1.Market.created_at:type_name -> google.protobuf.Timestamp
-	35, // 48: bullpen.v1.Category.sub_categories:type_name -> bullpen.v1.SubCategory
-	34, // 49: bullpen.v1.GetCategoriesResponse.categories:type_name -> bullpen.v1.Category
-	59, // 50: bullpen.v1.GetMarketCommentsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	38, // 51: bullpen.v1.Comment.replies:type_name -> bullpen.v1.Comment
-	61, // 52: bullpen.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
-	38, // 53: bullpen.v1.GetMarketCommentsResponse.comments:type_name -> bullpen.v1.Comment
-	60, // 54: bullpen.v1.GetMarketCommentsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
-	61, // 55: bullpen.v1.MarketPriceUpdate.timestamp:type_name -> google.protobuf.Timestamp
-	59, // 56: bullpen.v1.GetPageViewRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	58, // 57: bullpen.v1.GetPageViewRequest.params:type_name -> bullpen.v1.GetPageViewRequest.ParamsEntry
-	44, // 58: bullpen.v1.PageView.tabs:type_name -> bullpen.v1.PageTab
-	45, // 59: bullpen.v1.PageView.sections:type_name -> bullpen.v1.PageSection
-	46, // 60: bullpen.v1.PageSection.event_grid:type_name -> bullpen.v1.EventGridSection
-	47, // 61: bullpen.v1.PageSection.category_nav:type_name -> bullpen.v1.CategoryNavSection
-	48, // 62: bullpen.v1.PageSection.stats_bar:type_name -> bullpen.v1.StatsBarSection
-	50, // 63: bullpen.v1.PageSection.market_list:type_name -> bullpen.v1.MarketListSection
-	51, // 64: bullpen.v1.PageSection.sports_games:type_name -> bullpen.v1.SportsGameSection
-	16, // 65: bullpen.v1.EventGridSection.events:type_name -> bullpen.v1.EventResult
-	13, // 66: bullpen.v1.EventGridSection.applied_sort:type_name -> bullpen.v1.SortConfig
-	44, // 67: bullpen.v1.CategoryNavSection.categories:type_name -> bullpen.v1.PageTab
-	49, // 68: bullpen.v1.StatsBarSection.stats:type_name -> bullpen.v1.StatItem
-	55, // 69: bullpen.v1.MarketListSection.markets:type_name -> bullpen.v1.MarketRow
-	52, // 70: bullpen.v1.SportsGameSection.games:type_name -> bullpen.v1.SportsGame
-	30, // 71: bullpen.v1.SportsGame.home_team:type_name -> bullpen.v1.Team
-	30, // 72: bullpen.v1.SportsGame.away_team:type_name -> bullpen.v1.Team
-	53, // 73: bullpen.v1.SportsGame.moneyline:type_name -> bullpen.v1.OddsColumn
-	53, // 74: bullpen.v1.SportsGame.spread:type_name -> bullpen.v1.OddsColumn
-	53, // 75: bullpen.v1.SportsGame.total:type_name -> bullpen.v1.OddsColumn
-	54, // 76: bullpen.v1.OddsColumn.alt_lines:type_name -> bullpen.v1.OddsLine
-	56, // 77: bullpen.v1.MarketRow.history:type_name -> bullpen.v1.PricePoint
-	18, // 78: bullpen.v1.ResultAggregates.FieldRangesEntry.value:type_name -> bullpen.v1.FieldRange
-	4,  // 79: bullpen.v1.PolymarketExploreService.QueryMarkets:input_type -> bullpen.v1.QueryMarketsRequest
-	6,  // 80: bullpen.v1.PolymarketExploreService.QueryEvents:input_type -> bullpen.v1.QueryEventsRequest
-	24, // 81: bullpen.v1.PolymarketExploreService.GetHomepageSummary:input_type -> bullpen.v1.GetHomepageSummaryRequest
-	23, // 82: bullpen.v1.PolymarketExploreService.GetFeaturedLens:input_type -> bullpen.v1.GetFeaturedLensRequest
-	26, // 83: bullpen.v1.PolymarketExploreService.GetEvent:input_type -> bullpen.v1.GetEventRequest
-	28, // 84: bullpen.v1.PolymarketExploreService.GetMarket:input_type -> bullpen.v1.GetMarketRequest
-	31, // 85: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:input_type -> bullpen.v1.GetMarketAnalyticsRequest
-	19, // 86: bullpen.v1.PolymarketExploreService.GetMarketStrength:input_type -> bullpen.v1.GetMarketStrengthRequest
-	33, // 87: bullpen.v1.PolymarketExploreService.GetCategories:input_type -> bullpen.v1.GetCategoriesRequest
-	37, // 88: bullpen.v1.PolymarketExploreService.GetMarketComments:input_type -> bullpen.v1.GetMarketCommentsRequest
-	40, // 89: bullpen.v1.PolymarketExploreService.StreamMarketPrices:input_type -> bullpen.v1.StreamMarketPricesRequest
-	42, // 90: bullpen.v1.PolymarketExploreService.GetPageView:input_type -> bullpen.v1.GetPageViewRequest
-	5,  // 91: bullpen.v1.PolymarketExploreService.QueryMarkets:output_type -> bullpen.v1.QueryMarketsResponse
-	7,  // 92: bullpen.v1.PolymarketExploreService.QueryEvents:output_type -> bullpen.v1.QueryEventsResponse
-	25, // 93: bullpen.v1.PolymarketExploreService.GetHomepageSummary:output_type -> bullpen.v1.HomepageSummary
-	5,  // 94: bullpen.v1.PolymarketExploreService.GetFeaturedLens:output_type -> bullpen.v1.QueryMarketsResponse
-	27, // 95: bullpen.v1.PolymarketExploreService.GetEvent:output_type -> bullpen.v1.Event
-	29, // 96: bullpen.v1.PolymarketExploreService.GetMarket:output_type -> bullpen.v1.Market
-	32, // 97: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:output_type -> bullpen.v1.MarketAnalytics
-	20, // 98: bullpen.v1.PolymarketExploreService.GetMarketStrength:output_type -> bullpen.v1.MarketStrength
-	36, // 99: bullpen.v1.PolymarketExploreService.GetCategories:output_type -> bullpen.v1.GetCategoriesResponse
-	39, // 100: bullpen.v1.PolymarketExploreService.GetMarketComments:output_type -> bullpen.v1.GetMarketCommentsResponse
-	41, // 101: bullpen.v1.PolymarketExploreService.StreamMarketPrices:output_type -> bullpen.v1.MarketPriceUpdate
-	43, // 102: bullpen.v1.PolymarketExploreService.GetPageView:output_type -> bullpen.v1.PageView
-	91, // [91:103] is the sub-list for method output_type
-	79, // [79:91] is the sub-list for method input_type
-	79, // [79:79] is the sub-list for extension type_name
-	79, // [79:79] is the sub-list for extension extendee
-	0,  // [0:79] is the sub-list for field type_name
+	8,   // 0: bullpen.v1.QueryMarketsRequest.filter:type_name -> bullpen.v1.MarketFilter
+	11,  // 1: bullpen.v1.QueryMarketsRequest.scoring:type_name -> bullpen.v1.ScoringConfig
+	13,  // 2: bullpen.v1.QueryMarketsRequest.sort:type_name -> bullpen.v1.SortConfig
+	14,  // 3: bullpen.v1.QueryMarketsRequest.enrichment:type_name -> bullpen.v1.EnrichmentConfig
+	122, // 4: bullpen.v1.QueryMarketsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	15,  // 5: bullpen.v1.QueryMarketsResponse.markets:type_name -> bullpen.v1.MarketResult
+	123, // 6: bullpen.v1.QueryMarketsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	17,  // 7: bullpen.v1.QueryMarketsResponse.aggregates:type_name -> bullpen.v1.ResultAggregates
+	8,   // 8: bullpen.v1.QueryEventsRequest.filter:type_name -> bullpen.v1.MarketFilter
+	11,  // 9: bullpen.v1.QueryEventsRequest.scoring:type_name -> bullpen.v1.ScoringConfig
+	13,  // 10: bullpen.v1.QueryEventsRequest.sort:type_name -> bullpen.v1.SortConfig
+	14,  // 11: bullpen.v1.QueryEventsRequest.enrichment:type_name -> bullpen.v1.EnrichmentConfig
+	122, // 12: bullpen.v1.QueryEventsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	16,  // 13: bullpen.v1.QueryEventsResponse.events:type_name -> bullpen.v1.EventResult
+	123, // 14: bullpen.v1.QueryEventsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	17,  // 15: bullpen.v1.QueryEventsResponse.aggregates:type_name -> bullpen.v1.ResultAggregates
+	9,   // 16: bullpen.v1.MarketFilter.status:type_name -> bullpen.v1.StatusFilter
+	10,  // 17: bullpen.v1.MarketFilter.time_range:type_name -> bullpen.v1.TimeRangeFilter
+	124, // 18: bullpen.v1.TimeRangeFilter.ends_before:type_name -> google.protobuf.Timestamp
+	124, // 19: bullpen.v1.TimeRangeFilter.ends_after:type_name -> google.protobuf.Timestamp
+	124, // 20: bullpen.v1.TimeRangeFilter.created_after:type_name -> google.protobuf.Timestamp
+	124, // 21: bullpen.v1.TimeRangeFilter.created_before:type_name -> google.protobuf.Timestamp
+	0,   // 22: bullpen.v1.ScoringConfig.function:type_name -> bullpen.v1.ScoringFunction
+	125, // 23: bullpen.v1.ScoringConfig.window:type_name -> bullpen.v1.TimeWindow
+	12,  // 24: bullpen.v1.ScoringConfig.weights:type_name -> bullpen.v1.ScoringWeight
+	1,   // 25: bullpen.v1.ScoringWeight.dimension:type_name -> bullpen.v1.ScoringDimension
+	2,   // 26: bullpen.v1.SortConfig.field:type_name -> bullpen.v1.SortField
+	126, // 27: bullpen.v1.SortConfig.order:type_name -> bullpen.v1.SortOrder
+	29,  // 28: bullpen.v1.MarketResult.market:type_name -> bullpen.v1.Market
+	32,  // 29: bullpen.v1.MarketResult.analytics:type_name -> bullpen.v1.MarketAnalytics
+	20,  // 30: bullpen.v1.MarketResult.strength:type_name -> bullpen.v1.MarketStrength
+	27,  // 31: bullpen.v1.EventResult.event:type_name -> bullpen.v1.Event
+	32,  // 32: bullpen.v1.EventResult.analytics:type_name -> bullpen.v1.MarketAnalytics
+	20,  // 33: bullpen.v1.EventResult.strength:type_name -> bullpen.v1.MarketStrength
+	120, // 34: bullpen.v1.ResultAggregates.field_ranges:type_name -> bullpen.v1.ResultAggregates.FieldRangesEntry
+	21,  // 35: bullpen.v1.MarketStrength.dimensions:type_name -> bullpen.v1.StrengthDimension
+	22,  // 36: bullpen.v1.MarketStrength.yes_holders:type_name -> bullpen.v1.TaggedHolder
+	22,  // 37: bullpen.v1.MarketStrength.no_holders:type_name -> bullpen.v1.TaggedHolder
+	127, // 38: bullpen.v1.TaggedHolder.tags:type_name -> bullpen.v1.TraderTag
+	3,   // 39: bullpen.v1.GetFeaturedLensRequest.lens:type_name -> bullpen.v1.FeaturedLens
+	125, // 40: bullpen.v1.GetFeaturedLensRequest.window:type_name -> bullpen.v1.TimeWindow
+	29,  // 41: bullpen.v1.Event.markets:type_name -> bullpen.v1.Market
+	124, // 42: bullpen.v1.Event.end_date:type_name -> google.protobuf.Timestamp
+	124, // 43: bullpen.v1.Event.created_at:type_name -> google.protobuf.Timestamp
+	30,  // 44: bullpen.v1.Event.home_team:type_name -> bullpen.v1.Team
+	30,  // 45: bullpen.v1.Event.away_team:type_name -> bullpen.v1.Team
+	124, // 46: bullpen.v1.Market.end_date:type_name -> google.protobuf.Timestamp
+	124, // 47: bullpen.v1.Market.created_at:type_name -> google.protobuf.Timestamp
+	35,  // 48: bullpen.v1.Category.sub_categories:type_name -> bullpen.v1.SubCategory
+	34,  // 49: bullpen.v1.GetCategoriesResponse.categories:type_name -> bullpen.v1.Category
+	122, // 50: bullpen.v1.GetMarketCommentsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	40,  // 51: bullpen.v1.Comment.replies:type_name -> bullpen.v1.Comment
+	124, // 52: bullpen.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
+	38,  // 53: bullpen.v1.Comment.top_position:type_name -> bullpen.v1.CommentPositionBadge
+	38,  // 54: bullpen.v1.Comment.all_positions:type_name -> bullpen.v1.CommentPositionBadge
+	39,  // 55: bullpen.v1.Comment.media:type_name -> bullpen.v1.CommentMedia
+	40,  // 56: bullpen.v1.GetMarketCommentsResponse.comments:type_name -> bullpen.v1.Comment
+	123, // 57: bullpen.v1.GetMarketCommentsResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	40,  // 58: bullpen.v1.GetCommentsResponse.comments:type_name -> bullpen.v1.Comment
+	124, // 59: bullpen.v1.MarketPriceUpdate.timestamp:type_name -> google.protobuf.Timestamp
+	122, // 60: bullpen.v1.GetPageViewRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	121, // 61: bullpen.v1.GetPageViewRequest.params:type_name -> bullpen.v1.GetPageViewRequest.ParamsEntry
+	63,  // 62: bullpen.v1.PageView.tabs:type_name -> bullpen.v1.PageTab
+	64,  // 63: bullpen.v1.PageView.sections:type_name -> bullpen.v1.PageSection
+	65,  // 64: bullpen.v1.PageSection.event_grid:type_name -> bullpen.v1.EventGridSection
+	66,  // 65: bullpen.v1.PageSection.category_nav:type_name -> bullpen.v1.CategoryNavSection
+	67,  // 66: bullpen.v1.PageSection.stats_bar:type_name -> bullpen.v1.StatsBarSection
+	69,  // 67: bullpen.v1.PageSection.market_list:type_name -> bullpen.v1.MarketListSection
+	70,  // 68: bullpen.v1.PageSection.sports_games:type_name -> bullpen.v1.SportsGameSection
+	16,  // 69: bullpen.v1.EventGridSection.events:type_name -> bullpen.v1.EventResult
+	13,  // 70: bullpen.v1.EventGridSection.applied_sort:type_name -> bullpen.v1.SortConfig
+	63,  // 71: bullpen.v1.CategoryNavSection.categories:type_name -> bullpen.v1.PageTab
+	68,  // 72: bullpen.v1.StatsBarSection.stats:type_name -> bullpen.v1.StatItem
+	74,  // 73: bullpen.v1.MarketListSection.markets:type_name -> bullpen.v1.MarketRow
+	71,  // 74: bullpen.v1.SportsGameSection.games:type_name -> bullpen.v1.SportsGame
+	30,  // 75: bullpen.v1.SportsGame.home_team:type_name -> bullpen.v1.Team
+	30,  // 76: bullpen.v1.SportsGame.away_team:type_name -> bullpen.v1.Team
+	72,  // 77: bullpen.v1.SportsGame.moneyline:type_name -> bullpen.v1.OddsColumn
+	72,  // 78: bullpen.v1.SportsGame.spread:type_name -> bullpen.v1.OddsColumn
+	72,  // 79: bullpen.v1.SportsGame.total:type_name -> bullpen.v1.OddsColumn
+	73,  // 80: bullpen.v1.OddsColumn.alt_lines:type_name -> bullpen.v1.OddsLine
+	75,  // 81: bullpen.v1.MarketRow.history:type_name -> bullpen.v1.PricePoint
+	84,  // 82: bullpen.v1.TradeAnalyticsResponse.daily_volume:type_name -> bullpen.v1.DailyVolume
+	85,  // 83: bullpen.v1.TradeAnalyticsResponse.size_distribution:type_name -> bullpen.v1.TradeSizeBucket
+	86,  // 84: bullpen.v1.TradeAnalyticsResponse.hourly_pattern:type_name -> bullpen.v1.HourlyPattern
+	87,  // 85: bullpen.v1.TradeAnalyticsResponse.top_traders:type_name -> bullpen.v1.TopTrader
+	88,  // 86: bullpen.v1.TradeAnalyticsResponse.summary:type_name -> bullpen.v1.AnalyticsSummary
+	89,  // 87: bullpen.v1.TradeAnalyticsResponse.calibration:type_name -> bullpen.v1.CalibrationPoint
+	90,  // 88: bullpen.v1.TradeAnalyticsResponse.maker_taker:type_name -> bullpen.v1.MakerTakerBucket
+	91,  // 89: bullpen.v1.TradeAnalyticsResponse.calibration_metrics:type_name -> bullpen.v1.CalibrationMetrics
+	94,  // 90: bullpen.v1.PnlLeaderboardResponse.entries:type_name -> bullpen.v1.PnlLeaderboardEntry
+	98,  // 91: bullpen.v1.WalletProfile.category_breakdown:type_name -> bullpen.v1.WalletCategoryBreakdown
+	97,  // 92: bullpen.v1.WalletProfile.similar_traders:type_name -> bullpen.v1.SimilarTrader
+	122, // 93: bullpen.v1.GetTraderDiscoveryRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	100, // 94: bullpen.v1.GetTraderDiscoveryResponse.traders:type_name -> bullpen.v1.TraderCard
+	122, // 95: bullpen.v1.GetSmartMoneySignalsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	103, // 96: bullpen.v1.GetSmartMoneySignalsResponse.markets:type_name -> bullpen.v1.SmartMoneyMarket
+	108, // 97: bullpen.v1.PipelineStats.tables:type_name -> bullpen.v1.TableStat
+	109, // 98: bullpen.v1.PipelineStats.cron_jobs:type_name -> bullpen.v1.CronJobStat
+	113, // 99: bullpen.v1.EventAnalytics.top_wallets:type_name -> bullpen.v1.EventTopWallet
+	122, // 100: bullpen.v1.GetWalletPositionsRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	115, // 101: bullpen.v1.GetWalletPositionsResponse.positions:type_name -> bullpen.v1.WalletPosition
+	118, // 102: bullpen.v1.GetSignificantTradesResponse.trades:type_name -> bullpen.v1.SignificantTrade
+	18,  // 103: bullpen.v1.ResultAggregates.FieldRangesEntry.value:type_name -> bullpen.v1.FieldRange
+	4,   // 104: bullpen.v1.PolymarketExploreService.QueryMarkets:input_type -> bullpen.v1.QueryMarketsRequest
+	6,   // 105: bullpen.v1.PolymarketExploreService.QueryEvents:input_type -> bullpen.v1.QueryEventsRequest
+	24,  // 106: bullpen.v1.PolymarketExploreService.GetHomepageSummary:input_type -> bullpen.v1.GetHomepageSummaryRequest
+	23,  // 107: bullpen.v1.PolymarketExploreService.GetFeaturedLens:input_type -> bullpen.v1.GetFeaturedLensRequest
+	26,  // 108: bullpen.v1.PolymarketExploreService.GetEvent:input_type -> bullpen.v1.GetEventRequest
+	28,  // 109: bullpen.v1.PolymarketExploreService.GetMarket:input_type -> bullpen.v1.GetMarketRequest
+	31,  // 110: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:input_type -> bullpen.v1.GetMarketAnalyticsRequest
+	19,  // 111: bullpen.v1.PolymarketExploreService.GetMarketStrength:input_type -> bullpen.v1.GetMarketStrengthRequest
+	33,  // 112: bullpen.v1.PolymarketExploreService.GetCategories:input_type -> bullpen.v1.GetCategoriesRequest
+	37,  // 113: bullpen.v1.PolymarketExploreService.GetMarketComments:input_type -> bullpen.v1.GetMarketCommentsRequest
+	42,  // 114: bullpen.v1.PolymarketExploreService.GetGammaNonce:input_type -> bullpen.v1.GetGammaNonceRequest
+	44,  // 115: bullpen.v1.PolymarketExploreService.GammaLogin:input_type -> bullpen.v1.GammaLoginRequest
+	46,  // 116: bullpen.v1.PolymarketExploreService.PostComment:input_type -> bullpen.v1.PostCommentRequest
+	48,  // 117: bullpen.v1.PolymarketExploreService.GetComments:input_type -> bullpen.v1.GetCommentsRequest
+	50,  // 118: bullpen.v1.PolymarketExploreService.ReactToComment:input_type -> bullpen.v1.ReactToCommentRequest
+	52,  // 119: bullpen.v1.PolymarketExploreService.DeleteComment:input_type -> bullpen.v1.DeleteCommentRequest
+	54,  // 120: bullpen.v1.PolymarketExploreService.ReplyToComment:input_type -> bullpen.v1.ReplyToCommentRequest
+	55,  // 121: bullpen.v1.PolymarketExploreService.InitDeviceAuth:input_type -> bullpen.v1.InitDeviceAuthRequest
+	57,  // 122: bullpen.v1.PolymarketExploreService.PollDeviceSession:input_type -> bullpen.v1.PollDeviceSessionRequest
+	80,  // 123: bullpen.v1.PolymarketExploreService.RedeemPosition:input_type -> bullpen.v1.RedeemPositionRequest
+	76,  // 124: bullpen.v1.PolymarketExploreService.ToggleBookmark:input_type -> bullpen.v1.ToggleBookmarkRequest
+	78,  // 125: bullpen.v1.PolymarketExploreService.GetBookmarks:input_type -> bullpen.v1.GetBookmarksRequest
+	82,  // 126: bullpen.v1.PolymarketExploreService.GetTradeAnalytics:input_type -> bullpen.v1.GetTradeAnalyticsRequest
+	92,  // 127: bullpen.v1.PolymarketExploreService.GetPnlLeaderboard:input_type -> bullpen.v1.GetPnlLeaderboardRequest
+	95,  // 128: bullpen.v1.PolymarketExploreService.GetWalletProfile:input_type -> bullpen.v1.GetWalletProfileRequest
+	99,  // 129: bullpen.v1.PolymarketExploreService.GetTraderDiscovery:input_type -> bullpen.v1.GetTraderDiscoveryRequest
+	102, // 130: bullpen.v1.PolymarketExploreService.GetSmartMoneySignals:input_type -> bullpen.v1.GetSmartMoneySignalsRequest
+	105, // 131: bullpen.v1.PolymarketExploreService.GetWalletTaxonomy:input_type -> bullpen.v1.GetWalletTaxonomyRequest
+	117, // 132: bullpen.v1.PolymarketExploreService.GetSignificantTrades:input_type -> bullpen.v1.GetSignificantTradesRequest
+	111, // 133: bullpen.v1.PolymarketExploreService.GetEventAnalytics:input_type -> bullpen.v1.GetEventAnalyticsRequest
+	114, // 134: bullpen.v1.PolymarketExploreService.GetWalletPositions:input_type -> bullpen.v1.GetWalletPositionsRequest
+	107, // 135: bullpen.v1.PolymarketExploreService.GetPipelineStats:input_type -> bullpen.v1.GetPipelineStatsRequest
+	59,  // 136: bullpen.v1.PolymarketExploreService.StreamMarketPrices:input_type -> bullpen.v1.StreamMarketPricesRequest
+	61,  // 137: bullpen.v1.PolymarketExploreService.GetPageView:input_type -> bullpen.v1.GetPageViewRequest
+	5,   // 138: bullpen.v1.PolymarketExploreService.QueryMarkets:output_type -> bullpen.v1.QueryMarketsResponse
+	7,   // 139: bullpen.v1.PolymarketExploreService.QueryEvents:output_type -> bullpen.v1.QueryEventsResponse
+	25,  // 140: bullpen.v1.PolymarketExploreService.GetHomepageSummary:output_type -> bullpen.v1.HomepageSummary
+	5,   // 141: bullpen.v1.PolymarketExploreService.GetFeaturedLens:output_type -> bullpen.v1.QueryMarketsResponse
+	27,  // 142: bullpen.v1.PolymarketExploreService.GetEvent:output_type -> bullpen.v1.Event
+	29,  // 143: bullpen.v1.PolymarketExploreService.GetMarket:output_type -> bullpen.v1.Market
+	32,  // 144: bullpen.v1.PolymarketExploreService.GetMarketAnalytics:output_type -> bullpen.v1.MarketAnalytics
+	20,  // 145: bullpen.v1.PolymarketExploreService.GetMarketStrength:output_type -> bullpen.v1.MarketStrength
+	36,  // 146: bullpen.v1.PolymarketExploreService.GetCategories:output_type -> bullpen.v1.GetCategoriesResponse
+	41,  // 147: bullpen.v1.PolymarketExploreService.GetMarketComments:output_type -> bullpen.v1.GetMarketCommentsResponse
+	43,  // 148: bullpen.v1.PolymarketExploreService.GetGammaNonce:output_type -> bullpen.v1.GetGammaNonceResponse
+	45,  // 149: bullpen.v1.PolymarketExploreService.GammaLogin:output_type -> bullpen.v1.GammaLoginResponse
+	47,  // 150: bullpen.v1.PolymarketExploreService.PostComment:output_type -> bullpen.v1.PostCommentResponse
+	49,  // 151: bullpen.v1.PolymarketExploreService.GetComments:output_type -> bullpen.v1.GetCommentsResponse
+	51,  // 152: bullpen.v1.PolymarketExploreService.ReactToComment:output_type -> bullpen.v1.ReactToCommentResponse
+	53,  // 153: bullpen.v1.PolymarketExploreService.DeleteComment:output_type -> bullpen.v1.DeleteCommentResponse
+	47,  // 154: bullpen.v1.PolymarketExploreService.ReplyToComment:output_type -> bullpen.v1.PostCommentResponse
+	56,  // 155: bullpen.v1.PolymarketExploreService.InitDeviceAuth:output_type -> bullpen.v1.InitDeviceAuthResponse
+	58,  // 156: bullpen.v1.PolymarketExploreService.PollDeviceSession:output_type -> bullpen.v1.PollDeviceSessionResponse
+	81,  // 157: bullpen.v1.PolymarketExploreService.RedeemPosition:output_type -> bullpen.v1.RedeemPositionResponse
+	77,  // 158: bullpen.v1.PolymarketExploreService.ToggleBookmark:output_type -> bullpen.v1.ToggleBookmarkResponse
+	79,  // 159: bullpen.v1.PolymarketExploreService.GetBookmarks:output_type -> bullpen.v1.GetBookmarksResponse
+	83,  // 160: bullpen.v1.PolymarketExploreService.GetTradeAnalytics:output_type -> bullpen.v1.TradeAnalyticsResponse
+	93,  // 161: bullpen.v1.PolymarketExploreService.GetPnlLeaderboard:output_type -> bullpen.v1.PnlLeaderboardResponse
+	96,  // 162: bullpen.v1.PolymarketExploreService.GetWalletProfile:output_type -> bullpen.v1.WalletProfile
+	101, // 163: bullpen.v1.PolymarketExploreService.GetTraderDiscovery:output_type -> bullpen.v1.GetTraderDiscoveryResponse
+	104, // 164: bullpen.v1.PolymarketExploreService.GetSmartMoneySignals:output_type -> bullpen.v1.GetSmartMoneySignalsResponse
+	106, // 165: bullpen.v1.PolymarketExploreService.GetWalletTaxonomy:output_type -> bullpen.v1.WalletTaxonomy
+	119, // 166: bullpen.v1.PolymarketExploreService.GetSignificantTrades:output_type -> bullpen.v1.GetSignificantTradesResponse
+	112, // 167: bullpen.v1.PolymarketExploreService.GetEventAnalytics:output_type -> bullpen.v1.EventAnalytics
+	116, // 168: bullpen.v1.PolymarketExploreService.GetWalletPositions:output_type -> bullpen.v1.GetWalletPositionsResponse
+	110, // 169: bullpen.v1.PolymarketExploreService.GetPipelineStats:output_type -> bullpen.v1.PipelineStats
+	60,  // 170: bullpen.v1.PolymarketExploreService.StreamMarketPrices:output_type -> bullpen.v1.MarketPriceUpdate
+	62,  // 171: bullpen.v1.PolymarketExploreService.GetPageView:output_type -> bullpen.v1.PageView
+	138, // [138:172] is the sub-list for method output_type
+	104, // [104:138] is the sub-list for method input_type
+	104, // [104:104] is the sub-list for extension type_name
+	104, // [104:104] is the sub-list for extension extendee
+	0,   // [0:104] is the sub-list for field type_name
 }
 
 func init() { file_bullpen_v1_polymarket_explore_proto_init() }
@@ -5350,7 +11155,7 @@ func file_bullpen_v1_polymarket_explore_proto_init() {
 		(*GetMarketRequest_ConditionId)(nil),
 		(*GetMarketRequest_Slug)(nil),
 	}
-	file_bullpen_v1_polymarket_explore_proto_msgTypes[41].OneofWrappers = []any{
+	file_bullpen_v1_polymarket_explore_proto_msgTypes[60].OneofWrappers = []any{
 		(*PageSection_EventGrid)(nil),
 		(*PageSection_CategoryNav)(nil),
 		(*PageSection_StatsBar)(nil),
@@ -5363,7 +11168,7 @@ func file_bullpen_v1_polymarket_explore_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_bullpen_v1_polymarket_explore_proto_rawDesc), len(file_bullpen_v1_polymarket_explore_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   55,
+			NumMessages:   118,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

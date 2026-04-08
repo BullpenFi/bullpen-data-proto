@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetLastTradeRequest, GetMarketHoldersRequest, GetMarketHoldersResponse, GetMarketPricesRequest, GetMarketPricesResponse, GetOpenInterestRequest, GetOrderbookRequest, GetOrderbooksRequest, GetOrderbooksResponse, GetRecentTradesRequest, GetRecentTradesResponse, GetSpreadRequest, LastTrade, OpenInterest, Orderbook, OrderbookUpdate, Spread, StreamOrderbookRequest } from "./polymarket_trade_info_pb.js";
+import { GetLastTradeRequest, GetMarketHoldersRequest, GetMarketHoldersResponse, GetMarketPricesRequest, GetMarketPricesResponse, GetMidpointsRequest, GetMidpointsResponse, GetOpenInterestRequest, GetOrderbookRequest, GetOrderbooksRequest, GetOrderbooksResponse, GetRecentTradesRequest, GetRecentTradesResponse, GetSpreadRequest, GetSpreadsRequest, GetSpreadsResponse, LastTrade, OpenInterest, Orderbook, OrderbookUpdate, Spread, StreamOrderbookRequest } from "./polymarket_trade_info_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -77,6 +77,26 @@ export const PolymarketTradeInfoService = {
       name: "GetMarketPrices",
       I: GetMarketPricesRequest,
       O: GetMarketPricesResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Batch CLOB pricing (Phase 5)
+     *
+     * @generated from rpc bullpen.v1.PolymarketTradeInfoService.GetMidpoints
+     */
+    getMidpoints: {
+      name: "GetMidpoints",
+      I: GetMidpointsRequest,
+      O: GetMidpointsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketTradeInfoService.GetSpreads
+     */
+    getSpreads: {
+      name: "GetSpreads",
+      I: GetSpreadsRequest,
+      O: GetSpreadsResponse,
       kind: MethodKind.Unary,
     },
     /**

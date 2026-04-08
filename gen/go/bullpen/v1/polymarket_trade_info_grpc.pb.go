@@ -26,6 +26,8 @@ const (
 	PolymarketTradeInfoService_GetLastTrade_FullMethodName     = "/bullpen.v1.PolymarketTradeInfoService/GetLastTrade"
 	PolymarketTradeInfoService_GetOpenInterest_FullMethodName  = "/bullpen.v1.PolymarketTradeInfoService/GetOpenInterest"
 	PolymarketTradeInfoService_GetMarketPrices_FullMethodName  = "/bullpen.v1.PolymarketTradeInfoService/GetMarketPrices"
+	PolymarketTradeInfoService_GetMidpoints_FullMethodName     = "/bullpen.v1.PolymarketTradeInfoService/GetMidpoints"
+	PolymarketTradeInfoService_GetSpreads_FullMethodName       = "/bullpen.v1.PolymarketTradeInfoService/GetSpreads"
 	PolymarketTradeInfoService_GetMarketHolders_FullMethodName = "/bullpen.v1.PolymarketTradeInfoService/GetMarketHolders"
 	PolymarketTradeInfoService_GetRecentTrades_FullMethodName  = "/bullpen.v1.PolymarketTradeInfoService/GetRecentTrades"
 )
@@ -43,6 +45,9 @@ type PolymarketTradeInfoServiceClient interface {
 	GetLastTrade(ctx context.Context, in *GetLastTradeRequest, opts ...grpc.CallOption) (*LastTrade, error)
 	GetOpenInterest(ctx context.Context, in *GetOpenInterestRequest, opts ...grpc.CallOption) (*OpenInterest, error)
 	GetMarketPrices(ctx context.Context, in *GetMarketPricesRequest, opts ...grpc.CallOption) (*GetMarketPricesResponse, error)
+	// Batch CLOB pricing (Phase 5)
+	GetMidpoints(ctx context.Context, in *GetMidpointsRequest, opts ...grpc.CallOption) (*GetMidpointsResponse, error)
+	GetSpreads(ctx context.Context, in *GetSpreadsRequest, opts ...grpc.CallOption) (*GetSpreadsResponse, error)
 	// Market participants
 	GetMarketHolders(ctx context.Context, in *GetMarketHoldersRequest, opts ...grpc.CallOption) (*GetMarketHoldersResponse, error)
 	GetRecentTrades(ctx context.Context, in *GetRecentTradesRequest, opts ...grpc.CallOption) (*GetRecentTradesResponse, error)
@@ -135,6 +140,26 @@ func (c *polymarketTradeInfoServiceClient) GetMarketPrices(ctx context.Context, 
 	return out, nil
 }
 
+func (c *polymarketTradeInfoServiceClient) GetMidpoints(ctx context.Context, in *GetMidpointsRequest, opts ...grpc.CallOption) (*GetMidpointsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMidpointsResponse)
+	err := c.cc.Invoke(ctx, PolymarketTradeInfoService_GetMidpoints_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketTradeInfoServiceClient) GetSpreads(ctx context.Context, in *GetSpreadsRequest, opts ...grpc.CallOption) (*GetSpreadsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSpreadsResponse)
+	err := c.cc.Invoke(ctx, PolymarketTradeInfoService_GetSpreads_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *polymarketTradeInfoServiceClient) GetMarketHolders(ctx context.Context, in *GetMarketHoldersRequest, opts ...grpc.CallOption) (*GetMarketHoldersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetMarketHoldersResponse)
@@ -168,6 +193,9 @@ type PolymarketTradeInfoServiceServer interface {
 	GetLastTrade(context.Context, *GetLastTradeRequest) (*LastTrade, error)
 	GetOpenInterest(context.Context, *GetOpenInterestRequest) (*OpenInterest, error)
 	GetMarketPrices(context.Context, *GetMarketPricesRequest) (*GetMarketPricesResponse, error)
+	// Batch CLOB pricing (Phase 5)
+	GetMidpoints(context.Context, *GetMidpointsRequest) (*GetMidpointsResponse, error)
+	GetSpreads(context.Context, *GetSpreadsRequest) (*GetSpreadsResponse, error)
 	// Market participants
 	GetMarketHolders(context.Context, *GetMarketHoldersRequest) (*GetMarketHoldersResponse, error)
 	GetRecentTrades(context.Context, *GetRecentTradesRequest) (*GetRecentTradesResponse, error)
@@ -201,6 +229,12 @@ func (UnimplementedPolymarketTradeInfoServiceServer) GetOpenInterest(context.Con
 }
 func (UnimplementedPolymarketTradeInfoServiceServer) GetMarketPrices(context.Context, *GetMarketPricesRequest) (*GetMarketPricesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetMarketPrices not implemented")
+}
+func (UnimplementedPolymarketTradeInfoServiceServer) GetMidpoints(context.Context, *GetMidpointsRequest) (*GetMidpointsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetMidpoints not implemented")
+}
+func (UnimplementedPolymarketTradeInfoServiceServer) GetSpreads(context.Context, *GetSpreadsRequest) (*GetSpreadsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSpreads not implemented")
 }
 func (UnimplementedPolymarketTradeInfoServiceServer) GetMarketHolders(context.Context, *GetMarketHoldersRequest) (*GetMarketHoldersResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetMarketHolders not implemented")
@@ -349,6 +383,42 @@ func _PolymarketTradeInfoService_GetMarketPrices_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PolymarketTradeInfoService_GetMidpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMidpointsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketTradeInfoServiceServer).GetMidpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketTradeInfoService_GetMidpoints_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketTradeInfoServiceServer).GetMidpoints(ctx, req.(*GetMidpointsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketTradeInfoService_GetSpreads_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSpreadsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketTradeInfoServiceServer).GetSpreads(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketTradeInfoService_GetSpreads_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketTradeInfoServiceServer).GetSpreads(ctx, req.(*GetSpreadsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PolymarketTradeInfoService_GetMarketHolders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetMarketHoldersRequest)
 	if err := dec(in); err != nil {
@@ -415,6 +485,14 @@ var PolymarketTradeInfoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMarketPrices",
 			Handler:    _PolymarketTradeInfoService_GetMarketPrices_Handler,
+		},
+		{
+			MethodName: "GetMidpoints",
+			Handler:    _PolymarketTradeInfoService_GetMidpoints_Handler,
+		},
+		{
+			MethodName: "GetSpreads",
+			Handler:    _PolymarketTradeInfoService_GetSpreads_Handler,
 		},
 		{
 			MethodName: "GetMarketHolders",

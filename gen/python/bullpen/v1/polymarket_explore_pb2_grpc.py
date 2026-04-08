@@ -71,6 +71,116 @@ class PolymarketExploreServiceStub(object):
                 request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetMarketCommentsRequest.SerializeToString,
                 response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetMarketCommentsResponse.FromString,
                 _registered_method=True)
+        self.GetGammaNonce = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetGammaNonce',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetGammaNonceRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetGammaNonceResponse.FromString,
+                _registered_method=True)
+        self.GammaLogin = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GammaLogin',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GammaLoginRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GammaLoginResponse.FromString,
+                _registered_method=True)
+        self.PostComment = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/PostComment',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentResponse.FromString,
+                _registered_method=True)
+        self.GetComments = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetComments',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetCommentsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetCommentsResponse.FromString,
+                _registered_method=True)
+        self.ReactToComment = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/ReactToComment',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ReactToCommentRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ReactToCommentResponse.FromString,
+                _registered_method=True)
+        self.DeleteComment = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/DeleteComment',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.DeleteCommentRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.DeleteCommentResponse.FromString,
+                _registered_method=True)
+        self.ReplyToComment = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/ReplyToComment',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ReplyToCommentRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentResponse.FromString,
+                _registered_method=True)
+        self.InitDeviceAuth = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/InitDeviceAuth',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.InitDeviceAuthRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.InitDeviceAuthResponse.FromString,
+                _registered_method=True)
+        self.PollDeviceSession = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/PollDeviceSession',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PollDeviceSessionRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PollDeviceSessionResponse.FromString,
+                _registered_method=True)
+        self.RedeemPosition = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/RedeemPosition',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.RedeemPositionRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.RedeemPositionResponse.FromString,
+                _registered_method=True)
+        self.ToggleBookmark = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/ToggleBookmark',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ToggleBookmarkRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ToggleBookmarkResponse.FromString,
+                _registered_method=True)
+        self.GetBookmarks = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetBookmarks',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetBookmarksRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetBookmarksResponse.FromString,
+                _registered_method=True)
+        self.GetTradeAnalytics = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetTradeAnalytics',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetTradeAnalyticsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.TradeAnalyticsResponse.FromString,
+                _registered_method=True)
+        self.GetPnlLeaderboard = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetPnlLeaderboard',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetPnlLeaderboardRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PnlLeaderboardResponse.FromString,
+                _registered_method=True)
+        self.GetWalletProfile = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetWalletProfile',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletProfileRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.WalletProfile.FromString,
+                _registered_method=True)
+        self.GetTraderDiscovery = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetTraderDiscovery',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetTraderDiscoveryRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetTraderDiscoveryResponse.FromString,
+                _registered_method=True)
+        self.GetSmartMoneySignals = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetSmartMoneySignals',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSmartMoneySignalsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSmartMoneySignalsResponse.FromString,
+                _registered_method=True)
+        self.GetWalletTaxonomy = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetWalletTaxonomy',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletTaxonomyRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.WalletTaxonomy.FromString,
+                _registered_method=True)
+        self.GetSignificantTrades = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetSignificantTrades',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSignificantTradesRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSignificantTradesResponse.FromString,
+                _registered_method=True)
+        self.GetEventAnalytics = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetEventAnalytics',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetEventAnalyticsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.EventAnalytics.FromString,
+                _registered_method=True)
+        self.GetWalletPositions = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetWalletPositions',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletPositionsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletPositionsResponse.FromString,
+                _registered_method=True)
+        self.GetPipelineStats = channel.unary_unary(
+                '/bullpen.v1.PolymarketExploreService/GetPipelineStats',
+                request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetPipelineStatsRequest.SerializeToString,
+                response_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PipelineStats.FromString,
+                _registered_method=True)
         self.StreamMarketPrices = channel.unary_stream(
                 '/bullpen.v1.PolymarketExploreService/StreamMarketPrices',
                 request_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.StreamMarketPricesRequest.SerializeToString,
@@ -158,6 +268,147 @@ class PolymarketExploreServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetGammaNonce(self, request, context):
+        """---- Gamma Auth (SIWE login for commenting) ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GammaLogin(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PostComment(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetComments(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReactToComment(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteComment(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReplyToComment(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def InitDeviceAuth(self, request, context):
+        """---- Device Auth (Bullpen device flow → Gamma session) ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PollDeviceSession(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RedeemPosition(self, request, context):
+        """---- Positions ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ToggleBookmark(self, request, context):
+        """---- Bookmarks ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetBookmarks(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTradeAnalytics(self, request, context):
+        """---- Trade Analytics ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPnlLeaderboard(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetWalletProfile(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTraderDiscovery(self, request, context):
+        """---- Trader Discovery & Smart Money ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetSmartMoneySignals(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetWalletTaxonomy(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetSignificantTrades(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetEventAnalytics(self, request, context):
+        """---- Event-level aggregation ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetWalletPositions(self, request, context):
+        """---- Wallet Positions ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPipelineStats(self, request, context):
+        """---- Pipeline Stats (dashboard) ----
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def StreamMarketPrices(self, request, context):
         """---- Streaming ----
         """
@@ -224,6 +475,116 @@ def add_PolymarketExploreServiceServicer_to_server(servicer, server):
                     servicer.GetMarketComments,
                     request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetMarketCommentsRequest.FromString,
                     response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetMarketCommentsResponse.SerializeToString,
+            ),
+            'GetGammaNonce': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetGammaNonce,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetGammaNonceRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetGammaNonceResponse.SerializeToString,
+            ),
+            'GammaLogin': grpc.unary_unary_rpc_method_handler(
+                    servicer.GammaLogin,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GammaLoginRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GammaLoginResponse.SerializeToString,
+            ),
+            'PostComment': grpc.unary_unary_rpc_method_handler(
+                    servicer.PostComment,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentResponse.SerializeToString,
+            ),
+            'GetComments': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetComments,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetCommentsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetCommentsResponse.SerializeToString,
+            ),
+            'ReactToComment': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReactToComment,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ReactToCommentRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ReactToCommentResponse.SerializeToString,
+            ),
+            'DeleteComment': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteComment,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.DeleteCommentRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.DeleteCommentResponse.SerializeToString,
+            ),
+            'ReplyToComment': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReplyToComment,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ReplyToCommentRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentResponse.SerializeToString,
+            ),
+            'InitDeviceAuth': grpc.unary_unary_rpc_method_handler(
+                    servicer.InitDeviceAuth,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.InitDeviceAuthRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.InitDeviceAuthResponse.SerializeToString,
+            ),
+            'PollDeviceSession': grpc.unary_unary_rpc_method_handler(
+                    servicer.PollDeviceSession,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PollDeviceSessionRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PollDeviceSessionResponse.SerializeToString,
+            ),
+            'RedeemPosition': grpc.unary_unary_rpc_method_handler(
+                    servicer.RedeemPosition,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.RedeemPositionRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.RedeemPositionResponse.SerializeToString,
+            ),
+            'ToggleBookmark': grpc.unary_unary_rpc_method_handler(
+                    servicer.ToggleBookmark,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ToggleBookmarkRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.ToggleBookmarkResponse.SerializeToString,
+            ),
+            'GetBookmarks': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetBookmarks,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetBookmarksRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetBookmarksResponse.SerializeToString,
+            ),
+            'GetTradeAnalytics': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTradeAnalytics,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetTradeAnalyticsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.TradeAnalyticsResponse.SerializeToString,
+            ),
+            'GetPnlLeaderboard': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPnlLeaderboard,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetPnlLeaderboardRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PnlLeaderboardResponse.SerializeToString,
+            ),
+            'GetWalletProfile': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetWalletProfile,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletProfileRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.WalletProfile.SerializeToString,
+            ),
+            'GetTraderDiscovery': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTraderDiscovery,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetTraderDiscoveryRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetTraderDiscoveryResponse.SerializeToString,
+            ),
+            'GetSmartMoneySignals': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSmartMoneySignals,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSmartMoneySignalsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSmartMoneySignalsResponse.SerializeToString,
+            ),
+            'GetWalletTaxonomy': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetWalletTaxonomy,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletTaxonomyRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.WalletTaxonomy.SerializeToString,
+            ),
+            'GetSignificantTrades': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSignificantTrades,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSignificantTradesRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetSignificantTradesResponse.SerializeToString,
+            ),
+            'GetEventAnalytics': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetEventAnalytics,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetEventAnalyticsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.EventAnalytics.SerializeToString,
+            ),
+            'GetWalletPositions': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetWalletPositions,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletPositionsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletPositionsResponse.SerializeToString,
+            ),
+            'GetPipelineStats': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPipelineStats,
+                    request_deserializer=bullpen_dot_v1_dot_polymarket__explore__pb2.GetPipelineStatsRequest.FromString,
+                    response_serializer=bullpen_dot_v1_dot_polymarket__explore__pb2.PipelineStats.SerializeToString,
             ),
             'StreamMarketPrices': grpc.unary_stream_rpc_method_handler(
                     servicer.StreamMarketPrices,
@@ -513,6 +874,600 @@ class PolymarketExploreService(object):
             '/bullpen.v1.PolymarketExploreService/GetMarketComments',
             bullpen_dot_v1_dot_polymarket__explore__pb2.GetMarketCommentsRequest.SerializeToString,
             bullpen_dot_v1_dot_polymarket__explore__pb2.GetMarketCommentsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetGammaNonce(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetGammaNonce',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetGammaNonceRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetGammaNonceResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GammaLogin(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GammaLogin',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GammaLoginRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GammaLoginResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PostComment(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/PostComment',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetComments(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetComments',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetCommentsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetCommentsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReactToComment(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/ReactToComment',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.ReactToCommentRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.ReactToCommentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteComment(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/DeleteComment',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.DeleteCommentRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.DeleteCommentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReplyToComment(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/ReplyToComment',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.ReplyToCommentRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.PostCommentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def InitDeviceAuth(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/InitDeviceAuth',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.InitDeviceAuthRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.InitDeviceAuthResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PollDeviceSession(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/PollDeviceSession',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.PollDeviceSessionRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.PollDeviceSessionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RedeemPosition(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/RedeemPosition',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.RedeemPositionRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.RedeemPositionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ToggleBookmark(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/ToggleBookmark',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.ToggleBookmarkRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.ToggleBookmarkResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetBookmarks(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetBookmarks',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetBookmarksRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetBookmarksResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetTradeAnalytics(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetTradeAnalytics',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetTradeAnalyticsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.TradeAnalyticsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPnlLeaderboard(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetPnlLeaderboard',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetPnlLeaderboardRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.PnlLeaderboardResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetWalletProfile(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetWalletProfile',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletProfileRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.WalletProfile.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetTraderDiscovery(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetTraderDiscovery',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetTraderDiscoveryRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetTraderDiscoveryResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetSmartMoneySignals(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetSmartMoneySignals',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetSmartMoneySignalsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetSmartMoneySignalsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetWalletTaxonomy(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetWalletTaxonomy',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletTaxonomyRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.WalletTaxonomy.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetSignificantTrades(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetSignificantTrades',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetSignificantTradesRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetSignificantTradesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetEventAnalytics(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetEventAnalytics',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetEventAnalyticsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.EventAnalytics.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetWalletPositions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetWalletPositions',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletPositionsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetWalletPositionsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPipelineStats(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/bullpen.v1.PolymarketExploreService/GetPipelineStats',
+            bullpen_dot_v1_dot_polymarket__explore__pb2.GetPipelineStatsRequest.SerializeToString,
+            bullpen_dot_v1_dot_polymarket__explore__pb2.PipelineStats.FromString,
             options,
             channel_credentials,
             insecure,

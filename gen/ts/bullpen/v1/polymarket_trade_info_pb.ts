@@ -752,6 +752,162 @@ export class GetMarketPricesResponse extends Message<GetMarketPricesResponse> {
 }
 
 /**
+ * @generated from message bullpen.v1.GetMidpointsRequest
+ */
+export class GetMidpointsRequest extends Message<GetMidpointsRequest> {
+  /**
+   * CLOB token IDs to query midpoints for (POST /midpoints).
+   *
+   * @generated from field: repeated string token_ids = 1;
+   */
+  tokenIds: string[] = [];
+
+  constructor(data?: PartialMessage<GetMidpointsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetMidpointsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "token_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetMidpointsRequest {
+    return new GetMidpointsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetMidpointsRequest {
+    return new GetMidpointsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetMidpointsRequest {
+    return new GetMidpointsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetMidpointsRequest | PlainMessage<GetMidpointsRequest> | undefined, b: GetMidpointsRequest | PlainMessage<GetMidpointsRequest> | undefined): boolean {
+    return proto3.util.equals(GetMidpointsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetMidpointsResponse
+ */
+export class GetMidpointsResponse extends Message<GetMidpointsResponse> {
+  /**
+   * Map of token_id → midpoint price string (e.g. "0.5250").
+   *
+   * @generated from field: map<string, string> midpoints = 1;
+   */
+  midpoints: { [key: string]: string } = {};
+
+  constructor(data?: PartialMessage<GetMidpointsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetMidpointsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "midpoints", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "scalar", T: 9 /* ScalarType.STRING */} },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetMidpointsResponse {
+    return new GetMidpointsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetMidpointsResponse {
+    return new GetMidpointsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetMidpointsResponse {
+    return new GetMidpointsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetMidpointsResponse | PlainMessage<GetMidpointsResponse> | undefined, b: GetMidpointsResponse | PlainMessage<GetMidpointsResponse> | undefined): boolean {
+    return proto3.util.equals(GetMidpointsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetSpreadsRequest
+ */
+export class GetSpreadsRequest extends Message<GetSpreadsRequest> {
+  /**
+   * CLOB token IDs to query spreads for (POST /spreads).
+   *
+   * @generated from field: repeated string token_ids = 1;
+   */
+  tokenIds: string[] = [];
+
+  constructor(data?: PartialMessage<GetSpreadsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetSpreadsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "token_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSpreadsRequest {
+    return new GetSpreadsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSpreadsRequest {
+    return new GetSpreadsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSpreadsRequest {
+    return new GetSpreadsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSpreadsRequest | PlainMessage<GetSpreadsRequest> | undefined, b: GetSpreadsRequest | PlainMessage<GetSpreadsRequest> | undefined): boolean {
+    return proto3.util.equals(GetSpreadsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetSpreadsResponse
+ */
+export class GetSpreadsResponse extends Message<GetSpreadsResponse> {
+  /**
+   * Map of token_id → spread string (e.g. "0.009").
+   *
+   * @generated from field: map<string, string> spreads = 1;
+   */
+  spreads: { [key: string]: string } = {};
+
+  constructor(data?: PartialMessage<GetSpreadsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetSpreadsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "spreads", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "scalar", T: 9 /* ScalarType.STRING */} },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSpreadsResponse {
+    return new GetSpreadsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSpreadsResponse {
+    return new GetSpreadsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSpreadsResponse {
+    return new GetSpreadsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSpreadsResponse | PlainMessage<GetSpreadsResponse> | undefined, b: GetSpreadsResponse | PlainMessage<GetSpreadsResponse> | undefined): boolean {
+    return proto3.util.equals(GetSpreadsResponse, a, b);
+  }
+}
+
+/**
  * @generated from message bullpen.v1.GetMarketHoldersRequest
  */
 export class GetMarketHoldersRequest extends Message<GetMarketHoldersRequest> {

@@ -1127,6 +1127,7 @@ type Balances struct {
 	TotalPositionValue string                 `protobuf:"bytes,2,opt,name=total_position_value,json=totalPositionValue,proto3" json:"total_position_value,omitempty"`
 	UnrealizedPnl      string                 `protobuf:"bytes,3,opt,name=unrealized_pnl,json=unrealizedPnl,proto3" json:"unrealized_pnl,omitempty"`
 	TotalPnl           string                 `protobuf:"bytes,4,opt,name=total_pnl,json=totalPnl,proto3" json:"total_pnl,omitempty"`
+	ProxyAddress       string                 `protobuf:"bytes,5,opt,name=proxy_address,json=proxyAddress,proto3" json:"proxy_address,omitempty"` // The Gnosis Safe address (deposit target for USDC.e)
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -1185,6 +1186,13 @@ func (x *Balances) GetUnrealizedPnl() string {
 func (x *Balances) GetTotalPnl() string {
 	if x != nil {
 		return x.TotalPnl
+	}
+	return ""
+}
+
+func (x *Balances) GetProxyAddress() string {
+	if x != nil {
+		return x.ProxyAddress
 	}
 	return ""
 }
@@ -1999,12 +2007,13 @@ const file_bullpen_v1_polymarket_account_proto_rawDesc = "" +
 	"pagination\x18\x02 \x01(\v2\x1e.bullpen.v1.PaginationResponseR\n" +
 	"pagination\".\n" +
 	"\x12GetBalancesRequest\x12\x18\n" +
-	"\aaddress\x18\x01 \x01(\tR\aaddress\"\xa3\x01\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\"\xc8\x01\n" +
 	"\bBalances\x12!\n" +
 	"\fusdc_balance\x18\x01 \x01(\tR\vusdcBalance\x120\n" +
 	"\x14total_position_value\x18\x02 \x01(\tR\x12totalPositionValue\x12%\n" +
 	"\x0eunrealized_pnl\x18\x03 \x01(\tR\runrealizedPnl\x12\x1b\n" +
-	"\ttotal_pnl\x18\x04 \x01(\tR\btotalPnl\"\x9a\x02\n" +
+	"\ttotal_pnl\x18\x04 \x01(\tR\btotalPnl\x12#\n" +
+	"\rproxy_address\x18\x05 \x01(\tR\fproxyAddress\"\x9a\x02\n" +
 	"\x15GetLeaderboardRequest\x12E\n" +
 	"\x04type\x18\x01 \x01(\x0e21.bullpen.v1.GetLeaderboardRequest.LeaderboardTypeR\x04type\x12.\n" +
 	"\x06window\x18\x02 \x01(\x0e2\x16.bullpen.v1.TimeWindowR\x06window\x12=\n" +

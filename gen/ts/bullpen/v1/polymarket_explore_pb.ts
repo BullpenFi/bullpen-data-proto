@@ -1610,6 +1610,11 @@ export class GetEventRequest extends Message<GetEventRequest> {
     case: "eventId";
   } | { case: undefined; value?: undefined } = { case: undefined };
 
+  /**
+   * @generated from field: string locale = 3;
+   */
+  locale = "";
+
   constructor(data?: PartialMessage<GetEventRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -1620,6 +1625,7 @@ export class GetEventRequest extends Message<GetEventRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "slug", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "identifier" },
     { no: 2, name: "event_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "identifier" },
+    { no: 3, name: "locale", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetEventRequest {
@@ -1813,6 +1819,38 @@ export class Event extends Message<Event> {
    */
   awayTeam?: Team;
 
+  /**
+   * AI-generated market context (from Gamma eventMetadata)
+   *
+   * AI summary text
+   *
+   * @generated from field: string context_description = 31;
+   */
+  contextDescription = "";
+
+  /**
+   * ISO timestamp of last context update
+   *
+   * @generated from field: string context_updated_at = 32;
+   */
+  contextUpdatedAt = "";
+
+  /**
+   * Classification fields
+   *
+   * 'sports_game', 'crypto_updown', 'multi_outcome', 'binary'
+   *
+   * @generated from field: string display_type = 33;
+   */
+  displayType = "";
+
+  /**
+   * top-level category (e.g. 'Sports', 'Politics')
+   *
+   * @generated from field: string category = 34;
+   */
+  category = "";
+
   constructor(data?: PartialMessage<Event>) {
     super();
     proto3.util.initPartial(data, this);
@@ -1851,6 +1889,10 @@ export class Event extends Message<Event> {
     { no: 28, name: "league", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 29, name: "home_team", kind: "message", T: Team },
     { no: 30, name: "away_team", kind: "message", T: Team },
+    { no: 31, name: "context_description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 32, name: "context_updated_at", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 33, name: "display_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 34, name: "category", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Event {
@@ -2558,6 +2600,120 @@ export class GetMarketCommentsRequest extends Message<GetMarketCommentsRequest> 
 }
 
 /**
+ * @generated from message bullpen.v1.CommentPositionBadge
+ */
+export class CommentPositionBadge extends Message<CommentPositionBadge> {
+  /**
+   * outcome name: "Croatia", "Finland"
+   *
+   * @generated from field: string name = 1;
+   */
+  name = "";
+
+  /**
+   * formatted: "142.8K", "16.7K"
+   *
+   * @generated from field: string size_label = 2;
+   */
+  sizeLabel = "";
+
+  /**
+   * true = Yes side (green), false = No side (red)
+   *
+   * @generated from field: bool is_yes = 3;
+   */
+  isYes = false;
+
+  constructor(data?: PartialMessage<CommentPositionBadge>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.CommentPositionBadge";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "size_label", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "is_yes", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CommentPositionBadge {
+    return new CommentPositionBadge().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CommentPositionBadge {
+    return new CommentPositionBadge().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CommentPositionBadge {
+    return new CommentPositionBadge().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CommentPositionBadge | PlainMessage<CommentPositionBadge> | undefined, b: CommentPositionBadge | PlainMessage<CommentPositionBadge> | undefined): boolean {
+    return proto3.util.equals(CommentPositionBadge, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.CommentMedia
+ */
+export class CommentMedia extends Message<CommentMedia> {
+  /**
+   * @generated from field: string url = 1;
+   */
+  url = "";
+
+  /**
+   * @generated from field: string alt_text = 2;
+   */
+  altText = "";
+
+  /**
+   * "gif", "image", etc.
+   *
+   * @generated from field: string media_type = 3;
+   */
+  mediaType = "";
+
+  /**
+   * "giphy", etc.
+   *
+   * @generated from field: string provider = 4;
+   */
+  provider = "";
+
+  constructor(data?: PartialMessage<CommentMedia>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.CommentMedia";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "alt_text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "media_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "provider", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CommentMedia {
+    return new CommentMedia().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CommentMedia {
+    return new CommentMedia().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CommentMedia {
+    return new CommentMedia().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CommentMedia | PlainMessage<CommentMedia> | undefined, b: CommentMedia | PlainMessage<CommentMedia> | undefined): boolean {
+    return proto3.util.equals(CommentMedia, a, b);
+  }
+}
+
+/**
  * @generated from message bullpen.v1.Comment
  */
 export class Comment extends Message<Comment> {
@@ -2601,6 +2757,27 @@ export class Comment extends Message<Comment> {
    */
   createdAt?: Timestamp;
 
+  /**
+   * largest position badge (for inline display)
+   *
+   * @generated from field: bullpen.v1.CommentPositionBadge top_position = 9;
+   */
+  topPosition?: CommentPositionBadge;
+
+  /**
+   * top 8 for dropdown
+   *
+   * @generated from field: repeated bullpen.v1.CommentPositionBadge all_positions = 10;
+   */
+  allPositions: CommentPositionBadge[] = [];
+
+  /**
+   * GIFs, images from Giphy etc.
+   *
+   * @generated from field: repeated bullpen.v1.CommentMedia media = 11;
+   */
+  media: CommentMedia[] = [];
+
   constructor(data?: PartialMessage<Comment>) {
     super();
     proto3.util.initPartial(data, this);
@@ -2617,6 +2794,9 @@ export class Comment extends Message<Comment> {
     { no: 6, name: "reaction_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 7, name: "replies", kind: "message", T: Comment, repeated: true },
     { no: 8, name: "created_at", kind: "message", T: Timestamp },
+    { no: 9, name: "top_position", kind: "message", T: CommentPositionBadge },
+    { no: 10, name: "all_positions", kind: "message", T: CommentPositionBadge, repeated: true },
+    { no: 11, name: "media", kind: "message", T: CommentMedia, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Comment {
@@ -2676,6 +2856,841 @@ export class GetMarketCommentsResponse extends Message<GetMarketCommentsResponse
 
   static equals(a: GetMarketCommentsResponse | PlainMessage<GetMarketCommentsResponse> | undefined, b: GetMarketCommentsResponse | PlainMessage<GetMarketCommentsResponse> | undefined): boolean {
     return proto3.util.equals(GetMarketCommentsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetGammaNonceRequest
+ */
+export class GetGammaNonceRequest extends Message<GetGammaNonceRequest> {
+  /**
+   * @generated from field: string wallet_address = 1;
+   */
+  walletAddress = "";
+
+  constructor(data?: PartialMessage<GetGammaNonceRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetGammaNonceRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "wallet_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetGammaNonceRequest {
+    return new GetGammaNonceRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetGammaNonceRequest {
+    return new GetGammaNonceRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetGammaNonceRequest {
+    return new GetGammaNonceRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetGammaNonceRequest | PlainMessage<GetGammaNonceRequest> | undefined, b: GetGammaNonceRequest | PlainMessage<GetGammaNonceRequest> | undefined): boolean {
+    return proto3.util.equals(GetGammaNonceRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetGammaNonceResponse
+ */
+export class GetGammaNonceResponse extends Message<GetGammaNonceResponse> {
+  /**
+   * @generated from field: string nonce = 1;
+   */
+  nonce = "";
+
+  /**
+   * The SIWE text to sign with personal_sign
+   *
+   * @generated from field: string siwe_message = 2;
+   */
+  siweMessage = "";
+
+  /**
+   * Timestamp used in the message
+   *
+   * @generated from field: string issued_at = 3;
+   */
+  issuedAt = "";
+
+  constructor(data?: PartialMessage<GetGammaNonceResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetGammaNonceResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "nonce", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "siwe_message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "issued_at", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetGammaNonceResponse {
+    return new GetGammaNonceResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetGammaNonceResponse {
+    return new GetGammaNonceResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetGammaNonceResponse {
+    return new GetGammaNonceResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetGammaNonceResponse | PlainMessage<GetGammaNonceResponse> | undefined, b: GetGammaNonceResponse | PlainMessage<GetGammaNonceResponse> | undefined): boolean {
+    return proto3.util.equals(GetGammaNonceResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GammaLoginRequest
+ */
+export class GammaLoginRequest extends Message<GammaLoginRequest> {
+  /**
+   * @generated from field: string wallet_address = 1;
+   */
+  walletAddress = "";
+
+  /**
+   * @generated from field: string nonce = 2;
+   */
+  nonce = "";
+
+  /**
+   * The personal_sign result (0x-prefixed hex)
+   *
+   * @generated from field: string signature = 3;
+   */
+  signature = "";
+
+  /**
+   * Must match the issued_at from GetGammaNonceResponse
+   *
+   * @generated from field: string issued_at = 4;
+   */
+  issuedAt = "";
+
+  constructor(data?: PartialMessage<GammaLoginRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GammaLoginRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "wallet_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "nonce", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "signature", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "issued_at", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GammaLoginRequest {
+    return new GammaLoginRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GammaLoginRequest {
+    return new GammaLoginRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GammaLoginRequest {
+    return new GammaLoginRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GammaLoginRequest | PlainMessage<GammaLoginRequest> | undefined, b: GammaLoginRequest | PlainMessage<GammaLoginRequest> | undefined): boolean {
+    return proto3.util.equals(GammaLoginRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GammaLoginResponse
+ */
+export class GammaLoginResponse extends Message<GammaLoginResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * @generated from field: string address = 2;
+   */
+  address = "";
+
+  constructor(data?: PartialMessage<GammaLoginResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GammaLoginResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GammaLoginResponse {
+    return new GammaLoginResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GammaLoginResponse {
+    return new GammaLoginResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GammaLoginResponse {
+    return new GammaLoginResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GammaLoginResponse | PlainMessage<GammaLoginResponse> | undefined, b: GammaLoginResponse | PlainMessage<GammaLoginResponse> | undefined): boolean {
+    return proto3.util.equals(GammaLoginResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.PostCommentRequest
+ */
+export class PostCommentRequest extends Message<PostCommentRequest> {
+  /**
+   * Must have active Gamma session
+   *
+   * @generated from field: string wallet_address = 1;
+   */
+  walletAddress = "";
+
+  /**
+   * Gamma event numeric ID
+   *
+   * @generated from field: int64 event_id = 2;
+   */
+  eventId = protoInt64.zero;
+
+  /**
+   * Comment text
+   *
+   * @generated from field: string body = 3;
+   */
+  body = "";
+
+  constructor(data?: PartialMessage<PostCommentRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.PostCommentRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "wallet_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "event_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostCommentRequest {
+    return new PostCommentRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PostCommentRequest {
+    return new PostCommentRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PostCommentRequest {
+    return new PostCommentRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PostCommentRequest | PlainMessage<PostCommentRequest> | undefined, b: PostCommentRequest | PlainMessage<PostCommentRequest> | undefined): boolean {
+    return proto3.util.equals(PostCommentRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.PostCommentResponse
+ */
+export class PostCommentResponse extends Message<PostCommentResponse> {
+  /**
+   * @generated from field: string comment_id = 1;
+   */
+  commentId = "";
+
+  /**
+   * @generated from field: string body = 2;
+   */
+  body = "";
+
+  /**
+   * @generated from field: string user_address = 3;
+   */
+  userAddress = "";
+
+  /**
+   * @generated from field: string created_at = 4;
+   */
+  createdAt = "";
+
+  constructor(data?: PartialMessage<PostCommentResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.PostCommentResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "comment_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "user_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "created_at", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostCommentResponse {
+    return new PostCommentResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PostCommentResponse {
+    return new PostCommentResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PostCommentResponse {
+    return new PostCommentResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PostCommentResponse | PlainMessage<PostCommentResponse> | undefined, b: PostCommentResponse | PlainMessage<PostCommentResponse> | undefined): boolean {
+    return proto3.util.equals(PostCommentResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetCommentsRequest
+ */
+export class GetCommentsRequest extends Message<GetCommentsRequest> {
+  /**
+   * @generated from field: int64 event_id = 1;
+   */
+  eventId = protoInt64.zero;
+
+  /**
+   * @generated from field: int32 limit = 2;
+   */
+  limit = 0;
+
+  /**
+   * @generated from field: int32 offset = 3;
+   */
+  offset = 0;
+
+  /**
+   * @generated from field: bool holders_only = 4;
+   */
+  holdersOnly = false;
+
+  /**
+   * @generated from field: bool ascending = 5;
+   */
+  ascending = false;
+
+  constructor(data?: PartialMessage<GetCommentsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetCommentsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "event_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "limit", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "offset", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "holders_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 5, name: "ascending", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetCommentsRequest {
+    return new GetCommentsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetCommentsRequest {
+    return new GetCommentsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetCommentsRequest {
+    return new GetCommentsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetCommentsRequest | PlainMessage<GetCommentsRequest> | undefined, b: GetCommentsRequest | PlainMessage<GetCommentsRequest> | undefined): boolean {
+    return proto3.util.equals(GetCommentsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetCommentsResponse
+ */
+export class GetCommentsResponse extends Message<GetCommentsResponse> {
+  /**
+   * @generated from field: repeated bullpen.v1.Comment comments = 1;
+   */
+  comments: Comment[] = [];
+
+  /**
+   * @generated from field: int32 total_count = 2;
+   */
+  totalCount = 0;
+
+  constructor(data?: PartialMessage<GetCommentsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetCommentsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "comments", kind: "message", T: Comment, repeated: true },
+    { no: 2, name: "total_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetCommentsResponse {
+    return new GetCommentsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetCommentsResponse {
+    return new GetCommentsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetCommentsResponse {
+    return new GetCommentsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetCommentsResponse | PlainMessage<GetCommentsResponse> | undefined, b: GetCommentsResponse | PlainMessage<GetCommentsResponse> | undefined): boolean {
+    return proto3.util.equals(GetCommentsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.ReactToCommentRequest
+ */
+export class ReactToCommentRequest extends Message<ReactToCommentRequest> {
+  /**
+   * @generated from field: string wallet_address = 1;
+   */
+  walletAddress = "";
+
+  /**
+   * @generated from field: int64 comment_id = 2;
+   */
+  commentId = protoInt64.zero;
+
+  /**
+   * @generated from field: string reaction_type = 3;
+   */
+  reactionType = "";
+
+  constructor(data?: PartialMessage<ReactToCommentRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.ReactToCommentRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "wallet_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "comment_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "reaction_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ReactToCommentRequest {
+    return new ReactToCommentRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ReactToCommentRequest {
+    return new ReactToCommentRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ReactToCommentRequest {
+    return new ReactToCommentRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ReactToCommentRequest | PlainMessage<ReactToCommentRequest> | undefined, b: ReactToCommentRequest | PlainMessage<ReactToCommentRequest> | undefined): boolean {
+    return proto3.util.equals(ReactToCommentRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.ReactToCommentResponse
+ */
+export class ReactToCommentResponse extends Message<ReactToCommentResponse> {
+  /**
+   * @generated from field: string reaction_id = 1;
+   */
+  reactionId = "";
+
+  /**
+   * @generated from field: int64 comment_id = 2;
+   */
+  commentId = protoInt64.zero;
+
+  /**
+   * @generated from field: string reaction_type = 3;
+   */
+  reactionType = "";
+
+  /**
+   * @generated from field: string user_address = 4;
+   */
+  userAddress = "";
+
+  /**
+   * @generated from field: string created_at = 5;
+   */
+  createdAt = "";
+
+  constructor(data?: PartialMessage<ReactToCommentResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.ReactToCommentResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "reaction_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "comment_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "reaction_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "user_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "created_at", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ReactToCommentResponse {
+    return new ReactToCommentResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ReactToCommentResponse {
+    return new ReactToCommentResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ReactToCommentResponse {
+    return new ReactToCommentResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ReactToCommentResponse | PlainMessage<ReactToCommentResponse> | undefined, b: ReactToCommentResponse | PlainMessage<ReactToCommentResponse> | undefined): boolean {
+    return proto3.util.equals(ReactToCommentResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.DeleteCommentRequest
+ */
+export class DeleteCommentRequest extends Message<DeleteCommentRequest> {
+  /**
+   * @generated from field: string wallet_address = 1;
+   */
+  walletAddress = "";
+
+  /**
+   * @generated from field: string comment_id = 2;
+   */
+  commentId = "";
+
+  constructor(data?: PartialMessage<DeleteCommentRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.DeleteCommentRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "wallet_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "comment_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteCommentRequest {
+    return new DeleteCommentRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteCommentRequest {
+    return new DeleteCommentRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteCommentRequest {
+    return new DeleteCommentRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteCommentRequest | PlainMessage<DeleteCommentRequest> | undefined, b: DeleteCommentRequest | PlainMessage<DeleteCommentRequest> | undefined): boolean {
+    return proto3.util.equals(DeleteCommentRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.DeleteCommentResponse
+ */
+export class DeleteCommentResponse extends Message<DeleteCommentResponse> {
+  constructor(data?: PartialMessage<DeleteCommentResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.DeleteCommentResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteCommentResponse {
+    return new DeleteCommentResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteCommentResponse {
+    return new DeleteCommentResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteCommentResponse {
+    return new DeleteCommentResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteCommentResponse | PlainMessage<DeleteCommentResponse> | undefined, b: DeleteCommentResponse | PlainMessage<DeleteCommentResponse> | undefined): boolean {
+    return proto3.util.equals(DeleteCommentResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.ReplyToCommentRequest
+ */
+export class ReplyToCommentRequest extends Message<ReplyToCommentRequest> {
+  /**
+   * @generated from field: string wallet_address = 1;
+   */
+  walletAddress = "";
+
+  /**
+   * @generated from field: int64 event_id = 2;
+   */
+  eventId = protoInt64.zero;
+
+  /**
+   * @generated from field: string body = 3;
+   */
+  body = "";
+
+  /**
+   * @generated from field: string parent_comment_id = 4;
+   */
+  parentCommentId = "";
+
+  /**
+   * @generated from field: string reply_address = 5;
+   */
+  replyAddress = "";
+
+  constructor(data?: PartialMessage<ReplyToCommentRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.ReplyToCommentRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "wallet_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "event_id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "parent_comment_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "reply_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ReplyToCommentRequest {
+    return new ReplyToCommentRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ReplyToCommentRequest {
+    return new ReplyToCommentRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ReplyToCommentRequest {
+    return new ReplyToCommentRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ReplyToCommentRequest | PlainMessage<ReplyToCommentRequest> | undefined, b: ReplyToCommentRequest | PlainMessage<ReplyToCommentRequest> | undefined): boolean {
+    return proto3.util.equals(ReplyToCommentRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.InitDeviceAuthRequest
+ */
+export class InitDeviceAuthRequest extends Message<InitDeviceAuthRequest> {
+  constructor(data?: PartialMessage<InitDeviceAuthRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.InitDeviceAuthRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InitDeviceAuthRequest {
+    return new InitDeviceAuthRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): InitDeviceAuthRequest {
+    return new InitDeviceAuthRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InitDeviceAuthRequest {
+    return new InitDeviceAuthRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: InitDeviceAuthRequest | PlainMessage<InitDeviceAuthRequest> | undefined, b: InitDeviceAuthRequest | PlainMessage<InitDeviceAuthRequest> | undefined): boolean {
+    return proto3.util.equals(InitDeviceAuthRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.InitDeviceAuthResponse
+ */
+export class InitDeviceAuthResponse extends Message<InitDeviceAuthResponse> {
+  /**
+   * @generated from field: string device_code = 1;
+   */
+  deviceCode = "";
+
+  /**
+   * @generated from field: string user_code = 2;
+   */
+  userCode = "";
+
+  /**
+   * @generated from field: string verification_uri = 3;
+   */
+  verificationUri = "";
+
+  /**
+   * @generated from field: int32 expires_in = 4;
+   */
+  expiresIn = 0;
+
+  /**
+   * @generated from field: int32 interval = 5;
+   */
+  interval = 0;
+
+  constructor(data?: PartialMessage<InitDeviceAuthResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.InitDeviceAuthResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "device_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "user_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "verification_uri", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "expires_in", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 5, name: "interval", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InitDeviceAuthResponse {
+    return new InitDeviceAuthResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): InitDeviceAuthResponse {
+    return new InitDeviceAuthResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InitDeviceAuthResponse {
+    return new InitDeviceAuthResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: InitDeviceAuthResponse | PlainMessage<InitDeviceAuthResponse> | undefined, b: InitDeviceAuthResponse | PlainMessage<InitDeviceAuthResponse> | undefined): boolean {
+    return proto3.util.equals(InitDeviceAuthResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.PollDeviceSessionRequest
+ */
+export class PollDeviceSessionRequest extends Message<PollDeviceSessionRequest> {
+  /**
+   * @generated from field: string device_code = 1;
+   */
+  deviceCode = "";
+
+  constructor(data?: PartialMessage<PollDeviceSessionRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.PollDeviceSessionRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "device_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PollDeviceSessionRequest {
+    return new PollDeviceSessionRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PollDeviceSessionRequest {
+    return new PollDeviceSessionRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PollDeviceSessionRequest {
+    return new PollDeviceSessionRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PollDeviceSessionRequest | PlainMessage<PollDeviceSessionRequest> | undefined, b: PollDeviceSessionRequest | PlainMessage<PollDeviceSessionRequest> | undefined): boolean {
+    return proto3.util.equals(PollDeviceSessionRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.PollDeviceSessionResponse
+ */
+export class PollDeviceSessionResponse extends Message<PollDeviceSessionResponse> {
+  /**
+   * "pending", "completed", "expired"
+   *
+   * @generated from field: string status = 1;
+   */
+  status = "";
+
+  /**
+   * Set when status=completed
+   *
+   * @generated from field: string wallet_address = 2;
+   */
+  walletAddress = "";
+
+  /**
+   * Whether Gamma session is active
+   *
+   * @generated from field: bool gamma_authenticated = 3;
+   */
+  gammaAuthenticated = false;
+
+  constructor(data?: PartialMessage<PollDeviceSessionResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.PollDeviceSessionResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "status", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "wallet_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "gamma_authenticated", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PollDeviceSessionResponse {
+    return new PollDeviceSessionResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PollDeviceSessionResponse {
+    return new PollDeviceSessionResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PollDeviceSessionResponse {
+    return new PollDeviceSessionResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PollDeviceSessionResponse | PlainMessage<PollDeviceSessionResponse> | undefined, b: PollDeviceSessionResponse | PlainMessage<PollDeviceSessionResponse> | undefined): boolean {
+    return proto3.util.equals(PollDeviceSessionResponse, a, b);
   }
 }
 
@@ -2794,6 +3809,11 @@ export class GetPageViewRequest extends Message<GetPageViewRequest> {
    */
   params: { [key: string]: string } = {};
 
+  /**
+   * @generated from field: string locale = 6;
+   */
+  locale = "";
+
   constructor(data?: PartialMessage<GetPageViewRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -2807,6 +3827,7 @@ export class GetPageViewRequest extends Message<GetPageViewRequest> {
     { no: 3, name: "date_filter", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "pagination", kind: "message", T: PaginationRequest },
     { no: 5, name: "params", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "scalar", T: 9 /* ScalarType.STRING */} },
+    { no: 6, name: "locale", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPageViewRequest {
@@ -3786,6 +4807,3241 @@ export class PricePoint extends Message<PricePoint> {
 
   static equals(a: PricePoint | PlainMessage<PricePoint> | undefined, b: PricePoint | PlainMessage<PricePoint> | undefined): boolean {
     return proto3.util.equals(PricePoint, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.ToggleBookmarkRequest
+ */
+export class ToggleBookmarkRequest extends Message<ToggleBookmarkRequest> {
+  /**
+   * @generated from field: string event_id = 1;
+   */
+  eventId = "";
+
+  /**
+   * @generated from field: string event_slug = 2;
+   */
+  eventSlug = "";
+
+  constructor(data?: PartialMessage<ToggleBookmarkRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.ToggleBookmarkRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "event_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "event_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ToggleBookmarkRequest {
+    return new ToggleBookmarkRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ToggleBookmarkRequest {
+    return new ToggleBookmarkRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ToggleBookmarkRequest {
+    return new ToggleBookmarkRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ToggleBookmarkRequest | PlainMessage<ToggleBookmarkRequest> | undefined, b: ToggleBookmarkRequest | PlainMessage<ToggleBookmarkRequest> | undefined): boolean {
+    return proto3.util.equals(ToggleBookmarkRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.ToggleBookmarkResponse
+ */
+export class ToggleBookmarkResponse extends Message<ToggleBookmarkResponse> {
+  /**
+   * @generated from field: bool bookmarked = 1;
+   */
+  bookmarked = false;
+
+  constructor(data?: PartialMessage<ToggleBookmarkResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.ToggleBookmarkResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "bookmarked", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ToggleBookmarkResponse {
+    return new ToggleBookmarkResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ToggleBookmarkResponse {
+    return new ToggleBookmarkResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ToggleBookmarkResponse {
+    return new ToggleBookmarkResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ToggleBookmarkResponse | PlainMessage<ToggleBookmarkResponse> | undefined, b: ToggleBookmarkResponse | PlainMessage<ToggleBookmarkResponse> | undefined): boolean {
+    return proto3.util.equals(ToggleBookmarkResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetBookmarksRequest
+ */
+export class GetBookmarksRequest extends Message<GetBookmarksRequest> {
+  constructor(data?: PartialMessage<GetBookmarksRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetBookmarksRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetBookmarksRequest {
+    return new GetBookmarksRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetBookmarksRequest {
+    return new GetBookmarksRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetBookmarksRequest {
+    return new GetBookmarksRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetBookmarksRequest | PlainMessage<GetBookmarksRequest> | undefined, b: GetBookmarksRequest | PlainMessage<GetBookmarksRequest> | undefined): boolean {
+    return proto3.util.equals(GetBookmarksRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetBookmarksResponse
+ */
+export class GetBookmarksResponse extends Message<GetBookmarksResponse> {
+  /**
+   * @generated from field: repeated string event_slugs = 1;
+   */
+  eventSlugs: string[] = [];
+
+  constructor(data?: PartialMessage<GetBookmarksResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetBookmarksResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "event_slugs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetBookmarksResponse {
+    return new GetBookmarksResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetBookmarksResponse {
+    return new GetBookmarksResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetBookmarksResponse {
+    return new GetBookmarksResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetBookmarksResponse | PlainMessage<GetBookmarksResponse> | undefined, b: GetBookmarksResponse | PlainMessage<GetBookmarksResponse> | undefined): boolean {
+    return proto3.util.equals(GetBookmarksResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.RedeemPositionRequest
+ */
+export class RedeemPositionRequest extends Message<RedeemPositionRequest> {
+  /**
+   * @generated from field: string condition_id = 1;
+   */
+  conditionId = "";
+
+  /**
+   * @generated from field: int32 outcome_index = 2;
+   */
+  outcomeIndex = 0;
+
+  constructor(data?: PartialMessage<RedeemPositionRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.RedeemPositionRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "condition_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "outcome_index", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RedeemPositionRequest {
+    return new RedeemPositionRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RedeemPositionRequest {
+    return new RedeemPositionRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RedeemPositionRequest {
+    return new RedeemPositionRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: RedeemPositionRequest | PlainMessage<RedeemPositionRequest> | undefined, b: RedeemPositionRequest | PlainMessage<RedeemPositionRequest> | undefined): boolean {
+    return proto3.util.equals(RedeemPositionRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.RedeemPositionResponse
+ */
+export class RedeemPositionResponse extends Message<RedeemPositionResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message = "";
+
+  /**
+   * @generated from field: string tx_hash = 3;
+   */
+  txHash = "";
+
+  constructor(data?: PartialMessage<RedeemPositionResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.RedeemPositionResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "tx_hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RedeemPositionResponse {
+    return new RedeemPositionResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RedeemPositionResponse {
+    return new RedeemPositionResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RedeemPositionResponse {
+    return new RedeemPositionResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: RedeemPositionResponse | PlainMessage<RedeemPositionResponse> | undefined, b: RedeemPositionResponse | PlainMessage<RedeemPositionResponse> | undefined): boolean {
+    return proto3.util.equals(RedeemPositionResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetTradeAnalyticsRequest
+ */
+export class GetTradeAnalyticsRequest extends Message<GetTradeAnalyticsRequest> {
+  /**
+   * Empty = return all analytics. Optional filters:
+   *
+   * "7d", "30d", "90d", "all" (default: "30d")
+   *
+   * @generated from field: string period = 1;
+   */
+  period = "";
+
+  constructor(data?: PartialMessage<GetTradeAnalyticsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetTradeAnalyticsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "period", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetTradeAnalyticsRequest {
+    return new GetTradeAnalyticsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetTradeAnalyticsRequest {
+    return new GetTradeAnalyticsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetTradeAnalyticsRequest {
+    return new GetTradeAnalyticsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetTradeAnalyticsRequest | PlainMessage<GetTradeAnalyticsRequest> | undefined, b: GetTradeAnalyticsRequest | PlainMessage<GetTradeAnalyticsRequest> | undefined): boolean {
+    return proto3.util.equals(GetTradeAnalyticsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.TradeAnalyticsResponse
+ */
+export class TradeAnalyticsResponse extends Message<TradeAnalyticsResponse> {
+  /**
+   * Volume over time (daily)
+   *
+   * @generated from field: repeated bullpen.v1.DailyVolume daily_volume = 1;
+   */
+  dailyVolume: DailyVolume[] = [];
+
+  /**
+   * Trade size distribution
+   *
+   * @generated from field: repeated bullpen.v1.TradeSizeBucket size_distribution = 2;
+   */
+  sizeDistribution: TradeSizeBucket[] = [];
+
+  /**
+   * Hourly trading pattern
+   *
+   * @generated from field: repeated bullpen.v1.HourlyPattern hourly_pattern = 3;
+   */
+  hourlyPattern: HourlyPattern[] = [];
+
+  /**
+   * Top traders
+   *
+   * @generated from field: repeated bullpen.v1.TopTrader top_traders = 4;
+   */
+  topTraders: TopTrader[] = [];
+
+  /**
+   * Summary stats
+   *
+   * @generated from field: bullpen.v1.AnalyticsSummary summary = 5;
+   */
+  summary?: AnalyticsSummary;
+
+  /**
+   * Market calibration (win rate vs price)
+   *
+   * @generated from field: repeated bullpen.v1.CalibrationPoint calibration = 6;
+   */
+  calibration: CalibrationPoint[] = [];
+
+  /**
+   * Maker vs taker excess returns by price bucket
+   *
+   * @generated from field: repeated bullpen.v1.MakerTakerBucket maker_taker = 7;
+   */
+  makerTaker: MakerTakerBucket[] = [];
+
+  /**
+   * Calibration quality metrics
+   *
+   * @generated from field: bullpen.v1.CalibrationMetrics calibration_metrics = 8;
+   */
+  calibrationMetrics?: CalibrationMetrics;
+
+  constructor(data?: PartialMessage<TradeAnalyticsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.TradeAnalyticsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "daily_volume", kind: "message", T: DailyVolume, repeated: true },
+    { no: 2, name: "size_distribution", kind: "message", T: TradeSizeBucket, repeated: true },
+    { no: 3, name: "hourly_pattern", kind: "message", T: HourlyPattern, repeated: true },
+    { no: 4, name: "top_traders", kind: "message", T: TopTrader, repeated: true },
+    { no: 5, name: "summary", kind: "message", T: AnalyticsSummary },
+    { no: 6, name: "calibration", kind: "message", T: CalibrationPoint, repeated: true },
+    { no: 7, name: "maker_taker", kind: "message", T: MakerTakerBucket, repeated: true },
+    { no: 8, name: "calibration_metrics", kind: "message", T: CalibrationMetrics },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TradeAnalyticsResponse {
+    return new TradeAnalyticsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TradeAnalyticsResponse {
+    return new TradeAnalyticsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TradeAnalyticsResponse {
+    return new TradeAnalyticsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: TradeAnalyticsResponse | PlainMessage<TradeAnalyticsResponse> | undefined, b: TradeAnalyticsResponse | PlainMessage<TradeAnalyticsResponse> | undefined): boolean {
+    return proto3.util.equals(TradeAnalyticsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.DailyVolume
+ */
+export class DailyVolume extends Message<DailyVolume> {
+  /**
+   * "2026-03-30"
+   *
+   * @generated from field: string date = 1;
+   */
+  date = "";
+
+  /**
+   * @generated from field: int64 trade_count = 2;
+   */
+  tradeCount = protoInt64.zero;
+
+  /**
+   * USDC
+   *
+   * @generated from field: double total_volume = 3;
+   */
+  totalVolume = 0;
+
+  /**
+   * @generated from field: int64 unique_traders = 4;
+   */
+  uniqueTraders = protoInt64.zero;
+
+  /**
+   * @generated from field: double buy_volume = 5;
+   */
+  buyVolume = 0;
+
+  /**
+   * @generated from field: double sell_volume = 6;
+   */
+  sellVolume = 0;
+
+  constructor(data?: PartialMessage<DailyVolume>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.DailyVolume";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "trade_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "unique_traders", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 5, name: "buy_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "sell_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DailyVolume {
+    return new DailyVolume().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DailyVolume {
+    return new DailyVolume().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DailyVolume {
+    return new DailyVolume().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DailyVolume | PlainMessage<DailyVolume> | undefined, b: DailyVolume | PlainMessage<DailyVolume> | undefined): boolean {
+    return proto3.util.equals(DailyVolume, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.TradeSizeBucket
+ */
+export class TradeSizeBucket extends Message<TradeSizeBucket> {
+  /**
+   * "<$10", "$10-100", "$100-1K", "$1K-10K", "$10K+"
+   *
+   * @generated from field: string bucket = 1;
+   */
+  bucket = "";
+
+  /**
+   * "BUY" or "SELL"
+   *
+   * @generated from field: string side = 2;
+   */
+  side = "";
+
+  /**
+   * @generated from field: int64 trade_count = 3;
+   */
+  tradeCount = protoInt64.zero;
+
+  /**
+   * @generated from field: double total_volume = 4;
+   */
+  totalVolume = 0;
+
+  constructor(data?: PartialMessage<TradeSizeBucket>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.TradeSizeBucket";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "bucket", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "side", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "trade_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 4, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TradeSizeBucket {
+    return new TradeSizeBucket().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TradeSizeBucket {
+    return new TradeSizeBucket().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TradeSizeBucket {
+    return new TradeSizeBucket().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: TradeSizeBucket | PlainMessage<TradeSizeBucket> | undefined, b: TradeSizeBucket | PlainMessage<TradeSizeBucket> | undefined): boolean {
+    return proto3.util.equals(TradeSizeBucket, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.HourlyPattern
+ */
+export class HourlyPattern extends Message<HourlyPattern> {
+  /**
+   * 0-23 UTC
+   *
+   * @generated from field: int32 hour = 1;
+   */
+  hour = 0;
+
+  /**
+   * @generated from field: int64 trade_count = 2;
+   */
+  tradeCount = protoInt64.zero;
+
+  /**
+   * @generated from field: double total_volume = 3;
+   */
+  totalVolume = 0;
+
+  /**
+   * @generated from field: double avg_size = 4;
+   */
+  avgSize = 0;
+
+  constructor(data?: PartialMessage<HourlyPattern>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.HourlyPattern";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "hour", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "trade_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "avg_size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): HourlyPattern {
+    return new HourlyPattern().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): HourlyPattern {
+    return new HourlyPattern().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): HourlyPattern {
+    return new HourlyPattern().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: HourlyPattern | PlainMessage<HourlyPattern> | undefined, b: HourlyPattern | PlainMessage<HourlyPattern> | undefined): boolean {
+    return proto3.util.equals(HourlyPattern, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.TopTrader
+ */
+export class TopTrader extends Message<TopTrader> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * pseudonym if available
+   *
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: string profile_image = 3;
+   */
+  profileImage = "";
+
+  /**
+   * @generated from field: int64 trade_count = 4;
+   */
+  tradeCount = protoInt64.zero;
+
+  /**
+   * @generated from field: double total_volume = 5;
+   */
+  totalVolume = 0;
+
+  /**
+   * @generated from field: double buy_volume = 6;
+   */
+  buyVolume = 0;
+
+  /**
+   * @generated from field: double sell_volume = 7;
+   */
+  sellVolume = 0;
+
+  /**
+   * @generated from field: int64 unique_markets = 8;
+   */
+  uniqueMarkets = protoInt64.zero;
+
+  /**
+   * @generated from field: double avg_trade_size = 9;
+   */
+  avgTradeSize = 0;
+
+  constructor(data?: PartialMessage<TopTrader>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.TopTrader";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "profile_image", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "trade_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 5, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "buy_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "sell_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 8, name: "unique_markets", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 9, name: "avg_trade_size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TopTrader {
+    return new TopTrader().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TopTrader {
+    return new TopTrader().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TopTrader {
+    return new TopTrader().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: TopTrader | PlainMessage<TopTrader> | undefined, b: TopTrader | PlainMessage<TopTrader> | undefined): boolean {
+    return proto3.util.equals(TopTrader, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.AnalyticsSummary
+ */
+export class AnalyticsSummary extends Message<AnalyticsSummary> {
+  /**
+   * @generated from field: int64 total_trades = 1;
+   */
+  totalTrades = protoInt64.zero;
+
+  /**
+   * @generated from field: double total_volume = 2;
+   */
+  totalVolume = 0;
+
+  /**
+   * @generated from field: int64 unique_traders = 3;
+   */
+  uniqueTraders = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 active_markets = 4;
+   */
+  activeMarkets = protoInt64.zero;
+
+  /**
+   * @generated from field: double avg_trade_size = 5;
+   */
+  avgTradeSize = 0;
+
+  /**
+   * @generated from field: double median_trade_size = 6;
+   */
+  medianTradeSize = 0;
+
+  /**
+   * the period these stats cover
+   *
+   * @generated from field: string period = 7;
+   */
+  period = "";
+
+  constructor(data?: PartialMessage<AnalyticsSummary>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.AnalyticsSummary";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "total_trades", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 3, name: "unique_traders", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 4, name: "active_markets", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 5, name: "avg_trade_size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "median_trade_size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "period", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AnalyticsSummary {
+    return new AnalyticsSummary().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AnalyticsSummary {
+    return new AnalyticsSummary().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AnalyticsSummary {
+    return new AnalyticsSummary().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: AnalyticsSummary | PlainMessage<AnalyticsSummary> | undefined, b: AnalyticsSummary | PlainMessage<AnalyticsSummary> | undefined): boolean {
+    return proto3.util.equals(AnalyticsSummary, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.CalibrationPoint
+ */
+export class CalibrationPoint extends Message<CalibrationPoint> {
+  /**
+   * 1-99 cents
+   *
+   * @generated from field: int32 price = 1;
+   */
+  price = 0;
+
+  /**
+   * @generated from field: int64 total_trades = 2;
+   */
+  totalTrades = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 wins = 3;
+   */
+  wins = protoInt64.zero;
+
+  /**
+   * percentage (0-100)
+   *
+   * @generated from field: double win_rate = 4;
+   */
+  winRate = 0;
+
+  constructor(data?: PartialMessage<CalibrationPoint>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.CalibrationPoint";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "price", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "total_trades", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "wins", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 4, name: "win_rate", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CalibrationPoint {
+    return new CalibrationPoint().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CalibrationPoint {
+    return new CalibrationPoint().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CalibrationPoint {
+    return new CalibrationPoint().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CalibrationPoint | PlainMessage<CalibrationPoint> | undefined, b: CalibrationPoint | PlainMessage<CalibrationPoint> | undefined): boolean {
+    return proto3.util.equals(CalibrationPoint, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.MakerTakerBucket
+ */
+export class MakerTakerBucket extends Message<MakerTakerBucket> {
+  /**
+   * 5, 10, ..., 95
+   *
+   * @generated from field: int32 price_bucket = 1;
+   */
+  priceBucket = 0;
+
+  /**
+   * "maker" or "taker"
+   *
+   * @generated from field: string role = 2;
+   */
+  role = "";
+
+  /**
+   * @generated from field: int64 total_trades = 3;
+   */
+  totalTrades = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 wins = 4;
+   */
+  wins = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 losses = 5;
+   */
+  losses = protoInt64.zero;
+
+  /**
+   * @generated from field: double avg_return = 6;
+   */
+  avgReturn = 0;
+
+  /**
+   * @generated from field: double total_volume = 7;
+   */
+  totalVolume = 0;
+
+  constructor(data?: PartialMessage<MakerTakerBucket>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.MakerTakerBucket";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "price_bucket", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "role", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "total_trades", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 4, name: "wins", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 5, name: "losses", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 6, name: "avg_return", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MakerTakerBucket {
+    return new MakerTakerBucket().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MakerTakerBucket {
+    return new MakerTakerBucket().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MakerTakerBucket {
+    return new MakerTakerBucket().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: MakerTakerBucket | PlainMessage<MakerTakerBucket> | undefined, b: MakerTakerBucket | PlainMessage<MakerTakerBucket> | undefined): boolean {
+    return proto3.util.equals(MakerTakerBucket, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.CalibrationMetrics
+ */
+export class CalibrationMetrics extends Message<CalibrationMetrics> {
+  /**
+   * @generated from field: double brier_score = 1;
+   */
+  brierScore = 0;
+
+  /**
+   * @generated from field: double log_loss = 2;
+   */
+  logLoss = 0;
+
+  /**
+   * @generated from field: double ece = 3;
+   */
+  ece = 0;
+
+  /**
+   * @generated from field: int64 total_resolved_trades = 4;
+   */
+  totalResolvedTrades = protoInt64.zero;
+
+  constructor(data?: PartialMessage<CalibrationMetrics>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.CalibrationMetrics";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "brier_score", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 2, name: "log_loss", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 3, name: "ece", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "total_resolved_trades", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CalibrationMetrics {
+    return new CalibrationMetrics().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CalibrationMetrics {
+    return new CalibrationMetrics().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CalibrationMetrics {
+    return new CalibrationMetrics().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CalibrationMetrics | PlainMessage<CalibrationMetrics> | undefined, b: CalibrationMetrics | PlainMessage<CalibrationMetrics> | undefined): boolean {
+    return proto3.util.equals(CalibrationMetrics, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetPnlLeaderboardRequest
+ */
+export class GetPnlLeaderboardRequest extends Message<GetPnlLeaderboardRequest> {
+  /**
+   * @generated from field: string period = 1;
+   */
+  period = "";
+
+  /**
+   * @generated from field: string category = 2;
+   */
+  category = "";
+
+  /**
+   * @generated from field: int32 limit = 3;
+   */
+  limit = 0;
+
+  constructor(data?: PartialMessage<GetPnlLeaderboardRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetPnlLeaderboardRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "period", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "category", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "limit", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPnlLeaderboardRequest {
+    return new GetPnlLeaderboardRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPnlLeaderboardRequest {
+    return new GetPnlLeaderboardRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPnlLeaderboardRequest {
+    return new GetPnlLeaderboardRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetPnlLeaderboardRequest | PlainMessage<GetPnlLeaderboardRequest> | undefined, b: GetPnlLeaderboardRequest | PlainMessage<GetPnlLeaderboardRequest> | undefined): boolean {
+    return proto3.util.equals(GetPnlLeaderboardRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.PnlLeaderboardResponse
+ */
+export class PnlLeaderboardResponse extends Message<PnlLeaderboardResponse> {
+  /**
+   * @generated from field: repeated bullpen.v1.PnlLeaderboardEntry entries = 1;
+   */
+  entries: PnlLeaderboardEntry[] = [];
+
+  constructor(data?: PartialMessage<PnlLeaderboardResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.PnlLeaderboardResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "entries", kind: "message", T: PnlLeaderboardEntry, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PnlLeaderboardResponse {
+    return new PnlLeaderboardResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PnlLeaderboardResponse {
+    return new PnlLeaderboardResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PnlLeaderboardResponse {
+    return new PnlLeaderboardResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PnlLeaderboardResponse | PlainMessage<PnlLeaderboardResponse> | undefined, b: PnlLeaderboardResponse | PlainMessage<PnlLeaderboardResponse> | undefined): boolean {
+    return proto3.util.equals(PnlLeaderboardResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.PnlLeaderboardEntry
+ */
+export class PnlLeaderboardEntry extends Message<PnlLeaderboardEntry> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: double unrealized_pnl = 3;
+   */
+  unrealizedPnl = 0;
+
+  /**
+   * @generated from field: double realized_pnl = 4;
+   */
+  realizedPnl = 0;
+
+  /**
+   * @generated from field: double total_pnl = 5;
+   */
+  totalPnl = 0;
+
+  /**
+   * @generated from field: double total_invested = 6;
+   */
+  totalInvested = 0;
+
+  /**
+   * @generated from field: double roi = 7;
+   */
+  roi = 0;
+
+  /**
+   * @generated from field: int32 open_positions = 8;
+   */
+  openPositions = 0;
+
+  /**
+   * @generated from field: int64 trade_count = 9;
+   */
+  tradeCount = protoInt64.zero;
+
+  constructor(data?: PartialMessage<PnlLeaderboardEntry>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.PnlLeaderboardEntry";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "unrealized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "realized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 5, name: "total_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "total_invested", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "roi", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 8, name: "open_positions", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 9, name: "trade_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PnlLeaderboardEntry {
+    return new PnlLeaderboardEntry().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PnlLeaderboardEntry {
+    return new PnlLeaderboardEntry().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PnlLeaderboardEntry {
+    return new PnlLeaderboardEntry().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PnlLeaderboardEntry | PlainMessage<PnlLeaderboardEntry> | undefined, b: PnlLeaderboardEntry | PlainMessage<PnlLeaderboardEntry> | undefined): boolean {
+    return proto3.util.equals(PnlLeaderboardEntry, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetWalletProfileRequest
+ */
+export class GetWalletProfileRequest extends Message<GetWalletProfileRequest> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  constructor(data?: PartialMessage<GetWalletProfileRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetWalletProfileRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetWalletProfileRequest {
+    return new GetWalletProfileRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetWalletProfileRequest {
+    return new GetWalletProfileRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetWalletProfileRequest {
+    return new GetWalletProfileRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetWalletProfileRequest | PlainMessage<GetWalletProfileRequest> | undefined, b: GetWalletProfileRequest | PlainMessage<GetWalletProfileRequest> | undefined): boolean {
+    return proto3.util.equals(GetWalletProfileRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.WalletProfile
+ */
+export class WalletProfile extends Message<WalletProfile> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: string profile_image = 3;
+   */
+  profileImage = "";
+
+  /**
+   * P&L overview
+   *
+   * @generated from field: double unrealized_pnl = 4;
+   */
+  unrealizedPnl = 0;
+
+  /**
+   * @generated from field: double realized_pnl = 5;
+   */
+  realizedPnl = 0;
+
+  /**
+   * @generated from field: double total_pnl = 6;
+   */
+  totalPnl = 0;
+
+  /**
+   * @generated from field: double total_invested = 7;
+   */
+  totalInvested = 0;
+
+  /**
+   * @generated from field: double roi = 8;
+   */
+  roi = 0;
+
+  /**
+   * @generated from field: int32 open_positions = 9;
+   */
+  openPositions = 0;
+
+  /**
+   * P&L windows
+   *
+   * @generated from field: double pnl_change_24h = 10;
+   */
+  pnlChange24h = 0;
+
+  /**
+   * @generated from field: double pnl_change_7d = 11;
+   */
+  pnlChange7d = 0;
+
+  /**
+   * @generated from field: double pnl_change_30d = 12;
+   */
+  pnlChange30d = 0;
+
+  /**
+   * Trade activity
+   *
+   * @generated from field: int64 first_trade_at_unix = 13;
+   */
+  firstTradeAtUnix = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 last_trade_at_unix = 14;
+   */
+  lastTradeAtUnix = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 total_trades = 15;
+   */
+  totalTrades = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 trades_last_7d = 16;
+   */
+  tradesLast7d = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 trades_last_30d = 17;
+   */
+  tradesLast30d = protoInt64.zero;
+
+  /**
+   * @generated from field: double trades_per_week = 18;
+   */
+  tradesPerWeek = 0;
+
+  /**
+   * @generated from field: double trades_per_month = 19;
+   */
+  tradesPerMonth = 0;
+
+  /**
+   * @generated from field: double sell_frequency = 20;
+   */
+  sellFrequency = 0;
+
+  /**
+   * @generated from field: int64 unique_markets = 21;
+   */
+  uniqueMarkets = protoInt64.zero;
+
+  /**
+   * Resolved market performance
+   *
+   * @generated from field: int32 resolved_positions = 22;
+   */
+  resolvedPositions = 0;
+
+  /**
+   * @generated from field: int32 wins = 23;
+   */
+  wins = 0;
+
+  /**
+   * @generated from field: int32 losses = 24;
+   */
+  losses = 0;
+
+  /**
+   * @generated from field: double win_rate = 25;
+   */
+  winRate = 0;
+
+  /**
+   * @generated from field: double profit_factor = 26;
+   */
+  profitFactor = 0;
+
+  /**
+   * @generated from field: double avg_hold_duration_hours = 27;
+   */
+  avgHoldDurationHours = 0;
+
+  /**
+   * @generated from field: double biggest_win = 28;
+   */
+  biggestWin = 0;
+
+  /**
+   * @generated from field: double biggest_loss = 29;
+   */
+  biggestLoss = 0;
+
+  /**
+   * @generated from field: string current_streak_type = 30;
+   */
+  currentStreakType = "";
+
+  /**
+   * @generated from field: int32 current_streak_count = 31;
+   */
+  currentStreakCount = 0;
+
+  /**
+   * @generated from field: int32 longest_win_streak = 32;
+   */
+  longestWinStreak = 0;
+
+  /**
+   * @generated from field: int32 longest_loss_streak = 33;
+   */
+  longestLossStreak = 0;
+
+  /**
+   * Per-category breakdown
+   *
+   * @generated from field: repeated bullpen.v1.WalletCategoryBreakdown category_breakdown = 34;
+   */
+  categoryBreakdown: WalletCategoryBreakdown[] = [];
+
+  /**
+   * Staleness indicator: seconds since the P&L snapshot was last computed.
+   * -1 means snapshot_time is unknown. Frontend uses this to show a stale-data warning.
+   *
+   * @generated from field: int64 snapshot_age_seconds = 35;
+   */
+  snapshotAgeSeconds = protoInt64.zero;
+
+  /**
+   * Extended P&L analytics (from wallet_pnl_snapshot extended columns)
+   *
+   * @generated from field: double max_drawdown = 36;
+   */
+  maxDrawdown = 0;
+
+  /**
+   * @generated from field: double roi_stored = 37;
+   */
+  roiStored = 0;
+
+  /**
+   * @generated from field: double pnl_volatility = 38;
+   */
+  pnlVolatility = 0;
+
+  /**
+   * @generated from field: double roi_risk_adjusted = 39;
+   */
+  roiRiskAdjusted = 0;
+
+  /**
+   * @generated from field: double pnl_change_90d = 40;
+   */
+  pnlChange90d = 0;
+
+  /**
+   * @generated from field: double usdc_balance = 41;
+   */
+  usdcBalance = 0;
+
+  /**
+   * Taxonomy (from wallet_taxonomy)
+   *
+   * @generated from field: string trader_archetype = 42;
+   */
+  traderArchetype = "";
+
+  /**
+   * @generated from field: string risk_profile = 43;
+   */
+  riskProfile = "";
+
+  /**
+   * @generated from field: double copyability_score = 44;
+   */
+  copyabilityScore = 0;
+
+  /**
+   * @generated from field: string strategy_badge = 45;
+   */
+  strategyBadge = "";
+
+  /**
+   * @generated from field: string trader_tier = 46;
+   */
+  traderTier = "";
+
+  /**
+   * @generated from field: string summary = 47;
+   */
+  summary = "";
+
+  /**
+   * Additional taxonomy fields
+   *
+   * @generated from field: bool is_bot = 48;
+   */
+  isBot = false;
+
+  /**
+   * @generated from field: bool is_smart_money = 49;
+   */
+  isSmartMoney = false;
+
+  /**
+   * @generated from field: string specialist_generalist = 50;
+   */
+  specialistGeneralist = "";
+
+  /**
+   * @generated from field: double avg_trade_size = 51;
+   */
+  avgTradeSize = 0;
+
+  /**
+   * @generated from field: repeated string category_tags = 52;
+   */
+  categoryTags: string[] = [];
+
+  /**
+   * CLV (Closing Line Value) stats
+   *
+   * @generated from field: double avg_clv = 53;
+   */
+  avgClv = 0;
+
+  /**
+   * @generated from field: double clv_positive_rate = 54;
+   */
+  clvPositiveRate = 0;
+
+  /**
+   * Similar traders (from wallet_similar_traders)
+   *
+   * @generated from field: repeated bullpen.v1.SimilarTrader similar_traders = 55;
+   */
+  similarTraders: SimilarTrader[] = [];
+
+  constructor(data?: PartialMessage<WalletProfile>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.WalletProfile";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "profile_image", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "unrealized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 5, name: "realized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "total_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "total_invested", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 8, name: "roi", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 9, name: "open_positions", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 10, name: "pnl_change_24h", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 11, name: "pnl_change_7d", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 12, name: "pnl_change_30d", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 13, name: "first_trade_at_unix", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 14, name: "last_trade_at_unix", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 15, name: "total_trades", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 16, name: "trades_last_7d", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 17, name: "trades_last_30d", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 18, name: "trades_per_week", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 19, name: "trades_per_month", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 20, name: "sell_frequency", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 21, name: "unique_markets", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 22, name: "resolved_positions", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 23, name: "wins", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 24, name: "losses", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 25, name: "win_rate", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 26, name: "profit_factor", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 27, name: "avg_hold_duration_hours", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 28, name: "biggest_win", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 29, name: "biggest_loss", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 30, name: "current_streak_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 31, name: "current_streak_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 32, name: "longest_win_streak", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 33, name: "longest_loss_streak", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 34, name: "category_breakdown", kind: "message", T: WalletCategoryBreakdown, repeated: true },
+    { no: 35, name: "snapshot_age_seconds", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 36, name: "max_drawdown", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 37, name: "roi_stored", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 38, name: "pnl_volatility", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 39, name: "roi_risk_adjusted", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 40, name: "pnl_change_90d", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 41, name: "usdc_balance", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 42, name: "trader_archetype", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 43, name: "risk_profile", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 44, name: "copyability_score", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 45, name: "strategy_badge", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 46, name: "trader_tier", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 47, name: "summary", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 48, name: "is_bot", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 49, name: "is_smart_money", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 50, name: "specialist_generalist", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 51, name: "avg_trade_size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 52, name: "category_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 53, name: "avg_clv", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 54, name: "clv_positive_rate", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 55, name: "similar_traders", kind: "message", T: SimilarTrader, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WalletProfile {
+    return new WalletProfile().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WalletProfile {
+    return new WalletProfile().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WalletProfile {
+    return new WalletProfile().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: WalletProfile | PlainMessage<WalletProfile> | undefined, b: WalletProfile | PlainMessage<WalletProfile> | undefined): boolean {
+    return proto3.util.equals(WalletProfile, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.SimilarTrader
+ */
+export class SimilarTrader extends Message<SimilarTrader> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: double similarity_score = 3;
+   */
+  similarityScore = 0;
+
+  /**
+   * @generated from field: int32 shared_markets = 4;
+   */
+  sharedMarkets = 0;
+
+  constructor(data?: PartialMessage<SimilarTrader>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.SimilarTrader";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "similarity_score", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "shared_markets", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SimilarTrader {
+    return new SimilarTrader().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SimilarTrader {
+    return new SimilarTrader().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SimilarTrader {
+    return new SimilarTrader().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: SimilarTrader | PlainMessage<SimilarTrader> | undefined, b: SimilarTrader | PlainMessage<SimilarTrader> | undefined): boolean {
+    return proto3.util.equals(SimilarTrader, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.WalletCategoryBreakdown
+ */
+export class WalletCategoryBreakdown extends Message<WalletCategoryBreakdown> {
+  /**
+   * @generated from field: string category = 1;
+   */
+  category = "";
+
+  /**
+   * @generated from field: int64 trade_count = 2;
+   */
+  tradeCount = protoInt64.zero;
+
+  /**
+   * @generated from field: double total_volume = 3;
+   */
+  totalVolume = 0;
+
+  /**
+   * @generated from field: double unrealized_pnl = 4;
+   */
+  unrealizedPnl = 0;
+
+  /**
+   * @generated from field: double realized_pnl = 5;
+   */
+  realizedPnl = 0;
+
+  /**
+   * @generated from field: bool is_primary = 6;
+   */
+  isPrimary = false;
+
+  constructor(data?: PartialMessage<WalletCategoryBreakdown>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.WalletCategoryBreakdown";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "trade_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "unrealized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 5, name: "realized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "is_primary", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WalletCategoryBreakdown {
+    return new WalletCategoryBreakdown().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WalletCategoryBreakdown {
+    return new WalletCategoryBreakdown().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WalletCategoryBreakdown {
+    return new WalletCategoryBreakdown().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: WalletCategoryBreakdown | PlainMessage<WalletCategoryBreakdown> | undefined, b: WalletCategoryBreakdown | PlainMessage<WalletCategoryBreakdown> | undefined): boolean {
+    return proto3.util.equals(WalletCategoryBreakdown, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetTraderDiscoveryRequest
+ */
+export class GetTraderDiscoveryRequest extends Message<GetTraderDiscoveryRequest> {
+  /**
+   * filter by category tag (empty = all)
+   *
+   * @generated from field: string category = 1;
+   */
+  category = "";
+
+  /**
+   * filter: value_hunter, contrarian, scalper, etc.
+   *
+   * @generated from field: string archetype = 2;
+   */
+  archetype = "";
+
+  /**
+   * filter: conservative, moderate, aggressive
+   *
+   * @generated from field: string risk_profile = 3;
+   */
+  riskProfile = "";
+
+  /**
+   * filter: whale, large, medium, small
+   *
+   * @generated from field: string trader_tier = 4;
+   */
+  traderTier = "";
+
+  /**
+   * minimum lifetime P&L
+   *
+   * @generated from field: double min_pnl = 5;
+   */
+  minPnl = 0;
+
+  /**
+   * minimum win rate (0-1)
+   *
+   * @generated from field: double min_win_rate = 6;
+   */
+  minWinRate = 0;
+
+  /**
+   * only smart money wallets
+   *
+   * @generated from field: bool smart_money_only = 7;
+   */
+  smartMoneyOnly = false;
+
+  /**
+   * minimum copyability score (0-1)
+   *
+   * @generated from field: double min_copyability = 8;
+   */
+  minCopyability = 0;
+
+  /**
+   * pnl, win_rate, copyability, volume (default: pnl)
+   *
+   * @generated from field: string sort_by = 9;
+   */
+  sortBy = "";
+
+  /**
+   * @generated from field: bool ascending = 10;
+   */
+  ascending = false;
+
+  /**
+   * @generated from field: bullpen.v1.PaginationRequest pagination = 11;
+   */
+  pagination?: PaginationRequest;
+
+  constructor(data?: PartialMessage<GetTraderDiscoveryRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetTraderDiscoveryRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "archetype", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "risk_profile", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "trader_tier", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "min_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "min_win_rate", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "smart_money_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 8, name: "min_copyability", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 9, name: "sort_by", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 10, name: "ascending", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 11, name: "pagination", kind: "message", T: PaginationRequest },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetTraderDiscoveryRequest {
+    return new GetTraderDiscoveryRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetTraderDiscoveryRequest {
+    return new GetTraderDiscoveryRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetTraderDiscoveryRequest {
+    return new GetTraderDiscoveryRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetTraderDiscoveryRequest | PlainMessage<GetTraderDiscoveryRequest> | undefined, b: GetTraderDiscoveryRequest | PlainMessage<GetTraderDiscoveryRequest> | undefined): boolean {
+    return proto3.util.equals(GetTraderDiscoveryRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.TraderCard
+ */
+export class TraderCard extends Message<TraderCard> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: string profile_image = 3;
+   */
+  profileImage = "";
+
+  /**
+   * P&L
+   *
+   * @generated from field: double total_pnl = 4;
+   */
+  totalPnl = 0;
+
+  /**
+   * @generated from field: double unrealized_pnl = 5;
+   */
+  unrealizedPnl = 0;
+
+  /**
+   * @generated from field: double realized_pnl = 6;
+   */
+  realizedPnl = 0;
+
+  /**
+   * @generated from field: double pnl_change_24h = 7;
+   */
+  pnlChange24h = 0;
+
+  /**
+   * @generated from field: double pnl_change_7d = 8;
+   */
+  pnlChange7d = 0;
+
+  /**
+   * @generated from field: double pnl_change_30d = 9;
+   */
+  pnlChange30d = 0;
+
+  /**
+   * @generated from field: double roi = 10;
+   */
+  roi = 0;
+
+  /**
+   * @generated from field: double max_drawdown = 11;
+   */
+  maxDrawdown = 0;
+
+  /**
+   * Performance
+   *
+   * @generated from field: double win_rate = 12;
+   */
+  winRate = 0;
+
+  /**
+   * @generated from field: double profit_factor = 13;
+   */
+  profitFactor = 0;
+
+  /**
+   * @generated from field: int32 resolved_positions = 14;
+   */
+  resolvedPositions = 0;
+
+  /**
+   * @generated from field: int32 open_positions = 15;
+   */
+  openPositions = 0;
+
+  /**
+   * Taxonomy
+   *
+   * @generated from field: string trader_archetype = 16;
+   */
+  traderArchetype = "";
+
+  /**
+   * @generated from field: string risk_profile = 17;
+   */
+  riskProfile = "";
+
+  /**
+   * @generated from field: string trader_tier = 18;
+   */
+  traderTier = "";
+
+  /**
+   * @generated from field: string strategy_badge = 19;
+   */
+  strategyBadge = "";
+
+  /**
+   * @generated from field: double copyability_score = 20;
+   */
+  copyabilityScore = 0;
+
+  /**
+   * @generated from field: bool is_smart_money = 21;
+   */
+  isSmartMoney = false;
+
+  /**
+   * @generated from field: bool is_bot = 22;
+   */
+  isBot = false;
+
+  /**
+   * @generated from field: string specialist_generalist = 23;
+   */
+  specialistGeneralist = "";
+
+  /**
+   * @generated from field: repeated string category_tags = 24;
+   */
+  categoryTags: string[] = [];
+
+  /**
+   * @generated from field: string summary = 25;
+   */
+  summary = "";
+
+  /**
+   * Activity
+   *
+   * @generated from field: double trades_per_week = 26;
+   */
+  tradesPerWeek = 0;
+
+  /**
+   * @generated from field: double avg_trade_size = 27;
+   */
+  avgTradeSize = 0;
+
+  /**
+   * @generated from field: double avg_hold_duration_hours = 28;
+   */
+  avgHoldDurationHours = 0;
+
+  constructor(data?: PartialMessage<TraderCard>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.TraderCard";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "profile_image", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "total_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 5, name: "unrealized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "realized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "pnl_change_24h", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 8, name: "pnl_change_7d", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 9, name: "pnl_change_30d", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 10, name: "roi", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 11, name: "max_drawdown", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 12, name: "win_rate", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 13, name: "profit_factor", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 14, name: "resolved_positions", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 15, name: "open_positions", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 16, name: "trader_archetype", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 17, name: "risk_profile", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 18, name: "trader_tier", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 19, name: "strategy_badge", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 20, name: "copyability_score", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 21, name: "is_smart_money", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 22, name: "is_bot", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 23, name: "specialist_generalist", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 24, name: "category_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 25, name: "summary", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 26, name: "trades_per_week", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 27, name: "avg_trade_size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 28, name: "avg_hold_duration_hours", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TraderCard {
+    return new TraderCard().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TraderCard {
+    return new TraderCard().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TraderCard {
+    return new TraderCard().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: TraderCard | PlainMessage<TraderCard> | undefined, b: TraderCard | PlainMessage<TraderCard> | undefined): boolean {
+    return proto3.util.equals(TraderCard, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetTraderDiscoveryResponse
+ */
+export class GetTraderDiscoveryResponse extends Message<GetTraderDiscoveryResponse> {
+  /**
+   * @generated from field: repeated bullpen.v1.TraderCard traders = 1;
+   */
+  traders: TraderCard[] = [];
+
+  /**
+   * @generated from field: int32 total_count = 2;
+   */
+  totalCount = 0;
+
+  constructor(data?: PartialMessage<GetTraderDiscoveryResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetTraderDiscoveryResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "traders", kind: "message", T: TraderCard, repeated: true },
+    { no: 2, name: "total_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetTraderDiscoveryResponse {
+    return new GetTraderDiscoveryResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetTraderDiscoveryResponse {
+    return new GetTraderDiscoveryResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetTraderDiscoveryResponse {
+    return new GetTraderDiscoveryResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetTraderDiscoveryResponse | PlainMessage<GetTraderDiscoveryResponse> | undefined, b: GetTraderDiscoveryResponse | PlainMessage<GetTraderDiscoveryResponse> | undefined): boolean {
+    return proto3.util.equals(GetTraderDiscoveryResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetSmartMoneySignalsRequest
+ */
+export class GetSmartMoneySignalsRequest extends Message<GetSmartMoneySignalsRequest> {
+  /**
+   * filter by category (empty = all)
+   *
+   * @generated from field: string category = 1;
+   */
+  category = "";
+
+  /**
+   * minimum signal strength (0-1)
+   *
+   * @generated from field: double min_signal_strength = 2;
+   */
+  minSignalStrength = 0;
+
+  /**
+   * minimum smart traders (default 2)
+   *
+   * @generated from field: int32 min_trader_count = 3;
+   */
+  minTraderCount = 0;
+
+  /**
+   * signal_strength, net_flow, trader_count
+   *
+   * @generated from field: string sort_by = 4;
+   */
+  sortBy = "";
+
+  /**
+   * @generated from field: bullpen.v1.PaginationRequest pagination = 5;
+   */
+  pagination?: PaginationRequest;
+
+  constructor(data?: PartialMessage<GetSmartMoneySignalsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetSmartMoneySignalsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "min_signal_strength", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 3, name: "min_trader_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "sort_by", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "pagination", kind: "message", T: PaginationRequest },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSmartMoneySignalsRequest {
+    return new GetSmartMoneySignalsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSmartMoneySignalsRequest {
+    return new GetSmartMoneySignalsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSmartMoneySignalsRequest {
+    return new GetSmartMoneySignalsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSmartMoneySignalsRequest | PlainMessage<GetSmartMoneySignalsRequest> | undefined, b: GetSmartMoneySignalsRequest | PlainMessage<GetSmartMoneySignalsRequest> | undefined): boolean {
+    return proto3.util.equals(GetSmartMoneySignalsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.SmartMoneyMarket
+ */
+export class SmartMoneyMarket extends Message<SmartMoneyMarket> {
+  /**
+   * @generated from field: string condition_id = 1;
+   */
+  conditionId = "";
+
+  /**
+   * @generated from field: string title = 2;
+   */
+  title = "";
+
+  /**
+   * @generated from field: string slug = 3;
+   */
+  slug = "";
+
+  /**
+   * @generated from field: string event_slug = 4;
+   */
+  eventSlug = "";
+
+  /**
+   * @generated from field: string category = 5;
+   */
+  category = "";
+
+  /**
+   * @generated from field: double current_price = 6;
+   */
+  currentPrice = 0;
+
+  /**
+   * @generated from field: double smart_buy_volume = 7;
+   */
+  smartBuyVolume = 0;
+
+  /**
+   * @generated from field: double smart_sell_volume = 8;
+   */
+  smartSellVolume = 0;
+
+  /**
+   * @generated from field: double smart_net_flow = 9;
+   */
+  smartNetFlow = 0;
+
+  /**
+   * @generated from field: int32 smart_trader_count = 10;
+   */
+  smartTraderCount = 0;
+
+  /**
+   * @generated from field: double smart_avg_entry_price = 11;
+   */
+  smartAvgEntryPrice = 0;
+
+  /**
+   * @generated from field: double signal_strength = 12;
+   */
+  signalStrength = 0;
+
+  /**
+   * "bullish" or "bearish"
+   *
+   * @generated from field: string signal_direction = 13;
+   */
+  signalDirection = "";
+
+  constructor(data?: PartialMessage<SmartMoneyMarket>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.SmartMoneyMarket";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "condition_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "event_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "category", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "current_price", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 7, name: "smart_buy_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 8, name: "smart_sell_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 9, name: "smart_net_flow", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 10, name: "smart_trader_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 11, name: "smart_avg_entry_price", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 12, name: "signal_strength", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 13, name: "signal_direction", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SmartMoneyMarket {
+    return new SmartMoneyMarket().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SmartMoneyMarket {
+    return new SmartMoneyMarket().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SmartMoneyMarket {
+    return new SmartMoneyMarket().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: SmartMoneyMarket | PlainMessage<SmartMoneyMarket> | undefined, b: SmartMoneyMarket | PlainMessage<SmartMoneyMarket> | undefined): boolean {
+    return proto3.util.equals(SmartMoneyMarket, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetSmartMoneySignalsResponse
+ */
+export class GetSmartMoneySignalsResponse extends Message<GetSmartMoneySignalsResponse> {
+  /**
+   * @generated from field: repeated bullpen.v1.SmartMoneyMarket markets = 1;
+   */
+  markets: SmartMoneyMarket[] = [];
+
+  /**
+   * @generated from field: int32 total_count = 2;
+   */
+  totalCount = 0;
+
+  constructor(data?: PartialMessage<GetSmartMoneySignalsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetSmartMoneySignalsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "markets", kind: "message", T: SmartMoneyMarket, repeated: true },
+    { no: 2, name: "total_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSmartMoneySignalsResponse {
+    return new GetSmartMoneySignalsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSmartMoneySignalsResponse {
+    return new GetSmartMoneySignalsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSmartMoneySignalsResponse {
+    return new GetSmartMoneySignalsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSmartMoneySignalsResponse | PlainMessage<GetSmartMoneySignalsResponse> | undefined, b: GetSmartMoneySignalsResponse | PlainMessage<GetSmartMoneySignalsResponse> | undefined): boolean {
+    return proto3.util.equals(GetSmartMoneySignalsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetWalletTaxonomyRequest
+ */
+export class GetWalletTaxonomyRequest extends Message<GetWalletTaxonomyRequest> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  constructor(data?: PartialMessage<GetWalletTaxonomyRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetWalletTaxonomyRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetWalletTaxonomyRequest {
+    return new GetWalletTaxonomyRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetWalletTaxonomyRequest {
+    return new GetWalletTaxonomyRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetWalletTaxonomyRequest {
+    return new GetWalletTaxonomyRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetWalletTaxonomyRequest | PlainMessage<GetWalletTaxonomyRequest> | undefined, b: GetWalletTaxonomyRequest | PlainMessage<GetWalletTaxonomyRequest> | undefined): boolean {
+    return proto3.util.equals(GetWalletTaxonomyRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.WalletTaxonomy
+ */
+export class WalletTaxonomy extends Message<WalletTaxonomy> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * @generated from field: string trader_archetype = 2;
+   */
+  traderArchetype = "";
+
+  /**
+   * @generated from field: string risk_profile = 3;
+   */
+  riskProfile = "";
+
+  /**
+   * @generated from field: string strategy_badge = 4;
+   */
+  strategyBadge = "";
+
+  /**
+   * @generated from field: double copyability_score = 5;
+   */
+  copyabilityScore = 0;
+
+  /**
+   * @generated from field: bool is_bot = 6;
+   */
+  isBot = false;
+
+  /**
+   * @generated from field: bool is_smart_money = 7;
+   */
+  isSmartMoney = false;
+
+  /**
+   * @generated from field: string trader_tier = 8;
+   */
+  traderTier = "";
+
+  /**
+   * @generated from field: string summary = 9;
+   */
+  summary = "";
+
+  /**
+   * @generated from field: repeated string category_tags = 10;
+   */
+  categoryTags: string[] = [];
+
+  /**
+   * @generated from field: string specialist_generalist = 11;
+   */
+  specialistGeneralist = "";
+
+  constructor(data?: PartialMessage<WalletTaxonomy>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.WalletTaxonomy";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "trader_archetype", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "risk_profile", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "strategy_badge", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "copyability_score", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "is_bot", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 7, name: "is_smart_money", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 8, name: "trader_tier", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "summary", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 10, name: "category_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 11, name: "specialist_generalist", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WalletTaxonomy {
+    return new WalletTaxonomy().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WalletTaxonomy {
+    return new WalletTaxonomy().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WalletTaxonomy {
+    return new WalletTaxonomy().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: WalletTaxonomy | PlainMessage<WalletTaxonomy> | undefined, b: WalletTaxonomy | PlainMessage<WalletTaxonomy> | undefined): boolean {
+    return proto3.util.equals(WalletTaxonomy, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetPipelineStatsRequest
+ */
+export class GetPipelineStatsRequest extends Message<GetPipelineStatsRequest> {
+  constructor(data?: PartialMessage<GetPipelineStatsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetPipelineStatsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPipelineStatsRequest {
+    return new GetPipelineStatsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPipelineStatsRequest {
+    return new GetPipelineStatsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPipelineStatsRequest {
+    return new GetPipelineStatsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetPipelineStatsRequest | PlainMessage<GetPipelineStatsRequest> | undefined, b: GetPipelineStatsRequest | PlainMessage<GetPipelineStatsRequest> | undefined): boolean {
+    return proto3.util.equals(GetPipelineStatsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.TableStat
+ */
+export class TableStat extends Message<TableStat> {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name = "";
+
+  /**
+   * @generated from field: int64 row_count = 2;
+   */
+  rowCount = protoInt64.zero;
+
+  /**
+   * ISO timestamp from max(modification_time)
+   *
+   * @generated from field: string last_updated = 3;
+   */
+  lastUpdated = "";
+
+  constructor(data?: PartialMessage<TableStat>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.TableStat";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "row_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "last_updated", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TableStat {
+    return new TableStat().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TableStat {
+    return new TableStat().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TableStat {
+    return new TableStat().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: TableStat | PlainMessage<TableStat> | undefined, b: TableStat | PlainMessage<TableStat> | undefined): boolean {
+    return proto3.util.equals(TableStat, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.CronJobStat
+ */
+export class CronJobStat extends Message<CronJobStat> {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name = "";
+
+  /**
+   * @generated from field: string interval = 2;
+   */
+  interval = "";
+
+  /**
+   * ISO timestamp
+   *
+   * @generated from field: string last_run = 3;
+   */
+  lastRun = "";
+
+  /**
+   * "ok" or "warn"
+   *
+   * @generated from field: string status = 4;
+   */
+  status = "";
+
+  /**
+   * @generated from field: int64 rows_processed = 5;
+   */
+  rowsProcessed = protoInt64.zero;
+
+  constructor(data?: PartialMessage<CronJobStat>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.CronJobStat";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "interval", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "last_run", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "status", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "rows_processed", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CronJobStat {
+    return new CronJobStat().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CronJobStat {
+    return new CronJobStat().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CronJobStat {
+    return new CronJobStat().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CronJobStat | PlainMessage<CronJobStat> | undefined, b: CronJobStat | PlainMessage<CronJobStat> | undefined): boolean {
+    return proto3.util.equals(CronJobStat, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.PipelineStats
+ */
+export class PipelineStats extends Message<PipelineStats> {
+  /**
+   * Entity counts
+   *
+   * @generated from field: int64 events_count = 1;
+   */
+  eventsCount = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 markets_count = 2;
+   */
+  marketsCount = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 trades_count = 3;
+   */
+  tradesCount = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 wallets_tracked = 4;
+   */
+  walletsTracked = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 positions_count = 5;
+   */
+  positionsCount = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 interesting_wallets_count = 6;
+   */
+  interestingWalletsCount = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 smart_money_markets = 7;
+   */
+  smartMoneyMarkets = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 taxonomy_wallets = 8;
+   */
+  taxonomyWallets = protoInt64.zero;
+
+  /**
+   * Table details
+   *
+   * @generated from field: repeated bullpen.v1.TableStat tables = 9;
+   */
+  tables: TableStat[] = [];
+
+  /**
+   * Cron jobs
+   *
+   * @generated from field: repeated bullpen.v1.CronJobStat cron_jobs = 10;
+   */
+  cronJobs: CronJobStat[] = [];
+
+  constructor(data?: PartialMessage<PipelineStats>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.PipelineStats";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "events_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "markets_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "trades_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 4, name: "wallets_tracked", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 5, name: "positions_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 6, name: "interesting_wallets_count", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 7, name: "smart_money_markets", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 8, name: "taxonomy_wallets", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 9, name: "tables", kind: "message", T: TableStat, repeated: true },
+    { no: 10, name: "cron_jobs", kind: "message", T: CronJobStat, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PipelineStats {
+    return new PipelineStats().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PipelineStats {
+    return new PipelineStats().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PipelineStats {
+    return new PipelineStats().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PipelineStats | PlainMessage<PipelineStats> | undefined, b: PipelineStats | PlainMessage<PipelineStats> | undefined): boolean {
+    return proto3.util.equals(PipelineStats, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetEventAnalyticsRequest
+ */
+export class GetEventAnalyticsRequest extends Message<GetEventAnalyticsRequest> {
+  /**
+   * @generated from field: string event_slug = 1;
+   */
+  eventSlug = "";
+
+  constructor(data?: PartialMessage<GetEventAnalyticsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetEventAnalyticsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "event_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetEventAnalyticsRequest {
+    return new GetEventAnalyticsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetEventAnalyticsRequest {
+    return new GetEventAnalyticsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetEventAnalyticsRequest {
+    return new GetEventAnalyticsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetEventAnalyticsRequest | PlainMessage<GetEventAnalyticsRequest> | undefined, b: GetEventAnalyticsRequest | PlainMessage<GetEventAnalyticsRequest> | undefined): boolean {
+    return proto3.util.equals(GetEventAnalyticsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.EventAnalytics
+ */
+export class EventAnalytics extends Message<EventAnalytics> {
+  /**
+   * @generated from field: string event_slug = 1;
+   */
+  eventSlug = "";
+
+  /**
+   * @generated from field: double total_volume = 2;
+   */
+  totalVolume = 0;
+
+  /**
+   * @generated from field: double total_volume_24h = 3;
+   */
+  totalVolume24h = 0;
+
+  /**
+   * @generated from field: double total_open_interest = 4;
+   */
+  totalOpenInterest = 0;
+
+  /**
+   * @generated from field: double total_liquidity = 5;
+   */
+  totalLiquidity = 0;
+
+  /**
+   * @generated from field: int64 total_unique_bettors = 6;
+   */
+  totalUniqueBettors = protoInt64.zero;
+
+  /**
+   * @generated from field: int32 market_count = 7;
+   */
+  marketCount = 0;
+
+  /**
+   * @generated from field: double smart_net_flow = 8;
+   */
+  smartNetFlow = 0;
+
+  /**
+   * @generated from field: int32 smart_trader_count = 9;
+   */
+  smartTraderCount = 0;
+
+  /**
+   * @generated from field: string smart_signal_direction = 10;
+   */
+  smartSignalDirection = "";
+
+  /**
+   * @generated from field: repeated bullpen.v1.EventTopWallet top_wallets = 11;
+   */
+  topWallets: EventTopWallet[] = [];
+
+  constructor(data?: PartialMessage<EventAnalytics>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.EventAnalytics";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "event_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "total_volume", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 3, name: "total_volume_24h", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "total_open_interest", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 5, name: "total_liquidity", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 6, name: "total_unique_bettors", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 7, name: "market_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 8, name: "smart_net_flow", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 9, name: "smart_trader_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 10, name: "smart_signal_direction", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "top_wallets", kind: "message", T: EventTopWallet, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EventAnalytics {
+    return new EventAnalytics().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): EventAnalytics {
+    return new EventAnalytics().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): EventAnalytics {
+    return new EventAnalytics().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: EventAnalytics | PlainMessage<EventAnalytics> | undefined, b: EventAnalytics | PlainMessage<EventAnalytics> | undefined): boolean {
+    return proto3.util.equals(EventAnalytics, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.EventTopWallet
+ */
+export class EventTopWallet extends Message<EventTopWallet> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: double total_value = 3;
+   */
+  totalValue = 0;
+
+  /**
+   * @generated from field: double unrealized_pnl = 4;
+   */
+  unrealizedPnl = 0;
+
+  /**
+   * @generated from field: int32 markets_count = 5;
+   */
+  marketsCount = 0;
+
+  constructor(data?: PartialMessage<EventTopWallet>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.EventTopWallet";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "total_value", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "unrealized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 5, name: "markets_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EventTopWallet {
+    return new EventTopWallet().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): EventTopWallet {
+    return new EventTopWallet().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): EventTopWallet {
+    return new EventTopWallet().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: EventTopWallet | PlainMessage<EventTopWallet> | undefined, b: EventTopWallet | PlainMessage<EventTopWallet> | undefined): boolean {
+    return proto3.util.equals(EventTopWallet, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetWalletPositionsRequest
+ */
+export class GetWalletPositionsRequest extends Message<GetWalletPositionsRequest> {
+  /**
+   * @generated from field: string address = 1;
+   */
+  address = "";
+
+  /**
+   * @generated from field: bool include_closed = 2;
+   */
+  includeClosed = false;
+
+  /**
+   * @generated from field: string sort_by = 3;
+   */
+  sortBy = "";
+
+  /**
+   * @generated from field: bullpen.v1.PaginationRequest pagination = 4;
+   */
+  pagination?: PaginationRequest;
+
+  constructor(data?: PartialMessage<GetWalletPositionsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetWalletPositionsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "include_closed", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "sort_by", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "pagination", kind: "message", T: PaginationRequest },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetWalletPositionsRequest {
+    return new GetWalletPositionsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetWalletPositionsRequest {
+    return new GetWalletPositionsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetWalletPositionsRequest {
+    return new GetWalletPositionsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetWalletPositionsRequest | PlainMessage<GetWalletPositionsRequest> | undefined, b: GetWalletPositionsRequest | PlainMessage<GetWalletPositionsRequest> | undefined): boolean {
+    return proto3.util.equals(GetWalletPositionsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.WalletPosition
+ */
+export class WalletPosition extends Message<WalletPosition> {
+  /**
+   * @generated from field: string condition_id = 1;
+   */
+  conditionId = "";
+
+  /**
+   * @generated from field: string token_id = 2;
+   */
+  tokenId = "";
+
+  /**
+   * @generated from field: string market_title = 3;
+   */
+  marketTitle = "";
+
+  /**
+   * @generated from field: string market_slug = 4;
+   */
+  marketSlug = "";
+
+  /**
+   * @generated from field: string event_slug = 5;
+   */
+  eventSlug = "";
+
+  /**
+   * @generated from field: string outcome = 6;
+   */
+  outcome = "";
+
+  /**
+   * @generated from field: double size = 7;
+   */
+  size = 0;
+
+  /**
+   * @generated from field: double avg_entry_price = 8;
+   */
+  avgEntryPrice = 0;
+
+  /**
+   * @generated from field: double current_price = 9;
+   */
+  currentPrice = 0;
+
+  /**
+   * @generated from field: double cost_basis = 10;
+   */
+  costBasis = 0;
+
+  /**
+   * @generated from field: double current_value = 11;
+   */
+  currentValue = 0;
+
+  /**
+   * @generated from field: double unrealized_pnl = 12;
+   */
+  unrealizedPnl = 0;
+
+  /**
+   * @generated from field: double unrealized_pnl_pct = 13;
+   */
+  unrealizedPnlPct = 0;
+
+  /**
+   * @generated from field: string category = 14;
+   */
+  category = "";
+
+  /**
+   * @generated from field: int64 first_trade_unix = 15;
+   */
+  firstTradeUnix = protoInt64.zero;
+
+  /**
+   * @generated from field: int64 last_trade_unix = 16;
+   */
+  lastTradeUnix = protoInt64.zero;
+
+  /**
+   * @generated from field: int32 trade_count = 17;
+   */
+  tradeCount = 0;
+
+  constructor(data?: PartialMessage<WalletPosition>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.WalletPosition";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "condition_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "token_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "market_title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "market_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "event_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "outcome", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 8, name: "avg_entry_price", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 9, name: "current_price", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 10, name: "cost_basis", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 11, name: "current_value", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 12, name: "unrealized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 13, name: "unrealized_pnl_pct", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 14, name: "category", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 15, name: "first_trade_unix", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 16, name: "last_trade_unix", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 17, name: "trade_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WalletPosition {
+    return new WalletPosition().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WalletPosition {
+    return new WalletPosition().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WalletPosition {
+    return new WalletPosition().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: WalletPosition | PlainMessage<WalletPosition> | undefined, b: WalletPosition | PlainMessage<WalletPosition> | undefined): boolean {
+    return proto3.util.equals(WalletPosition, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetWalletPositionsResponse
+ */
+export class GetWalletPositionsResponse extends Message<GetWalletPositionsResponse> {
+  /**
+   * @generated from field: repeated bullpen.v1.WalletPosition positions = 1;
+   */
+  positions: WalletPosition[] = [];
+
+  /**
+   * @generated from field: int32 total_count = 2;
+   */
+  totalCount = 0;
+
+  /**
+   * @generated from field: double total_value = 3;
+   */
+  totalValue = 0;
+
+  /**
+   * @generated from field: double total_unrealized_pnl = 4;
+   */
+  totalUnrealizedPnl = 0;
+
+  constructor(data?: PartialMessage<GetWalletPositionsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetWalletPositionsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "positions", kind: "message", T: WalletPosition, repeated: true },
+    { no: 2, name: "total_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "total_value", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 4, name: "total_unrealized_pnl", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetWalletPositionsResponse {
+    return new GetWalletPositionsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetWalletPositionsResponse {
+    return new GetWalletPositionsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetWalletPositionsResponse {
+    return new GetWalletPositionsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetWalletPositionsResponse | PlainMessage<GetWalletPositionsResponse> | undefined, b: GetWalletPositionsResponse | PlainMessage<GetWalletPositionsResponse> | undefined): boolean {
+    return proto3.util.equals(GetWalletPositionsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetSignificantTradesRequest
+ */
+export class GetSignificantTradesRequest extends Message<GetSignificantTradesRequest> {
+  /**
+   * @generated from field: string signal_type = 1;
+   */
+  signalType = "";
+
+  /**
+   * @generated from field: int32 limit = 2;
+   */
+  limit = 0;
+
+  constructor(data?: PartialMessage<GetSignificantTradesRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetSignificantTradesRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "signal_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "limit", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSignificantTradesRequest {
+    return new GetSignificantTradesRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSignificantTradesRequest {
+    return new GetSignificantTradesRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSignificantTradesRequest {
+    return new GetSignificantTradesRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSignificantTradesRequest | PlainMessage<GetSignificantTradesRequest> | undefined, b: GetSignificantTradesRequest | PlainMessage<GetSignificantTradesRequest> | undefined): boolean {
+    return proto3.util.equals(GetSignificantTradesRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.SignificantTrade
+ */
+export class SignificantTrade extends Message<SignificantTrade> {
+  /**
+   * @generated from field: string trader_address = 1;
+   */
+  traderAddress = "";
+
+  /**
+   * @generated from field: string condition_id = 2;
+   */
+  conditionId = "";
+
+  /**
+   * @generated from field: string market_title = 3;
+   */
+  marketTitle = "";
+
+  /**
+   * @generated from field: string market_slug = 4;
+   */
+  marketSlug = "";
+
+  /**
+   * @generated from field: string event_slug = 5;
+   */
+  eventSlug = "";
+
+  /**
+   * @generated from field: string side = 6;
+   */
+  side = "";
+
+  /**
+   * @generated from field: double size = 7;
+   */
+  size = 0;
+
+  /**
+   * @generated from field: double price = 8;
+   */
+  price = 0;
+
+  /**
+   * @generated from field: double usdc_value = 9;
+   */
+  usdcValue = 0;
+
+  /**
+   * @generated from field: string signal_type = 10;
+   */
+  signalType = "";
+
+  /**
+   * @generated from field: string trader_tier = 11;
+   */
+  traderTier = "";
+
+  /**
+   * @generated from field: bool is_smart_money = 12;
+   */
+  isSmartMoney = false;
+
+  /**
+   * @generated from field: int64 timestamp_unix = 13;
+   */
+  timestampUnix = protoInt64.zero;
+
+  /**
+   * @generated from field: string transaction_hash = 14;
+   */
+  transactionHash = "";
+
+  constructor(data?: PartialMessage<SignificantTrade>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.SignificantTrade";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "trader_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "condition_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "market_title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "market_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "event_slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "side", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "size", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 8, name: "price", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 9, name: "usdc_value", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 10, name: "signal_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "trader_tier", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 12, name: "is_smart_money", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 13, name: "timestamp_unix", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 14, name: "transaction_hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SignificantTrade {
+    return new SignificantTrade().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SignificantTrade {
+    return new SignificantTrade().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SignificantTrade {
+    return new SignificantTrade().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: SignificantTrade | PlainMessage<SignificantTrade> | undefined, b: SignificantTrade | PlainMessage<SignificantTrade> | undefined): boolean {
+    return proto3.util.equals(SignificantTrade, a, b);
+  }
+}
+
+/**
+ * @generated from message bullpen.v1.GetSignificantTradesResponse
+ */
+export class GetSignificantTradesResponse extends Message<GetSignificantTradesResponse> {
+  /**
+   * @generated from field: repeated bullpen.v1.SignificantTrade trades = 1;
+   */
+  trades: SignificantTrade[] = [];
+
+  /**
+   * @generated from field: int32 total_count = 2;
+   */
+  totalCount = 0;
+
+  constructor(data?: PartialMessage<GetSignificantTradesResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "bullpen.v1.GetSignificantTradesResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "trades", kind: "message", T: SignificantTrade, repeated: true },
+    { no: 2, name: "total_count", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSignificantTradesResponse {
+    return new GetSignificantTradesResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSignificantTradesResponse {
+    return new GetSignificantTradesResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSignificantTradesResponse {
+    return new GetSignificantTradesResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSignificantTradesResponse | PlainMessage<GetSignificantTradesResponse> | undefined, b: GetSignificantTradesResponse | PlainMessage<GetSignificantTradesResponse> | undefined): boolean {
+    return proto3.util.equals(GetSignificantTradesResponse, a, b);
   }
 }
 

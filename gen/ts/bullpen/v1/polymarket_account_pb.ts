@@ -845,6 +845,13 @@ export class Balances extends Message<Balances> {
    */
   totalPnl = "";
 
+  /**
+   * The Gnosis Safe address (deposit target for USDC.e)
+   *
+   * @generated from field: string proxy_address = 5;
+   */
+  proxyAddress = "";
+
   constructor(data?: PartialMessage<Balances>) {
     super();
     proto3.util.initPartial(data, this);
@@ -857,6 +864,7 @@ export class Balances extends Message<Balances> {
     { no: 2, name: "total_position_value", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "unrealized_pnl", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "total_pnl", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "proxy_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Balances {

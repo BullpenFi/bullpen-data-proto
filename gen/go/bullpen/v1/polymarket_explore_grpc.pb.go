@@ -19,18 +19,40 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PolymarketExploreService_QueryMarkets_FullMethodName       = "/bullpen.v1.PolymarketExploreService/QueryMarkets"
-	PolymarketExploreService_QueryEvents_FullMethodName        = "/bullpen.v1.PolymarketExploreService/QueryEvents"
-	PolymarketExploreService_GetHomepageSummary_FullMethodName = "/bullpen.v1.PolymarketExploreService/GetHomepageSummary"
-	PolymarketExploreService_GetFeaturedLens_FullMethodName    = "/bullpen.v1.PolymarketExploreService/GetFeaturedLens"
-	PolymarketExploreService_GetEvent_FullMethodName           = "/bullpen.v1.PolymarketExploreService/GetEvent"
-	PolymarketExploreService_GetMarket_FullMethodName          = "/bullpen.v1.PolymarketExploreService/GetMarket"
-	PolymarketExploreService_GetMarketAnalytics_FullMethodName = "/bullpen.v1.PolymarketExploreService/GetMarketAnalytics"
-	PolymarketExploreService_GetMarketStrength_FullMethodName  = "/bullpen.v1.PolymarketExploreService/GetMarketStrength"
-	PolymarketExploreService_GetCategories_FullMethodName      = "/bullpen.v1.PolymarketExploreService/GetCategories"
-	PolymarketExploreService_GetMarketComments_FullMethodName  = "/bullpen.v1.PolymarketExploreService/GetMarketComments"
-	PolymarketExploreService_StreamMarketPrices_FullMethodName = "/bullpen.v1.PolymarketExploreService/StreamMarketPrices"
-	PolymarketExploreService_GetPageView_FullMethodName        = "/bullpen.v1.PolymarketExploreService/GetPageView"
+	PolymarketExploreService_QueryMarkets_FullMethodName         = "/bullpen.v1.PolymarketExploreService/QueryMarkets"
+	PolymarketExploreService_QueryEvents_FullMethodName          = "/bullpen.v1.PolymarketExploreService/QueryEvents"
+	PolymarketExploreService_GetHomepageSummary_FullMethodName   = "/bullpen.v1.PolymarketExploreService/GetHomepageSummary"
+	PolymarketExploreService_GetFeaturedLens_FullMethodName      = "/bullpen.v1.PolymarketExploreService/GetFeaturedLens"
+	PolymarketExploreService_GetEvent_FullMethodName             = "/bullpen.v1.PolymarketExploreService/GetEvent"
+	PolymarketExploreService_GetMarket_FullMethodName            = "/bullpen.v1.PolymarketExploreService/GetMarket"
+	PolymarketExploreService_GetMarketAnalytics_FullMethodName   = "/bullpen.v1.PolymarketExploreService/GetMarketAnalytics"
+	PolymarketExploreService_GetMarketStrength_FullMethodName    = "/bullpen.v1.PolymarketExploreService/GetMarketStrength"
+	PolymarketExploreService_GetCategories_FullMethodName        = "/bullpen.v1.PolymarketExploreService/GetCategories"
+	PolymarketExploreService_GetMarketComments_FullMethodName    = "/bullpen.v1.PolymarketExploreService/GetMarketComments"
+	PolymarketExploreService_GetGammaNonce_FullMethodName        = "/bullpen.v1.PolymarketExploreService/GetGammaNonce"
+	PolymarketExploreService_GammaLogin_FullMethodName           = "/bullpen.v1.PolymarketExploreService/GammaLogin"
+	PolymarketExploreService_PostComment_FullMethodName          = "/bullpen.v1.PolymarketExploreService/PostComment"
+	PolymarketExploreService_GetComments_FullMethodName          = "/bullpen.v1.PolymarketExploreService/GetComments"
+	PolymarketExploreService_ReactToComment_FullMethodName       = "/bullpen.v1.PolymarketExploreService/ReactToComment"
+	PolymarketExploreService_DeleteComment_FullMethodName        = "/bullpen.v1.PolymarketExploreService/DeleteComment"
+	PolymarketExploreService_ReplyToComment_FullMethodName       = "/bullpen.v1.PolymarketExploreService/ReplyToComment"
+	PolymarketExploreService_InitDeviceAuth_FullMethodName       = "/bullpen.v1.PolymarketExploreService/InitDeviceAuth"
+	PolymarketExploreService_PollDeviceSession_FullMethodName    = "/bullpen.v1.PolymarketExploreService/PollDeviceSession"
+	PolymarketExploreService_RedeemPosition_FullMethodName       = "/bullpen.v1.PolymarketExploreService/RedeemPosition"
+	PolymarketExploreService_ToggleBookmark_FullMethodName       = "/bullpen.v1.PolymarketExploreService/ToggleBookmark"
+	PolymarketExploreService_GetBookmarks_FullMethodName         = "/bullpen.v1.PolymarketExploreService/GetBookmarks"
+	PolymarketExploreService_GetTradeAnalytics_FullMethodName    = "/bullpen.v1.PolymarketExploreService/GetTradeAnalytics"
+	PolymarketExploreService_GetPnlLeaderboard_FullMethodName    = "/bullpen.v1.PolymarketExploreService/GetPnlLeaderboard"
+	PolymarketExploreService_GetWalletProfile_FullMethodName     = "/bullpen.v1.PolymarketExploreService/GetWalletProfile"
+	PolymarketExploreService_GetTraderDiscovery_FullMethodName   = "/bullpen.v1.PolymarketExploreService/GetTraderDiscovery"
+	PolymarketExploreService_GetSmartMoneySignals_FullMethodName = "/bullpen.v1.PolymarketExploreService/GetSmartMoneySignals"
+	PolymarketExploreService_GetWalletTaxonomy_FullMethodName    = "/bullpen.v1.PolymarketExploreService/GetWalletTaxonomy"
+	PolymarketExploreService_GetSignificantTrades_FullMethodName = "/bullpen.v1.PolymarketExploreService/GetSignificantTrades"
+	PolymarketExploreService_GetEventAnalytics_FullMethodName    = "/bullpen.v1.PolymarketExploreService/GetEventAnalytics"
+	PolymarketExploreService_GetWalletPositions_FullMethodName   = "/bullpen.v1.PolymarketExploreService/GetWalletPositions"
+	PolymarketExploreService_GetPipelineStats_FullMethodName     = "/bullpen.v1.PolymarketExploreService/GetPipelineStats"
+	PolymarketExploreService_StreamMarketPrices_FullMethodName   = "/bullpen.v1.PolymarketExploreService/StreamMarketPrices"
+	PolymarketExploreService_GetPageView_FullMethodName          = "/bullpen.v1.PolymarketExploreService/GetPageView"
 )
 
 // PolymarketExploreServiceClient is the client API for PolymarketExploreService service.
@@ -52,6 +74,37 @@ type PolymarketExploreServiceClient interface {
 	GetCategories(ctx context.Context, in *GetCategoriesRequest, opts ...grpc.CallOption) (*GetCategoriesResponse, error)
 	// ---- Social ----
 	GetMarketComments(ctx context.Context, in *GetMarketCommentsRequest, opts ...grpc.CallOption) (*GetMarketCommentsResponse, error)
+	// ---- Gamma Auth (SIWE login for commenting) ----
+	GetGammaNonce(ctx context.Context, in *GetGammaNonceRequest, opts ...grpc.CallOption) (*GetGammaNonceResponse, error)
+	GammaLogin(ctx context.Context, in *GammaLoginRequest, opts ...grpc.CallOption) (*GammaLoginResponse, error)
+	PostComment(ctx context.Context, in *PostCommentRequest, opts ...grpc.CallOption) (*PostCommentResponse, error)
+	GetComments(ctx context.Context, in *GetCommentsRequest, opts ...grpc.CallOption) (*GetCommentsResponse, error)
+	ReactToComment(ctx context.Context, in *ReactToCommentRequest, opts ...grpc.CallOption) (*ReactToCommentResponse, error)
+	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*DeleteCommentResponse, error)
+	ReplyToComment(ctx context.Context, in *ReplyToCommentRequest, opts ...grpc.CallOption) (*PostCommentResponse, error)
+	// ---- Device Auth (Bullpen device flow → Gamma session) ----
+	InitDeviceAuth(ctx context.Context, in *InitDeviceAuthRequest, opts ...grpc.CallOption) (*InitDeviceAuthResponse, error)
+	PollDeviceSession(ctx context.Context, in *PollDeviceSessionRequest, opts ...grpc.CallOption) (*PollDeviceSessionResponse, error)
+	// ---- Positions ----
+	RedeemPosition(ctx context.Context, in *RedeemPositionRequest, opts ...grpc.CallOption) (*RedeemPositionResponse, error)
+	// ---- Bookmarks ----
+	ToggleBookmark(ctx context.Context, in *ToggleBookmarkRequest, opts ...grpc.CallOption) (*ToggleBookmarkResponse, error)
+	GetBookmarks(ctx context.Context, in *GetBookmarksRequest, opts ...grpc.CallOption) (*GetBookmarksResponse, error)
+	// ---- Trade Analytics ----
+	GetTradeAnalytics(ctx context.Context, in *GetTradeAnalyticsRequest, opts ...grpc.CallOption) (*TradeAnalyticsResponse, error)
+	GetPnlLeaderboard(ctx context.Context, in *GetPnlLeaderboardRequest, opts ...grpc.CallOption) (*PnlLeaderboardResponse, error)
+	GetWalletProfile(ctx context.Context, in *GetWalletProfileRequest, opts ...grpc.CallOption) (*WalletProfile, error)
+	// ---- Trader Discovery & Smart Money ----
+	GetTraderDiscovery(ctx context.Context, in *GetTraderDiscoveryRequest, opts ...grpc.CallOption) (*GetTraderDiscoveryResponse, error)
+	GetSmartMoneySignals(ctx context.Context, in *GetSmartMoneySignalsRequest, opts ...grpc.CallOption) (*GetSmartMoneySignalsResponse, error)
+	GetWalletTaxonomy(ctx context.Context, in *GetWalletTaxonomyRequest, opts ...grpc.CallOption) (*WalletTaxonomy, error)
+	GetSignificantTrades(ctx context.Context, in *GetSignificantTradesRequest, opts ...grpc.CallOption) (*GetSignificantTradesResponse, error)
+	// ---- Event-level aggregation ----
+	GetEventAnalytics(ctx context.Context, in *GetEventAnalyticsRequest, opts ...grpc.CallOption) (*EventAnalytics, error)
+	// ---- Wallet Positions ----
+	GetWalletPositions(ctx context.Context, in *GetWalletPositionsRequest, opts ...grpc.CallOption) (*GetWalletPositionsResponse, error)
+	// ---- Pipeline Stats (dashboard) ----
+	GetPipelineStats(ctx context.Context, in *GetPipelineStatsRequest, opts ...grpc.CallOption) (*PipelineStats, error)
 	// ---- Streaming ----
 	StreamMarketPrices(ctx context.Context, in *StreamMarketPricesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[MarketPriceUpdate], error)
 	// ---- Page views (complete page rendering) ----
@@ -166,6 +219,226 @@ func (c *polymarketExploreServiceClient) GetMarketComments(ctx context.Context, 
 	return out, nil
 }
 
+func (c *polymarketExploreServiceClient) GetGammaNonce(ctx context.Context, in *GetGammaNonceRequest, opts ...grpc.CallOption) (*GetGammaNonceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetGammaNonceResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetGammaNonce_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GammaLogin(ctx context.Context, in *GammaLoginRequest, opts ...grpc.CallOption) (*GammaLoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GammaLoginResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GammaLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) PostComment(ctx context.Context, in *PostCommentRequest, opts ...grpc.CallOption) (*PostCommentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PostCommentResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_PostComment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetComments(ctx context.Context, in *GetCommentsRequest, opts ...grpc.CallOption) (*GetCommentsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCommentsResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetComments_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) ReactToComment(ctx context.Context, in *ReactToCommentRequest, opts ...grpc.CallOption) (*ReactToCommentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReactToCommentResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_ReactToComment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*DeleteCommentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteCommentResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_DeleteComment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) ReplyToComment(ctx context.Context, in *ReplyToCommentRequest, opts ...grpc.CallOption) (*PostCommentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PostCommentResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_ReplyToComment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) InitDeviceAuth(ctx context.Context, in *InitDeviceAuthRequest, opts ...grpc.CallOption) (*InitDeviceAuthResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InitDeviceAuthResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_InitDeviceAuth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) PollDeviceSession(ctx context.Context, in *PollDeviceSessionRequest, opts ...grpc.CallOption) (*PollDeviceSessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PollDeviceSessionResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_PollDeviceSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) RedeemPosition(ctx context.Context, in *RedeemPositionRequest, opts ...grpc.CallOption) (*RedeemPositionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RedeemPositionResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_RedeemPosition_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) ToggleBookmark(ctx context.Context, in *ToggleBookmarkRequest, opts ...grpc.CallOption) (*ToggleBookmarkResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ToggleBookmarkResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_ToggleBookmark_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetBookmarks(ctx context.Context, in *GetBookmarksRequest, opts ...grpc.CallOption) (*GetBookmarksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetBookmarksResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetBookmarks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetTradeAnalytics(ctx context.Context, in *GetTradeAnalyticsRequest, opts ...grpc.CallOption) (*TradeAnalyticsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(TradeAnalyticsResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetTradeAnalytics_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetPnlLeaderboard(ctx context.Context, in *GetPnlLeaderboardRequest, opts ...grpc.CallOption) (*PnlLeaderboardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PnlLeaderboardResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetPnlLeaderboard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetWalletProfile(ctx context.Context, in *GetWalletProfileRequest, opts ...grpc.CallOption) (*WalletProfile, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(WalletProfile)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetWalletProfile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetTraderDiscovery(ctx context.Context, in *GetTraderDiscoveryRequest, opts ...grpc.CallOption) (*GetTraderDiscoveryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTraderDiscoveryResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetTraderDiscovery_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetSmartMoneySignals(ctx context.Context, in *GetSmartMoneySignalsRequest, opts ...grpc.CallOption) (*GetSmartMoneySignalsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSmartMoneySignalsResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetSmartMoneySignals_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetWalletTaxonomy(ctx context.Context, in *GetWalletTaxonomyRequest, opts ...grpc.CallOption) (*WalletTaxonomy, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(WalletTaxonomy)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetWalletTaxonomy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetSignificantTrades(ctx context.Context, in *GetSignificantTradesRequest, opts ...grpc.CallOption) (*GetSignificantTradesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSignificantTradesResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetSignificantTrades_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetEventAnalytics(ctx context.Context, in *GetEventAnalyticsRequest, opts ...grpc.CallOption) (*EventAnalytics, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EventAnalytics)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetEventAnalytics_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetWalletPositions(ctx context.Context, in *GetWalletPositionsRequest, opts ...grpc.CallOption) (*GetWalletPositionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWalletPositionsResponse)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetWalletPositions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *polymarketExploreServiceClient) GetPipelineStats(ctx context.Context, in *GetPipelineStatsRequest, opts ...grpc.CallOption) (*PipelineStats, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PipelineStats)
+	err := c.cc.Invoke(ctx, PolymarketExploreService_GetPipelineStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *polymarketExploreServiceClient) StreamMarketPrices(ctx context.Context, in *StreamMarketPricesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[MarketPriceUpdate], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &PolymarketExploreService_ServiceDesc.Streams[0], PolymarketExploreService_StreamMarketPrices_FullMethodName, cOpts...)
@@ -214,6 +487,37 @@ type PolymarketExploreServiceServer interface {
 	GetCategories(context.Context, *GetCategoriesRequest) (*GetCategoriesResponse, error)
 	// ---- Social ----
 	GetMarketComments(context.Context, *GetMarketCommentsRequest) (*GetMarketCommentsResponse, error)
+	// ---- Gamma Auth (SIWE login for commenting) ----
+	GetGammaNonce(context.Context, *GetGammaNonceRequest) (*GetGammaNonceResponse, error)
+	GammaLogin(context.Context, *GammaLoginRequest) (*GammaLoginResponse, error)
+	PostComment(context.Context, *PostCommentRequest) (*PostCommentResponse, error)
+	GetComments(context.Context, *GetCommentsRequest) (*GetCommentsResponse, error)
+	ReactToComment(context.Context, *ReactToCommentRequest) (*ReactToCommentResponse, error)
+	DeleteComment(context.Context, *DeleteCommentRequest) (*DeleteCommentResponse, error)
+	ReplyToComment(context.Context, *ReplyToCommentRequest) (*PostCommentResponse, error)
+	// ---- Device Auth (Bullpen device flow → Gamma session) ----
+	InitDeviceAuth(context.Context, *InitDeviceAuthRequest) (*InitDeviceAuthResponse, error)
+	PollDeviceSession(context.Context, *PollDeviceSessionRequest) (*PollDeviceSessionResponse, error)
+	// ---- Positions ----
+	RedeemPosition(context.Context, *RedeemPositionRequest) (*RedeemPositionResponse, error)
+	// ---- Bookmarks ----
+	ToggleBookmark(context.Context, *ToggleBookmarkRequest) (*ToggleBookmarkResponse, error)
+	GetBookmarks(context.Context, *GetBookmarksRequest) (*GetBookmarksResponse, error)
+	// ---- Trade Analytics ----
+	GetTradeAnalytics(context.Context, *GetTradeAnalyticsRequest) (*TradeAnalyticsResponse, error)
+	GetPnlLeaderboard(context.Context, *GetPnlLeaderboardRequest) (*PnlLeaderboardResponse, error)
+	GetWalletProfile(context.Context, *GetWalletProfileRequest) (*WalletProfile, error)
+	// ---- Trader Discovery & Smart Money ----
+	GetTraderDiscovery(context.Context, *GetTraderDiscoveryRequest) (*GetTraderDiscoveryResponse, error)
+	GetSmartMoneySignals(context.Context, *GetSmartMoneySignalsRequest) (*GetSmartMoneySignalsResponse, error)
+	GetWalletTaxonomy(context.Context, *GetWalletTaxonomyRequest) (*WalletTaxonomy, error)
+	GetSignificantTrades(context.Context, *GetSignificantTradesRequest) (*GetSignificantTradesResponse, error)
+	// ---- Event-level aggregation ----
+	GetEventAnalytics(context.Context, *GetEventAnalyticsRequest) (*EventAnalytics, error)
+	// ---- Wallet Positions ----
+	GetWalletPositions(context.Context, *GetWalletPositionsRequest) (*GetWalletPositionsResponse, error)
+	// ---- Pipeline Stats (dashboard) ----
+	GetPipelineStats(context.Context, *GetPipelineStatsRequest) (*PipelineStats, error)
 	// ---- Streaming ----
 	StreamMarketPrices(*StreamMarketPricesRequest, grpc.ServerStreamingServer[MarketPriceUpdate]) error
 	// ---- Page views (complete page rendering) ----
@@ -257,6 +561,72 @@ func (UnimplementedPolymarketExploreServiceServer) GetCategories(context.Context
 }
 func (UnimplementedPolymarketExploreServiceServer) GetMarketComments(context.Context, *GetMarketCommentsRequest) (*GetMarketCommentsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetMarketComments not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetGammaNonce(context.Context, *GetGammaNonceRequest) (*GetGammaNonceResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetGammaNonce not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GammaLogin(context.Context, *GammaLoginRequest) (*GammaLoginResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GammaLogin not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) PostComment(context.Context, *PostCommentRequest) (*PostCommentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PostComment not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetComments(context.Context, *GetCommentsRequest) (*GetCommentsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetComments not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) ReactToComment(context.Context, *ReactToCommentRequest) (*ReactToCommentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReactToComment not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) DeleteComment(context.Context, *DeleteCommentRequest) (*DeleteCommentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteComment not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) ReplyToComment(context.Context, *ReplyToCommentRequest) (*PostCommentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReplyToComment not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) InitDeviceAuth(context.Context, *InitDeviceAuthRequest) (*InitDeviceAuthResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InitDeviceAuth not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) PollDeviceSession(context.Context, *PollDeviceSessionRequest) (*PollDeviceSessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PollDeviceSession not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) RedeemPosition(context.Context, *RedeemPositionRequest) (*RedeemPositionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RedeemPosition not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) ToggleBookmark(context.Context, *ToggleBookmarkRequest) (*ToggleBookmarkResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ToggleBookmark not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetBookmarks(context.Context, *GetBookmarksRequest) (*GetBookmarksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetBookmarks not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetTradeAnalytics(context.Context, *GetTradeAnalyticsRequest) (*TradeAnalyticsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTradeAnalytics not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetPnlLeaderboard(context.Context, *GetPnlLeaderboardRequest) (*PnlLeaderboardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPnlLeaderboard not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetWalletProfile(context.Context, *GetWalletProfileRequest) (*WalletProfile, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetWalletProfile not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetTraderDiscovery(context.Context, *GetTraderDiscoveryRequest) (*GetTraderDiscoveryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTraderDiscovery not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetSmartMoneySignals(context.Context, *GetSmartMoneySignalsRequest) (*GetSmartMoneySignalsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSmartMoneySignals not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetWalletTaxonomy(context.Context, *GetWalletTaxonomyRequest) (*WalletTaxonomy, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetWalletTaxonomy not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetSignificantTrades(context.Context, *GetSignificantTradesRequest) (*GetSignificantTradesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSignificantTrades not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetEventAnalytics(context.Context, *GetEventAnalyticsRequest) (*EventAnalytics, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetEventAnalytics not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetWalletPositions(context.Context, *GetWalletPositionsRequest) (*GetWalletPositionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetWalletPositions not implemented")
+}
+func (UnimplementedPolymarketExploreServiceServer) GetPipelineStats(context.Context, *GetPipelineStatsRequest) (*PipelineStats, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPipelineStats not implemented")
 }
 func (UnimplementedPolymarketExploreServiceServer) StreamMarketPrices(*StreamMarketPricesRequest, grpc.ServerStreamingServer[MarketPriceUpdate]) error {
 	return status.Error(codes.Unimplemented, "method StreamMarketPrices not implemented")
@@ -466,6 +836,402 @@ func _PolymarketExploreService_GetMarketComments_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PolymarketExploreService_GetGammaNonce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGammaNonceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetGammaNonce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetGammaNonce_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetGammaNonce(ctx, req.(*GetGammaNonceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GammaLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GammaLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GammaLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GammaLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GammaLogin(ctx, req.(*GammaLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_PostComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).PostComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_PostComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).PostComment(ctx, req.(*PostCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetComments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCommentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetComments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetComments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetComments(ctx, req.(*GetCommentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_ReactToComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReactToCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).ReactToComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_ReactToComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).ReactToComment(ctx, req.(*ReactToCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_DeleteComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).DeleteComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_DeleteComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).DeleteComment(ctx, req.(*DeleteCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_ReplyToComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReplyToCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).ReplyToComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_ReplyToComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).ReplyToComment(ctx, req.(*ReplyToCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_InitDeviceAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InitDeviceAuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).InitDeviceAuth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_InitDeviceAuth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).InitDeviceAuth(ctx, req.(*InitDeviceAuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_PollDeviceSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PollDeviceSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).PollDeviceSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_PollDeviceSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).PollDeviceSession(ctx, req.(*PollDeviceSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_RedeemPosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RedeemPositionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).RedeemPosition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_RedeemPosition_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).RedeemPosition(ctx, req.(*RedeemPositionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_ToggleBookmark_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ToggleBookmarkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).ToggleBookmark(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_ToggleBookmark_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).ToggleBookmark(ctx, req.(*ToggleBookmarkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetBookmarks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBookmarksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetBookmarks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetBookmarks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetBookmarks(ctx, req.(*GetBookmarksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetTradeAnalytics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTradeAnalyticsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetTradeAnalytics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetTradeAnalytics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetTradeAnalytics(ctx, req.(*GetTradeAnalyticsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetPnlLeaderboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPnlLeaderboardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetPnlLeaderboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetPnlLeaderboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetPnlLeaderboard(ctx, req.(*GetPnlLeaderboardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetWalletProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWalletProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetWalletProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetWalletProfile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetWalletProfile(ctx, req.(*GetWalletProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetTraderDiscovery_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTraderDiscoveryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetTraderDiscovery(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetTraderDiscovery_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetTraderDiscovery(ctx, req.(*GetTraderDiscoveryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetSmartMoneySignals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSmartMoneySignalsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetSmartMoneySignals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetSmartMoneySignals_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetSmartMoneySignals(ctx, req.(*GetSmartMoneySignalsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetWalletTaxonomy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWalletTaxonomyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetWalletTaxonomy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetWalletTaxonomy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetWalletTaxonomy(ctx, req.(*GetWalletTaxonomyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetSignificantTrades_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSignificantTradesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetSignificantTrades(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetSignificantTrades_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetSignificantTrades(ctx, req.(*GetSignificantTradesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetEventAnalytics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEventAnalyticsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetEventAnalytics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetEventAnalytics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetEventAnalytics(ctx, req.(*GetEventAnalyticsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetWalletPositions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWalletPositionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetWalletPositions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetWalletPositions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetWalletPositions(ctx, req.(*GetWalletPositionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PolymarketExploreService_GetPipelineStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPipelineStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PolymarketExploreServiceServer).GetPipelineStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PolymarketExploreService_GetPipelineStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PolymarketExploreServiceServer).GetPipelineStats(ctx, req.(*GetPipelineStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PolymarketExploreService_StreamMarketPrices_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(StreamMarketPricesRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -541,6 +1307,94 @@ var PolymarketExploreService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMarketComments",
 			Handler:    _PolymarketExploreService_GetMarketComments_Handler,
+		},
+		{
+			MethodName: "GetGammaNonce",
+			Handler:    _PolymarketExploreService_GetGammaNonce_Handler,
+		},
+		{
+			MethodName: "GammaLogin",
+			Handler:    _PolymarketExploreService_GammaLogin_Handler,
+		},
+		{
+			MethodName: "PostComment",
+			Handler:    _PolymarketExploreService_PostComment_Handler,
+		},
+		{
+			MethodName: "GetComments",
+			Handler:    _PolymarketExploreService_GetComments_Handler,
+		},
+		{
+			MethodName: "ReactToComment",
+			Handler:    _PolymarketExploreService_ReactToComment_Handler,
+		},
+		{
+			MethodName: "DeleteComment",
+			Handler:    _PolymarketExploreService_DeleteComment_Handler,
+		},
+		{
+			MethodName: "ReplyToComment",
+			Handler:    _PolymarketExploreService_ReplyToComment_Handler,
+		},
+		{
+			MethodName: "InitDeviceAuth",
+			Handler:    _PolymarketExploreService_InitDeviceAuth_Handler,
+		},
+		{
+			MethodName: "PollDeviceSession",
+			Handler:    _PolymarketExploreService_PollDeviceSession_Handler,
+		},
+		{
+			MethodName: "RedeemPosition",
+			Handler:    _PolymarketExploreService_RedeemPosition_Handler,
+		},
+		{
+			MethodName: "ToggleBookmark",
+			Handler:    _PolymarketExploreService_ToggleBookmark_Handler,
+		},
+		{
+			MethodName: "GetBookmarks",
+			Handler:    _PolymarketExploreService_GetBookmarks_Handler,
+		},
+		{
+			MethodName: "GetTradeAnalytics",
+			Handler:    _PolymarketExploreService_GetTradeAnalytics_Handler,
+		},
+		{
+			MethodName: "GetPnlLeaderboard",
+			Handler:    _PolymarketExploreService_GetPnlLeaderboard_Handler,
+		},
+		{
+			MethodName: "GetWalletProfile",
+			Handler:    _PolymarketExploreService_GetWalletProfile_Handler,
+		},
+		{
+			MethodName: "GetTraderDiscovery",
+			Handler:    _PolymarketExploreService_GetTraderDiscovery_Handler,
+		},
+		{
+			MethodName: "GetSmartMoneySignals",
+			Handler:    _PolymarketExploreService_GetSmartMoneySignals_Handler,
+		},
+		{
+			MethodName: "GetWalletTaxonomy",
+			Handler:    _PolymarketExploreService_GetWalletTaxonomy_Handler,
+		},
+		{
+			MethodName: "GetSignificantTrades",
+			Handler:    _PolymarketExploreService_GetSignificantTrades_Handler,
+		},
+		{
+			MethodName: "GetEventAnalytics",
+			Handler:    _PolymarketExploreService_GetEventAnalytics_Handler,
+		},
+		{
+			MethodName: "GetWalletPositions",
+			Handler:    _PolymarketExploreService_GetWalletPositions_Handler,
+		},
+		{
+			MethodName: "GetPipelineStats",
+			Handler:    _PolymarketExploreService_GetPipelineStats_Handler,
 		},
 		{
 			MethodName: "GetPageView",

@@ -926,6 +926,186 @@ func (x *GetMarketPricesResponse) GetPrices() []*TokenPrice {
 	return nil
 }
 
+type GetMidpointsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// CLOB token IDs to query midpoints for (POST /midpoints).
+	TokenIds      []string `protobuf:"bytes,1,rep,name=token_ids,json=tokenIds,proto3" json:"token_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMidpointsRequest) Reset() {
+	*x = GetMidpointsRequest{}
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMidpointsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMidpointsRequest) ProtoMessage() {}
+
+func (x *GetMidpointsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMidpointsRequest.ProtoReflect.Descriptor instead.
+func (*GetMidpointsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetMidpointsRequest) GetTokenIds() []string {
+	if x != nil {
+		return x.TokenIds
+	}
+	return nil
+}
+
+type GetMidpointsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Map of token_id → midpoint price string (e.g. "0.5250").
+	Midpoints     map[string]string `protobuf:"bytes,1,rep,name=midpoints,proto3" json:"midpoints,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMidpointsResponse) Reset() {
+	*x = GetMidpointsResponse{}
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMidpointsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMidpointsResponse) ProtoMessage() {}
+
+func (x *GetMidpointsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMidpointsResponse.ProtoReflect.Descriptor instead.
+func (*GetMidpointsResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *GetMidpointsResponse) GetMidpoints() map[string]string {
+	if x != nil {
+		return x.Midpoints
+	}
+	return nil
+}
+
+type GetSpreadsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// CLOB token IDs to query spreads for (POST /spreads).
+	TokenIds      []string `protobuf:"bytes,1,rep,name=token_ids,json=tokenIds,proto3" json:"token_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSpreadsRequest) Reset() {
+	*x = GetSpreadsRequest{}
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSpreadsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSpreadsRequest) ProtoMessage() {}
+
+func (x *GetSpreadsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSpreadsRequest.ProtoReflect.Descriptor instead.
+func (*GetSpreadsRequest) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *GetSpreadsRequest) GetTokenIds() []string {
+	if x != nil {
+		return x.TokenIds
+	}
+	return nil
+}
+
+type GetSpreadsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Map of token_id → spread string (e.g. "0.009").
+	Spreads       map[string]string `protobuf:"bytes,1,rep,name=spreads,proto3" json:"spreads,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSpreadsResponse) Reset() {
+	*x = GetSpreadsResponse{}
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSpreadsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSpreadsResponse) ProtoMessage() {}
+
+func (x *GetSpreadsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSpreadsResponse.ProtoReflect.Descriptor instead.
+func (*GetSpreadsResponse) Descriptor() ([]byte, []int) {
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *GetSpreadsResponse) GetSpreads() map[string]string {
+	if x != nil {
+		return x.Spreads
+	}
+	return nil
+}
+
 type GetMarketHoldersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ConditionId   string                 `protobuf:"bytes,1,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"`
@@ -936,7 +1116,7 @@ type GetMarketHoldersRequest struct {
 
 func (x *GetMarketHoldersRequest) Reset() {
 	*x = GetMarketHoldersRequest{}
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[16]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -948,7 +1128,7 @@ func (x *GetMarketHoldersRequest) String() string {
 func (*GetMarketHoldersRequest) ProtoMessage() {}
 
 func (x *GetMarketHoldersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[16]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -961,7 +1141,7 @@ func (x *GetMarketHoldersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMarketHoldersRequest.ProtoReflect.Descriptor instead.
 func (*GetMarketHoldersRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{16}
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetMarketHoldersRequest) GetConditionId() string {
@@ -993,7 +1173,7 @@ type Holder struct {
 
 func (x *Holder) Reset() {
 	*x = Holder{}
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[17]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1005,7 +1185,7 @@ func (x *Holder) String() string {
 func (*Holder) ProtoMessage() {}
 
 func (x *Holder) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[17]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1018,7 +1198,7 @@ func (x *Holder) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Holder.ProtoReflect.Descriptor instead.
 func (*Holder) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{17}
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *Holder) GetAddress() string {
@@ -1079,7 +1259,7 @@ type GetMarketHoldersResponse struct {
 
 func (x *GetMarketHoldersResponse) Reset() {
 	*x = GetMarketHoldersResponse{}
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[18]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1091,7 +1271,7 @@ func (x *GetMarketHoldersResponse) String() string {
 func (*GetMarketHoldersResponse) ProtoMessage() {}
 
 func (x *GetMarketHoldersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[18]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1104,7 +1284,7 @@ func (x *GetMarketHoldersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMarketHoldersResponse.ProtoReflect.Descriptor instead.
 func (*GetMarketHoldersResponse) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{18}
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetMarketHoldersResponse) GetHolders() []*Holder {
@@ -1126,7 +1306,7 @@ type GetRecentTradesRequest struct {
 
 func (x *GetRecentTradesRequest) Reset() {
 	*x = GetRecentTradesRequest{}
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[19]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1138,7 +1318,7 @@ func (x *GetRecentTradesRequest) String() string {
 func (*GetRecentTradesRequest) ProtoMessage() {}
 
 func (x *GetRecentTradesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[19]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1151,7 +1331,7 @@ func (x *GetRecentTradesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRecentTradesRequest.ProtoReflect.Descriptor instead.
 func (*GetRecentTradesRequest) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{19}
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *GetRecentTradesRequest) GetConditionId() string {
@@ -1200,7 +1380,7 @@ type RecentTrade struct {
 
 func (x *RecentTrade) Reset() {
 	*x = RecentTrade{}
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[20]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1212,7 +1392,7 @@ func (x *RecentTrade) String() string {
 func (*RecentTrade) ProtoMessage() {}
 
 func (x *RecentTrade) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[20]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1225,7 +1405,7 @@ func (x *RecentTrade) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecentTrade.ProtoReflect.Descriptor instead.
 func (*RecentTrade) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{20}
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *RecentTrade) GetTraderAddress() string {
@@ -1308,7 +1488,7 @@ type GetRecentTradesResponse struct {
 
 func (x *GetRecentTradesResponse) Reset() {
 	*x = GetRecentTradesResponse{}
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[21]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1320,7 +1500,7 @@ func (x *GetRecentTradesResponse) String() string {
 func (*GetRecentTradesResponse) ProtoMessage() {}
 
 func (x *GetRecentTradesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[21]
+	mi := &file_bullpen_v1_polymarket_trade_info_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1333,7 +1513,7 @@ func (x *GetRecentTradesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRecentTradesResponse.ProtoReflect.Descriptor instead.
 func (*GetRecentTradesResponse) Descriptor() ([]byte, []int) {
-	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{21}
+	return file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *GetRecentTradesResponse) GetTrades() []*RecentTrade {
@@ -1420,7 +1600,21 @@ const file_bullpen_v1_polymarket_trade_info_proto_rawDesc = "" +
 	"\x05price\x18\x02 \x01(\tR\x05price\x12\x12\n" +
 	"\x04size\x18\x03 \x01(\tR\x04size\"I\n" +
 	"\x17GetMarketPricesResponse\x12.\n" +
-	"\x06prices\x18\x01 \x03(\v2\x16.bullpen.v1.TokenPriceR\x06prices\"R\n" +
+	"\x06prices\x18\x01 \x03(\v2\x16.bullpen.v1.TokenPriceR\x06prices\"2\n" +
+	"\x13GetMidpointsRequest\x12\x1b\n" +
+	"\ttoken_ids\x18\x01 \x03(\tR\btokenIds\"\xa3\x01\n" +
+	"\x14GetMidpointsResponse\x12M\n" +
+	"\tmidpoints\x18\x01 \x03(\v2/.bullpen.v1.GetMidpointsResponse.MidpointsEntryR\tmidpoints\x1a<\n" +
+	"\x0eMidpointsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"0\n" +
+	"\x11GetSpreadsRequest\x12\x1b\n" +
+	"\ttoken_ids\x18\x01 \x03(\tR\btokenIds\"\x97\x01\n" +
+	"\x12GetSpreadsResponse\x12E\n" +
+	"\aspreads\x18\x01 \x03(\v2+.bullpen.v1.GetSpreadsResponse.SpreadsEntryR\aspreads\x1a:\n" +
+	"\fSpreadsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"R\n" +
 	"\x17GetMarketHoldersRequest\x12!\n" +
 	"\fcondition_id\x18\x01 \x01(\tR\vconditionId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\xdf\x01\n" +
@@ -1460,7 +1654,7 @@ const file_bullpen_v1_polymarket_trade_info_proto_rawDesc = "" +
 	"\x06trades\x18\x01 \x03(\v2\x17.bullpen.v1.RecentTradeR\x06trades\x12>\n" +
 	"\n" +
 	"pagination\x18\x02 \x01(\v2\x1e.bullpen.v1.PaginationResponseR\n" +
-	"pagination2\xff\x05\n" +
+	"pagination2\x9f\a\n" +
 	"\x1aPolymarketTradeInfoService\x12F\n" +
 	"\fGetOrderbook\x12\x1f.bullpen.v1.GetOrderbookRequest\x1a\x15.bullpen.v1.Orderbook\x12T\n" +
 	"\rGetOrderbooks\x12 .bullpen.v1.GetOrderbooksRequest\x1a!.bullpen.v1.GetOrderbooksResponse\x12T\n" +
@@ -1468,7 +1662,10 @@ const file_bullpen_v1_polymarket_trade_info_proto_rawDesc = "" +
 	"\tGetSpread\x12\x1c.bullpen.v1.GetSpreadRequest\x1a\x12.bullpen.v1.Spread\x12F\n" +
 	"\fGetLastTrade\x12\x1f.bullpen.v1.GetLastTradeRequest\x1a\x15.bullpen.v1.LastTrade\x12O\n" +
 	"\x0fGetOpenInterest\x12\".bullpen.v1.GetOpenInterestRequest\x1a\x18.bullpen.v1.OpenInterest\x12Z\n" +
-	"\x0fGetMarketPrices\x12\".bullpen.v1.GetMarketPricesRequest\x1a#.bullpen.v1.GetMarketPricesResponse\x12]\n" +
+	"\x0fGetMarketPrices\x12\".bullpen.v1.GetMarketPricesRequest\x1a#.bullpen.v1.GetMarketPricesResponse\x12Q\n" +
+	"\fGetMidpoints\x12\x1f.bullpen.v1.GetMidpointsRequest\x1a .bullpen.v1.GetMidpointsResponse\x12K\n" +
+	"\n" +
+	"GetSpreads\x12\x1d.bullpen.v1.GetSpreadsRequest\x1a\x1e.bullpen.v1.GetSpreadsResponse\x12]\n" +
 	"\x10GetMarketHolders\x12#.bullpen.v1.GetMarketHoldersRequest\x1a$.bullpen.v1.GetMarketHoldersResponse\x12Z\n" +
 	"\x0fGetRecentTrades\x12\".bullpen.v1.GetRecentTradesRequest\x1a#.bullpen.v1.GetRecentTradesResponseB\xb2\x01\n" +
 	"\x0ecom.bullpen.v1B\x18PolymarketTradeInfoProtoP\x01Z=github.com/BullpenFi/bullpen-data/gen/go/bullpen/v1;bullpenv1\xa2\x02\x03BXX\xaa\x02\n" +
@@ -1487,7 +1684,7 @@ func file_bullpen_v1_polymarket_trade_info_proto_rawDescGZIP() []byte {
 	return file_bullpen_v1_polymarket_trade_info_proto_rawDescData
 }
 
-var file_bullpen_v1_polymarket_trade_info_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_bullpen_v1_polymarket_trade_info_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_bullpen_v1_polymarket_trade_info_proto_goTypes = []any{
 	(*GetOrderbookRequest)(nil),      // 0: bullpen.v1.GetOrderbookRequest
 	(*PriceLevel)(nil),               // 1: bullpen.v1.PriceLevel
@@ -1505,58 +1702,70 @@ var file_bullpen_v1_polymarket_trade_info_proto_goTypes = []any{
 	(*GetMarketPricesRequest)(nil),   // 13: bullpen.v1.GetMarketPricesRequest
 	(*TokenPrice)(nil),               // 14: bullpen.v1.TokenPrice
 	(*GetMarketPricesResponse)(nil),  // 15: bullpen.v1.GetMarketPricesResponse
-	(*GetMarketHoldersRequest)(nil),  // 16: bullpen.v1.GetMarketHoldersRequest
-	(*Holder)(nil),                   // 17: bullpen.v1.Holder
-	(*GetMarketHoldersResponse)(nil), // 18: bullpen.v1.GetMarketHoldersResponse
-	(*GetRecentTradesRequest)(nil),   // 19: bullpen.v1.GetRecentTradesRequest
-	(*RecentTrade)(nil),              // 20: bullpen.v1.RecentTrade
-	(*GetRecentTradesResponse)(nil),  // 21: bullpen.v1.GetRecentTradesResponse
-	nil,                              // 22: bullpen.v1.GetOrderbooksResponse.OrderbooksEntry
-	(*timestamppb.Timestamp)(nil),    // 23: google.protobuf.Timestamp
-	(Side)(0),                        // 24: bullpen.v1.Side
-	(*PaginationRequest)(nil),        // 25: bullpen.v1.PaginationRequest
-	(*PaginationResponse)(nil),       // 26: bullpen.v1.PaginationResponse
+	(*GetMidpointsRequest)(nil),      // 16: bullpen.v1.GetMidpointsRequest
+	(*GetMidpointsResponse)(nil),     // 17: bullpen.v1.GetMidpointsResponse
+	(*GetSpreadsRequest)(nil),        // 18: bullpen.v1.GetSpreadsRequest
+	(*GetSpreadsResponse)(nil),       // 19: bullpen.v1.GetSpreadsResponse
+	(*GetMarketHoldersRequest)(nil),  // 20: bullpen.v1.GetMarketHoldersRequest
+	(*Holder)(nil),                   // 21: bullpen.v1.Holder
+	(*GetMarketHoldersResponse)(nil), // 22: bullpen.v1.GetMarketHoldersResponse
+	(*GetRecentTradesRequest)(nil),   // 23: bullpen.v1.GetRecentTradesRequest
+	(*RecentTrade)(nil),              // 24: bullpen.v1.RecentTrade
+	(*GetRecentTradesResponse)(nil),  // 25: bullpen.v1.GetRecentTradesResponse
+	nil,                              // 26: bullpen.v1.GetOrderbooksResponse.OrderbooksEntry
+	nil,                              // 27: bullpen.v1.GetMidpointsResponse.MidpointsEntry
+	nil,                              // 28: bullpen.v1.GetSpreadsResponse.SpreadsEntry
+	(*timestamppb.Timestamp)(nil),    // 29: google.protobuf.Timestamp
+	(Side)(0),                        // 30: bullpen.v1.Side
+	(*PaginationRequest)(nil),        // 31: bullpen.v1.PaginationRequest
+	(*PaginationResponse)(nil),       // 32: bullpen.v1.PaginationResponse
 }
 var file_bullpen_v1_polymarket_trade_info_proto_depIdxs = []int32{
 	1,  // 0: bullpen.v1.Orderbook.bids:type_name -> bullpen.v1.PriceLevel
 	1,  // 1: bullpen.v1.Orderbook.asks:type_name -> bullpen.v1.PriceLevel
-	23, // 2: bullpen.v1.Orderbook.timestamp:type_name -> google.protobuf.Timestamp
-	22, // 3: bullpen.v1.GetOrderbooksResponse.orderbooks:type_name -> bullpen.v1.GetOrderbooksResponse.OrderbooksEntry
+	29, // 2: bullpen.v1.Orderbook.timestamp:type_name -> google.protobuf.Timestamp
+	26, // 3: bullpen.v1.GetOrderbooksResponse.orderbooks:type_name -> bullpen.v1.GetOrderbooksResponse.OrderbooksEntry
 	2,  // 4: bullpen.v1.OrderbookUpdate.orderbook:type_name -> bullpen.v1.Orderbook
-	24, // 5: bullpen.v1.LastTrade.side:type_name -> bullpen.v1.Side
-	23, // 6: bullpen.v1.LastTrade.timestamp:type_name -> google.protobuf.Timestamp
+	30, // 5: bullpen.v1.LastTrade.side:type_name -> bullpen.v1.Side
+	29, // 6: bullpen.v1.LastTrade.timestamp:type_name -> google.protobuf.Timestamp
 	14, // 7: bullpen.v1.GetMarketPricesResponse.prices:type_name -> bullpen.v1.TokenPrice
-	17, // 8: bullpen.v1.GetMarketHoldersResponse.holders:type_name -> bullpen.v1.Holder
-	25, // 9: bullpen.v1.GetRecentTradesRequest.pagination:type_name -> bullpen.v1.PaginationRequest
-	24, // 10: bullpen.v1.GetRecentTradesRequest.side_filter:type_name -> bullpen.v1.Side
-	24, // 11: bullpen.v1.RecentTrade.side:type_name -> bullpen.v1.Side
-	23, // 12: bullpen.v1.RecentTrade.timestamp:type_name -> google.protobuf.Timestamp
-	20, // 13: bullpen.v1.GetRecentTradesResponse.trades:type_name -> bullpen.v1.RecentTrade
-	26, // 14: bullpen.v1.GetRecentTradesResponse.pagination:type_name -> bullpen.v1.PaginationResponse
-	2,  // 15: bullpen.v1.GetOrderbooksResponse.OrderbooksEntry.value:type_name -> bullpen.v1.Orderbook
-	0,  // 16: bullpen.v1.PolymarketTradeInfoService.GetOrderbook:input_type -> bullpen.v1.GetOrderbookRequest
-	3,  // 17: bullpen.v1.PolymarketTradeInfoService.GetOrderbooks:input_type -> bullpen.v1.GetOrderbooksRequest
-	5,  // 18: bullpen.v1.PolymarketTradeInfoService.StreamOrderbook:input_type -> bullpen.v1.StreamOrderbookRequest
-	7,  // 19: bullpen.v1.PolymarketTradeInfoService.GetSpread:input_type -> bullpen.v1.GetSpreadRequest
-	9,  // 20: bullpen.v1.PolymarketTradeInfoService.GetLastTrade:input_type -> bullpen.v1.GetLastTradeRequest
-	11, // 21: bullpen.v1.PolymarketTradeInfoService.GetOpenInterest:input_type -> bullpen.v1.GetOpenInterestRequest
-	13, // 22: bullpen.v1.PolymarketTradeInfoService.GetMarketPrices:input_type -> bullpen.v1.GetMarketPricesRequest
-	16, // 23: bullpen.v1.PolymarketTradeInfoService.GetMarketHolders:input_type -> bullpen.v1.GetMarketHoldersRequest
-	19, // 24: bullpen.v1.PolymarketTradeInfoService.GetRecentTrades:input_type -> bullpen.v1.GetRecentTradesRequest
-	2,  // 25: bullpen.v1.PolymarketTradeInfoService.GetOrderbook:output_type -> bullpen.v1.Orderbook
-	4,  // 26: bullpen.v1.PolymarketTradeInfoService.GetOrderbooks:output_type -> bullpen.v1.GetOrderbooksResponse
-	6,  // 27: bullpen.v1.PolymarketTradeInfoService.StreamOrderbook:output_type -> bullpen.v1.OrderbookUpdate
-	8,  // 28: bullpen.v1.PolymarketTradeInfoService.GetSpread:output_type -> bullpen.v1.Spread
-	10, // 29: bullpen.v1.PolymarketTradeInfoService.GetLastTrade:output_type -> bullpen.v1.LastTrade
-	12, // 30: bullpen.v1.PolymarketTradeInfoService.GetOpenInterest:output_type -> bullpen.v1.OpenInterest
-	15, // 31: bullpen.v1.PolymarketTradeInfoService.GetMarketPrices:output_type -> bullpen.v1.GetMarketPricesResponse
-	18, // 32: bullpen.v1.PolymarketTradeInfoService.GetMarketHolders:output_type -> bullpen.v1.GetMarketHoldersResponse
-	21, // 33: bullpen.v1.PolymarketTradeInfoService.GetRecentTrades:output_type -> bullpen.v1.GetRecentTradesResponse
-	25, // [25:34] is the sub-list for method output_type
-	16, // [16:25] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	27, // 8: bullpen.v1.GetMidpointsResponse.midpoints:type_name -> bullpen.v1.GetMidpointsResponse.MidpointsEntry
+	28, // 9: bullpen.v1.GetSpreadsResponse.spreads:type_name -> bullpen.v1.GetSpreadsResponse.SpreadsEntry
+	21, // 10: bullpen.v1.GetMarketHoldersResponse.holders:type_name -> bullpen.v1.Holder
+	31, // 11: bullpen.v1.GetRecentTradesRequest.pagination:type_name -> bullpen.v1.PaginationRequest
+	30, // 12: bullpen.v1.GetRecentTradesRequest.side_filter:type_name -> bullpen.v1.Side
+	30, // 13: bullpen.v1.RecentTrade.side:type_name -> bullpen.v1.Side
+	29, // 14: bullpen.v1.RecentTrade.timestamp:type_name -> google.protobuf.Timestamp
+	24, // 15: bullpen.v1.GetRecentTradesResponse.trades:type_name -> bullpen.v1.RecentTrade
+	32, // 16: bullpen.v1.GetRecentTradesResponse.pagination:type_name -> bullpen.v1.PaginationResponse
+	2,  // 17: bullpen.v1.GetOrderbooksResponse.OrderbooksEntry.value:type_name -> bullpen.v1.Orderbook
+	0,  // 18: bullpen.v1.PolymarketTradeInfoService.GetOrderbook:input_type -> bullpen.v1.GetOrderbookRequest
+	3,  // 19: bullpen.v1.PolymarketTradeInfoService.GetOrderbooks:input_type -> bullpen.v1.GetOrderbooksRequest
+	5,  // 20: bullpen.v1.PolymarketTradeInfoService.StreamOrderbook:input_type -> bullpen.v1.StreamOrderbookRequest
+	7,  // 21: bullpen.v1.PolymarketTradeInfoService.GetSpread:input_type -> bullpen.v1.GetSpreadRequest
+	9,  // 22: bullpen.v1.PolymarketTradeInfoService.GetLastTrade:input_type -> bullpen.v1.GetLastTradeRequest
+	11, // 23: bullpen.v1.PolymarketTradeInfoService.GetOpenInterest:input_type -> bullpen.v1.GetOpenInterestRequest
+	13, // 24: bullpen.v1.PolymarketTradeInfoService.GetMarketPrices:input_type -> bullpen.v1.GetMarketPricesRequest
+	16, // 25: bullpen.v1.PolymarketTradeInfoService.GetMidpoints:input_type -> bullpen.v1.GetMidpointsRequest
+	18, // 26: bullpen.v1.PolymarketTradeInfoService.GetSpreads:input_type -> bullpen.v1.GetSpreadsRequest
+	20, // 27: bullpen.v1.PolymarketTradeInfoService.GetMarketHolders:input_type -> bullpen.v1.GetMarketHoldersRequest
+	23, // 28: bullpen.v1.PolymarketTradeInfoService.GetRecentTrades:input_type -> bullpen.v1.GetRecentTradesRequest
+	2,  // 29: bullpen.v1.PolymarketTradeInfoService.GetOrderbook:output_type -> bullpen.v1.Orderbook
+	4,  // 30: bullpen.v1.PolymarketTradeInfoService.GetOrderbooks:output_type -> bullpen.v1.GetOrderbooksResponse
+	6,  // 31: bullpen.v1.PolymarketTradeInfoService.StreamOrderbook:output_type -> bullpen.v1.OrderbookUpdate
+	8,  // 32: bullpen.v1.PolymarketTradeInfoService.GetSpread:output_type -> bullpen.v1.Spread
+	10, // 33: bullpen.v1.PolymarketTradeInfoService.GetLastTrade:output_type -> bullpen.v1.LastTrade
+	12, // 34: bullpen.v1.PolymarketTradeInfoService.GetOpenInterest:output_type -> bullpen.v1.OpenInterest
+	15, // 35: bullpen.v1.PolymarketTradeInfoService.GetMarketPrices:output_type -> bullpen.v1.GetMarketPricesResponse
+	17, // 36: bullpen.v1.PolymarketTradeInfoService.GetMidpoints:output_type -> bullpen.v1.GetMidpointsResponse
+	19, // 37: bullpen.v1.PolymarketTradeInfoService.GetSpreads:output_type -> bullpen.v1.GetSpreadsResponse
+	22, // 38: bullpen.v1.PolymarketTradeInfoService.GetMarketHolders:output_type -> bullpen.v1.GetMarketHoldersResponse
+	25, // 39: bullpen.v1.PolymarketTradeInfoService.GetRecentTrades:output_type -> bullpen.v1.GetRecentTradesResponse
+	29, // [29:40] is the sub-list for method output_type
+	18, // [18:29] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_bullpen_v1_polymarket_trade_info_proto_init() }
@@ -1571,7 +1780,7 @@ func file_bullpen_v1_polymarket_trade_info_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_bullpen_v1_polymarket_trade_info_proto_rawDesc), len(file_bullpen_v1_polymarket_trade_info_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Event, GetCategoriesRequest, GetCategoriesResponse, GetEventRequest, GetFeaturedLensRequest, GetHomepageSummaryRequest, GetMarketAnalyticsRequest, GetMarketCommentsRequest, GetMarketCommentsResponse, GetMarketRequest, GetMarketStrengthRequest, GetPageViewRequest, HomepageSummary, Market, MarketAnalytics, MarketPriceUpdate, MarketStrength, PageView, QueryEventsRequest, QueryEventsResponse, QueryMarketsRequest, QueryMarketsResponse, StreamMarketPricesRequest } from "./polymarket_explore_pb.js";
+import { DeleteCommentRequest, DeleteCommentResponse, Event, EventAnalytics, GammaLoginRequest, GammaLoginResponse, GetBookmarksRequest, GetBookmarksResponse, GetCategoriesRequest, GetCategoriesResponse, GetCommentsRequest, GetCommentsResponse, GetEventAnalyticsRequest, GetEventRequest, GetFeaturedLensRequest, GetGammaNonceRequest, GetGammaNonceResponse, GetHomepageSummaryRequest, GetMarketAnalyticsRequest, GetMarketCommentsRequest, GetMarketCommentsResponse, GetMarketRequest, GetMarketStrengthRequest, GetPageViewRequest, GetPipelineStatsRequest, GetPnlLeaderboardRequest, GetSignificantTradesRequest, GetSignificantTradesResponse, GetSmartMoneySignalsRequest, GetSmartMoneySignalsResponse, GetTradeAnalyticsRequest, GetTraderDiscoveryRequest, GetTraderDiscoveryResponse, GetWalletPositionsRequest, GetWalletPositionsResponse, GetWalletProfileRequest, GetWalletTaxonomyRequest, HomepageSummary, InitDeviceAuthRequest, InitDeviceAuthResponse, Market, MarketAnalytics, MarketPriceUpdate, MarketStrength, PageView, PipelineStats, PnlLeaderboardResponse, PollDeviceSessionRequest, PollDeviceSessionResponse, PostCommentRequest, PostCommentResponse, QueryEventsRequest, QueryEventsResponse, QueryMarketsRequest, QueryMarketsResponse, ReactToCommentRequest, ReactToCommentResponse, RedeemPositionRequest, RedeemPositionResponse, ReplyToCommentRequest, StreamMarketPricesRequest, ToggleBookmarkRequest, ToggleBookmarkResponse, TradeAnalyticsResponse, WalletProfile, WalletTaxonomy } from "./polymarket_explore_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -110,6 +110,222 @@ export const PolymarketExploreService = {
       name: "GetMarketComments",
       I: GetMarketCommentsRequest,
       O: GetMarketCommentsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Gamma Auth (SIWE login for commenting) ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetGammaNonce
+     */
+    getGammaNonce: {
+      name: "GetGammaNonce",
+      I: GetGammaNonceRequest,
+      O: GetGammaNonceResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GammaLogin
+     */
+    gammaLogin: {
+      name: "GammaLogin",
+      I: GammaLoginRequest,
+      O: GammaLoginResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.PostComment
+     */
+    postComment: {
+      name: "PostComment",
+      I: PostCommentRequest,
+      O: PostCommentResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetComments
+     */
+    getComments: {
+      name: "GetComments",
+      I: GetCommentsRequest,
+      O: GetCommentsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.ReactToComment
+     */
+    reactToComment: {
+      name: "ReactToComment",
+      I: ReactToCommentRequest,
+      O: ReactToCommentResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.DeleteComment
+     */
+    deleteComment: {
+      name: "DeleteComment",
+      I: DeleteCommentRequest,
+      O: DeleteCommentResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.ReplyToComment
+     */
+    replyToComment: {
+      name: "ReplyToComment",
+      I: ReplyToCommentRequest,
+      O: PostCommentResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Device Auth (Bullpen device flow → Gamma session) ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.InitDeviceAuth
+     */
+    initDeviceAuth: {
+      name: "InitDeviceAuth",
+      I: InitDeviceAuthRequest,
+      O: InitDeviceAuthResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.PollDeviceSession
+     */
+    pollDeviceSession: {
+      name: "PollDeviceSession",
+      I: PollDeviceSessionRequest,
+      O: PollDeviceSessionResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Positions ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.RedeemPosition
+     */
+    redeemPosition: {
+      name: "RedeemPosition",
+      I: RedeemPositionRequest,
+      O: RedeemPositionResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Bookmarks ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.ToggleBookmark
+     */
+    toggleBookmark: {
+      name: "ToggleBookmark",
+      I: ToggleBookmarkRequest,
+      O: ToggleBookmarkResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetBookmarks
+     */
+    getBookmarks: {
+      name: "GetBookmarks",
+      I: GetBookmarksRequest,
+      O: GetBookmarksResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Trade Analytics ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetTradeAnalytics
+     */
+    getTradeAnalytics: {
+      name: "GetTradeAnalytics",
+      I: GetTradeAnalyticsRequest,
+      O: TradeAnalyticsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetPnlLeaderboard
+     */
+    getPnlLeaderboard: {
+      name: "GetPnlLeaderboard",
+      I: GetPnlLeaderboardRequest,
+      O: PnlLeaderboardResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetWalletProfile
+     */
+    getWalletProfile: {
+      name: "GetWalletProfile",
+      I: GetWalletProfileRequest,
+      O: WalletProfile,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Trader Discovery & Smart Money ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetTraderDiscovery
+     */
+    getTraderDiscovery: {
+      name: "GetTraderDiscovery",
+      I: GetTraderDiscoveryRequest,
+      O: GetTraderDiscoveryResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetSmartMoneySignals
+     */
+    getSmartMoneySignals: {
+      name: "GetSmartMoneySignals",
+      I: GetSmartMoneySignalsRequest,
+      O: GetSmartMoneySignalsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetWalletTaxonomy
+     */
+    getWalletTaxonomy: {
+      name: "GetWalletTaxonomy",
+      I: GetWalletTaxonomyRequest,
+      O: WalletTaxonomy,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetSignificantTrades
+     */
+    getSignificantTrades: {
+      name: "GetSignificantTrades",
+      I: GetSignificantTradesRequest,
+      O: GetSignificantTradesResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Event-level aggregation ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetEventAnalytics
+     */
+    getEventAnalytics: {
+      name: "GetEventAnalytics",
+      I: GetEventAnalyticsRequest,
+      O: EventAnalytics,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Wallet Positions ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetWalletPositions
+     */
+    getWalletPositions: {
+      name: "GetWalletPositions",
+      I: GetWalletPositionsRequest,
+      O: GetWalletPositionsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * ---- Pipeline Stats (dashboard) ----
+     *
+     * @generated from rpc bullpen.v1.PolymarketExploreService.GetPipelineStats
+     */
+    getPipelineStats: {
+      name: "GetPipelineStats",
+      I: GetPipelineStatsRequest,
+      O: PipelineStats,
       kind: MethodKind.Unary,
     },
     /**
